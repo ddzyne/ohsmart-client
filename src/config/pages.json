@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Home",
+    "link": "/"
+  },
+  {
+    "name": "Deposit",
+    "link": "deposit"
+  },
+  {
+    "name": "About",
+    "link": ""
+  },
+  {
+    "name": "Search",
+    "link": ""
+  },
+  {
+    "name": "User guide",
+    "link": ""
+  },
+  {
+    "name": "Support",
+    "link": ""
+  }
+]

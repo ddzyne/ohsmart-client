@@ -1,0 +1,18 @@
+[
+  {
+    "label": "Metadata",
+    "data": "form"
+  },
+  {
+    "label": "Files",
+    "data": "files"
+  },
+  {
+    "label": "Preferences",
+    "data": "preferences"
+  },
+  {
+    "label": "Tools",
+    "data": "tools"
+  }
+]
