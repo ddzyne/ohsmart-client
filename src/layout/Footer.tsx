@@ -22,7 +22,7 @@ const Footer = () =>
               <Stack direction="column" alignItems="start">
                 {item.header && <h4>{item.header}</h4>}
                 {item.links && item.links.map( (link, j) =>
-                  <Link href={link.link} underline="none">
+                  <Link href={link.link} underline="none" key={`link-${link.name}`}>
                     {link.name}
                   </Link>
                 )}

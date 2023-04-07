@@ -25,7 +25,7 @@ export const section = {
       label: 'Date available',
       id: `${prefix}_date_available`,
       required: true,
-      description: '',
+      description: 'In case of an embargo, else publication date',
     },
   ],
 };

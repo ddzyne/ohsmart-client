@@ -10,6 +10,7 @@ export interface Field {
   id: string;
   label: string;
   repeatable: boolean;
+  multiline?: boolean;
   description?: string;
   required?: boolean;
   private?: boolean;

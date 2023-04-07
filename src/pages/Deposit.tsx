@@ -6,10 +6,11 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import tabs from '../config/tabs.json';
-import Form from '../features/form/Form';
+import Metadata from '../features/metadata/Metadata';
 import Files from '../features/files/Files';
 import Preferences from '../features/preferences/Preferences';
 import Tools from '../features/tools/Tools';
+import Button from '@mui/material/Button';
 
 interface TabPanelProps {
   children?: ReactNode;
@@ -22,7 +23,7 @@ interface ComponentTypes {
 }
 
 const components: ComponentTypes = {
-  form: Form,
+  metadata: Metadata,
   files: Files,
   preferences: Preferences,
   tools: Tools,
@@ -55,6 +56,9 @@ const Deposit = () => {
             )
           })}
         </Grid>
+        <Grid mdOffset={1} xs={12} md={10} mt={4} display="flex" justifyContent="end">
+          <Button variant="contained" size="large">Submit data</Button>
+        </Grid>
       </Grid>
     </Container>
   )
@@ -73,7 +77,7 @@ const TabPanel = (props: TabPanelProps) => {
     >
       {value === index && (
         <Box mt={2}>
-          <Typography>{children}</Typography>
+          {children}
         </Box>
       )}
     </div>

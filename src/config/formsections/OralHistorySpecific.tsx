@@ -1,163 +1,116 @@
 const prefix = "ohs";
 
 export const section = {
-  type: "collapsible",
-  title: {
-    en: "Oral-history specific",
-    nl: "Specifiek voor mondelinge geschiedenis",
-  },
+  title: "Oral-history specific",
+  id: prefix,
   fields: [
     {
-      legend: {en: "Interviewee (non-public data)", nl: "Geinterviewde (niet-publieke data)"},
+      type: 'group',
+      label: 'Interviewee',
+      id: `${prefix}_group_interviewee`,
+      repeatable: true,
+      description: 'Information about the person being interviewed. This data will not be public.',
       fields: [
         {
           type: "text",
-          label: {
-            en: "Initials",
-            nl: "Initialen",
-          },
-          name: `${prefix}_interviewee_initials`,
+          label: "Initials",
+          id: `${prefix}_interviewee_initials`,
           required: true,
-          col_span: "small",
           private: true,
         },
         {
           type: "text",
-          label: {
-            en: "Last name",
-            nl: "Achtername",
-          },
-          name: `${prefix}_interviewee_last_name`,
+          label: "Last name",
+          id: `${prefix}_interviewee_last_name`,
           required: true,
-          col_span: "small",
           private: true,
         },
         {
           type: "date",
-          label: {
-            en: "Date of birth",
-            nl: "Geboortedatum",
-          },
-          name: `${prefix}_interviewee_dob`,
+          label: "Date of birth",
+          id: `${prefix}_interviewee_dob`,
           required: true,
-          col_span: "small",
           private: true,
         },
       ]
     },
     {
-      // repeatable group
-      legend: {en: "Interviewer (non-public data)", nl: "Interviewer (niet-publieke data)"},
+      type: 'group',
+      label: 'Interviewer',
+      id: `${prefix}_group_interviewer`,
       repeatable: true,
+      description: 'Information about the person doing the interview. This data will not be public.',
       fields: [
         {
           type: "text",
-          label: {
-            en: "First name",
-            nl: "Voornaam",
-          },
-          name: `${prefix}_interviewer_first_name`,
+          label: "First name",
+          id: `${prefix}_interviewer_first_name`,
           required: true,
-          col_span: "small",
           private: true,
         },
         {
           type: "text",
-          label: {
-            en: "Last name",
-            nl: "Achtername",
-          },
-          name: `${prefix}_interviewer_last_name`,
+          label: "Last name",
+          id: `${prefix}_interviewer_last_name`,
           required: true,
-          col_span: "small",
           private: true,
         },
       ],
     },
     {
-      // repeatable group
-      legend: {en: "Others present (non-public data)", nl: "Andere aanwezigen (niet-publieke data)"},
+      type: 'group',
+      label: 'Others present',
+      id: `${prefix}_group_others`,
       repeatable: true,
+      description: 'Information about other people present during the interview. This data will not be public.',
       fields: [
         {
           type: "text",
-          label: {
-            en: "First name",
-            nl: "Voornaam",
-          },
-          name: `${prefix}_others_first_name`,
-          required: false,
-          col_span: "small",
+          label: "First name",
+          id: `${prefix}_others_first_name`,
           private: true,
         },
         {
           type: "text",
-          label: {
-            en: "Last name",
-            nl: "Achtername",
-          },
-          name: `${prefix}_others_last_name`,
-          required: false,
-          col_span: "small",
+          label: "Last name",
+          id: `${prefix}_others_last_name`,
           private: true,
         },
         {
           type: "text",
-          label: {
-            en: "Function",
-            nl: "Functie",
-          },
-          name: `${prefix}_others_function`,
-          required: false,
-          col_span: "small",
+          label: "Function",
+          id: `${prefix}_others_function`,
           private: true,
         },
       ],
     },
     {
-      type: "typeahead",
-      list: ["custom"],
-      label: {
-        en: "Location of interview",
-        nl: "Locatie van interview",
-      },
-      name: `${prefix}_location`,
+      type: "select",
+      label: "Location of interview",
+      id: `${prefix}_location`,
       required: true,
-      col_span: "medium",
       repeatable: true,
     },
     {
       type: "datetime-local",
-      label: {
-        en: "Date and time of interview",
-        nl: "Datum en tijd van interview",
-      },
-      name: `${prefix}_date_time_interview`,
+      label: "Date and time of interview",
+      id: `${prefix}_date_time_interview`,
       required: true,
-      col_span: "medium",
       repeatable: true,
     },
     {
       type: "text",
-      label: {
-        en: "Recorded by",
-        nl: "Opgenomen door",
-      },
-      name: `${prefix}_recorded_by`,
+      label: "Recorded by",
+      id: `${prefix}_recorded_by`,
       required: true,
-      col_span: "medium",
       repeatable: true,
     },
     // recording format follows from file upload I'd say
     {
       type: "text",
-      label: {
-        en: "Recording equipment",
-        nl: "Opnameapparatuur",
-      },
-      name: `${prefix}_recording_equipment`,
+      label: "Recording equipment",
+      id: `${prefix}_recording_equipment`,
       required: false,
-      col_span: "medium",
       repeatable: true,
     },
     // transcript by human: should this be here, or in the files section?

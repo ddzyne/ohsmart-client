@@ -7,10 +7,19 @@ import { LinkProps } from '@mui/material/Link';
 const customTheme = createTheme({
   palette: {
     primary: {
-      main: '#0971f1',
+      light: '#E4F9FF',
+      main: '#38a7d4',
+      dark: '#23baf8',
+      contrastText: '#fff',
+    },
+    secondary: {
+      light: '#ff7961',
+      main: '#f44336',
+      dark: '#ba000d',
+      contrastText: '#000',
     },
     neutral: {
-      main: grey[100],
+      main: grey[200],
       contrastText: 'black',
     },
     neutralDark: {
@@ -22,7 +31,7 @@ const customTheme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         colorPrimary: {
-          backgroundColor: grey[100],
+          backgroundColor: grey[200],
           color: 'black',
         }
       }
