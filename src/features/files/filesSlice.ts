@@ -13,13 +13,17 @@ export const filesSlice = createSlice({
     addFiles: (state, action: PayloadAction<any>) => {
       state.push(...action.payload);
     },
-    removeFiles: (state, action: PayloadAction<any>) => {
+    removeFile: (state, action: PayloadAction<any>) => {
       return state.filter((file: any) => file.fileName !== action.payload.fileName)
     },
+    setFileMeta: (state, action: PayloadAction<any>) => {
+      // set extra metadata for this file: restricted status, role and processing
+      
+    }
   }
 });
 
-export const { addFiles, removeFiles } = filesSlice.actions;
+export const { addFiles, removeFile, setFileMeta } = filesSlice.actions;
 
 // Select values from state
 export const getFiles = (state: RootState) => state.files;

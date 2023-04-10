@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useState, Fragment } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import {useDropzone} from 'react-dropzone';
 import Box from '@mui/material/Box';
@@ -23,24 +23,23 @@ import ListItemText from '@mui/material/ListItemText';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { getFiles, addFiles, removeFiles } from './filesSlice';
+import { getFiles, addFiles, removeFile, setFileMeta } from './filesSlice';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
 
 const columns: any = [
   { field: 'fileName', headerName: 'Name' },
   { field: 'readableSize', headerName: 'Size' },
   { field: 'readableType', headerName: 'Type' },
-  { field: 'role', headerName: 'Role' },
+/*  { field: 'role', headerName: 'Role' },
   { field: 'restricted', headerName: 'Restricted' },
-  { field: 'process', headerName: 'Process' },
+  { field: 'process', headerName: 'Process' },*/
 ];
 
 const Files = () => {
   const dispatch = useAppDispatch();
   const selectedFiles = useAppSelector(getFiles);
-
-  console.log(selectedFiles)
-
-  const [selectedProcessing, setSelectedProcessing] = useState<string[]>([]);
+  const [open, setOpen] = useState('');
 
   const onDrop = (acceptedFiles: any) => {
     const serializedFiles = acceptedFiles.map( (file: any, i: number) => ({
@@ -51,58 +50,10 @@ const Files = () => {
     dispatch(addFiles(serializedFiles));
   };
 
-  const handleProcessingChange = (event: SelectChangeEvent<typeof selectedProcessing>) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedProcessing(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
-
   const {acceptedFiles, getRootProps, getInputProps, isDragActive} = useDropzone({
     onDrop,
     multiple: true,
   });
-
-  /*
-  const files = selectedFiles.map( (file: any, i: number) => (
-    { 
-      ...file,
-      fileName: file.name,
-      id: i,
-      readableSize: `${(file.size*9.5367431640625*Math.pow(10, -7)).toFixed(2)} MB`, 
-      readableType: file.type.replace(/^.*\/(.*)$/, "$1"), 
-      role: <Select
-          id={`${file.path}_role`}
-          size="small"
-        >
-          {fileRoles.map((role) => (
-            <MenuItem key={role.id} value={role.id}>
-              {role.label}
-            </MenuItem>
-          ))}
-        </Select>, 
-      restricted: <Checkbox/>, 
-      process: <Select
-          id={`${file.path}_process`}
-          size="small"
-          multiple
-          value={selectedProcessing}
-          onChange={handleProcessingChange}
-          renderValue={(selected) => selected.join(', ')}
-        >
-          {fileProcessing.map((processing) => (
-            <MenuItem key={processing.id} value={processing.id}>
-              <Checkbox checked={selectedProcessing.indexOf(processing.id) > -1} />
-              <ListItemText primary={processing.label} />
-            </MenuItem>
-          ))}
-        </Select>
-    }
-  ));
-  */
 
   return (
     <Grid container spacing={2}>
@@ -125,26 +76,74 @@ const Files = () => {
       </Grid>
       <Grid xs={12}>
         <TableContainer component={Paper}>
-          <Table>
+          <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell />
-                {columns.map( (col: any) => <TableCell key={col.field}>{col.headerName}</TableCell>)}
+                <TableCell sx={{p: 1, width: 10}}/>
+                {columns.map( (col: any) => <TableCell sx={{p: 1}} key={col.field}>{col.headerName}</TableCell>)}
+                <TableCell sx={{p: 1, width: 10}}>Private</TableCell>
+                <TableCell sx={{p: 1, width: 120}}>Role</TableCell>
+                <TableCell sx={{p: 1, width: 200}}>Processing</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {selectedFiles.map( (file: any) =>
                 <TableRow key={file.fileName}>
-                  <TableCell>
-                    <IconButton color="primary" size="small" onClick={() => dispatch(removeFiles(file))}>
+
+                  <TableCell sx={{p: 0, pl: 1}}>
+                    <IconButton color="primary" size="small" onClick={() => dispatch(removeFile(file))}>
                       <DeleteIcon fontSize="small" />
                     </IconButton>
                   </TableCell>
+
                   {columns.map( (col: any, i: number) => 
-                    <TableCell key={`${file.fileName}_${col.field}`} sx={{ textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: i === 0 ? 200 : 'auto', overflow: 'hidden'}}>
+                    <TableCell key={`${file.fileName}_${col.field}`} sx={{ p: 1, textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: i === 0 ? 200 : 'auto', overflow: 'hidden'}}>
                       {file[col.field]}
                     </TableCell>
                   )}
+
+                  <TableCell sx={{p: 0}}><Checkbox/></TableCell>
+
+                  <TableCell sx={{p: 1}}>
+                    <FormControl fullWidth>
+                      <InputLabel size="small">Select</InputLabel>
+                      <Select
+                        id={`${file.fileName}_role`}
+                        size="small"
+                        onChange={(e) => setFileMeta({fileName: file.fileName, type: 'role', value: e.target.value})}
+                        value={file.role ? file.role : ''}
+                        label="Select role"
+                      >
+                        {fileRoles.map((role) => (
+                          <MenuItem key={role.id} value={role.id}>
+                            {role.label}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+
+                  <TableCell sx={{p: 1}}>
+                    <FormControl fullWidth>
+                      <InputLabel size="small">Select options</InputLabel>
+                      <Select
+                        id={`${file.fileName}_process`}
+                        size="small"
+                        multiple
+                        onChange={(e) => setFileMeta({fileName: file.fileName, type: 'process', value: e.target.value})}
+                        value={[]}
+                        label="Select options"
+                      >
+                        {fileProcessing.map((processing) => (
+                          <MenuItem key={processing.id} value={processing.id}>
+                            <Checkbox />
+                            <ListItemText primary={processing.label} />
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </TableCell>
+
                 </TableRow>
               )}
             </TableBody>
