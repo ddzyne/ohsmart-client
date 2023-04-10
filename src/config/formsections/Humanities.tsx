@@ -10,6 +10,7 @@ export const section = {
       id: `${prefix}_keywords`,
       required: true,
       repeatable: true,
+      value: '',
     },
   ],
 };

@@ -11,6 +11,7 @@ export const section = {
       required: true,
       repeatable: true,
       description: "The location(s) that the interview material deals with",
+      value: '',
     },
     {
       type: "datetime-local",
@@ -19,6 +20,7 @@ export const section = {
       required: true,
       repeatable: true,
       description: "The start and end times that the interview material deals with",
+      value: '',
     },
     {
       type: "select",
@@ -27,6 +29,7 @@ export const section = {
       required: true,
       repeatable: true,
       description: "List of relevant keywords",
+      value: '',
     },
   ],
 };

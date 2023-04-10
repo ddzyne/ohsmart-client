@@ -10,6 +10,7 @@ export const section = {
       id: `${prefix}_audience`,
       required: false,
       repeatable: true,
+      value: '',
     },
     {
       type: "select",
@@ -17,6 +18,7 @@ export const section = {
       id: `${prefix}_relation`,
       required: false,
       repeatable: true,
+      value: '',
     },
   ],
 };

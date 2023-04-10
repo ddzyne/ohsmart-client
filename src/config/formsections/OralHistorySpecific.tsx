@@ -17,6 +17,7 @@ export const section = {
           id: `${prefix}_interviewee_initials`,
           required: true,
           private: true,
+          value: '',
         },
         {
           type: "text",
@@ -24,6 +25,7 @@ export const section = {
           id: `${prefix}_interviewee_last_name`,
           required: true,
           private: true,
+          value: '',
         },
         {
           type: "date",
@@ -31,6 +33,7 @@ export const section = {
           id: `${prefix}_interviewee_dob`,
           required: true,
           private: true,
+          value: '',
         },
       ]
     },
@@ -47,6 +50,7 @@ export const section = {
           id: `${prefix}_interviewer_first_name`,
           required: true,
           private: true,
+          value: '',
         },
         {
           type: "text",
@@ -54,6 +58,7 @@ export const section = {
           id: `${prefix}_interviewer_last_name`,
           required: true,
           private: true,
+          value: '',
         },
       ],
     },
@@ -69,18 +74,21 @@ export const section = {
           label: "First name",
           id: `${prefix}_others_first_name`,
           private: true,
+          value: '',
         },
         {
           type: "text",
           label: "Last name",
           id: `${prefix}_others_last_name`,
           private: true,
+          value: '',
         },
         {
           type: "text",
           label: "Function",
           id: `${prefix}_others_function`,
           private: true,
+          value: '',
         },
       ],
     },
@@ -90,6 +98,7 @@ export const section = {
       id: `${prefix}_location`,
       required: true,
       repeatable: true,
+      value: '',
     },
     {
       type: "datetime-local",
@@ -97,6 +106,7 @@ export const section = {
       id: `${prefix}_date_time_interview`,
       required: true,
       repeatable: true,
+      value: '',
     },
     {
       type: "text",
@@ -104,6 +114,7 @@ export const section = {
       id: `${prefix}_recorded_by`,
       required: true,
       repeatable: true,
+      value: '',
     },
     // recording format follows from file upload I'd say
     {
@@ -112,6 +123,7 @@ export const section = {
       id: `${prefix}_recording_equipment`,
       required: false,
       repeatable: true,
+      value: '',
     },
     // transcript by human: should this be here, or in the files section?
     // transcription by machine, should be checkbox?

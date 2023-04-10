@@ -11,6 +11,7 @@ export const section = {
       id: `${prefix}_identifier`,
       required: true,
       description: '',
+      value: '',
     },
     {
       type: 'select',
@@ -19,6 +20,7 @@ export const section = {
       id: `${prefix}_language`,
       required: true,
       description: '',
+      value: '',
     },
     {
       type: 'date',
@@ -26,6 +28,7 @@ export const section = {
       id: `${prefix}_date_available`,
       required: true,
       description: 'In case of an embargo, else publication date',
+      value: '',
     },
   ],
 };

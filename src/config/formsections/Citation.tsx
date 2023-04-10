@@ -10,7 +10,7 @@ export const section = {
       label: 'Title',
       id: `${prefix}_group_title`,
       repeatable: true,
-      description: 'Interview [First name] [Last name] over [subject]',
+      description: 'Interview with [First name] [Last name] about [subject]',
       fields: [
         {
           type: 'text',
@@ -18,6 +18,7 @@ export const section = {
           id: `${prefix}_title_first_name`,
           required: true,
           private: true,
+          value: '',
         },
         {
           type: 'text',
@@ -25,6 +26,7 @@ export const section = {
           id: `${prefix}_title_last_name`,
           required: true,
           private: true,
+          value: '',
         },
         {
           type: 'text',
@@ -32,6 +34,7 @@ export const section = {
           id: `${prefix}_title_subject`,
           required: true,
           private: true,
+          value: '',
         },
       ]
     },
@@ -42,6 +45,7 @@ export const section = {
       required: true,
       repeatable: true,
       description: 'Project name or subject/title, important in the case of related interviews',
+      value: '',
     },
     {
       type: 'text',
@@ -50,6 +54,7 @@ export const section = {
       id: `${prefix}_description`,
       required: true,
       description: 'Some context on the interview. What is the role and relevance of the interviewee in the project? What led to the interview being conducted? Summary of what was discussed in the interview, with time breakdown, and describe important events in the interview. Improves discoverability and reusability of the interview data. Briefly describe the setting and atmosphere of the interview to indicate what does not emerge when only the text is read.',
+      value: '',
     },
     {
       // todo: 
@@ -60,6 +65,7 @@ export const section = {
       required: true,
       repeatable: true,
       description: 'Broad Data Station End Use Community or Domain',
+      value: '',
     },
     {
       type: 'select',
@@ -68,6 +74,7 @@ export const section = {
       required: true,
       list: 'custom',
       description: 'Institution - often the rights holder',
+      value: '',
     },
     {
       // I suppose this is read-only and pre-filled by system?
@@ -76,8 +83,8 @@ export const section = {
       id: `${prefix}_depositor`,
       required: true,
       disabled: true,
-      value: '',
       description: 'Unique to you',
+      value: '',
     },
   ],
 };
