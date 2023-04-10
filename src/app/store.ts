@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import counterReducer from '../features/counter/counterSlice';
 import metadataReducer from '../features/metadata/metadataSlice';
+import filesReducer from '../features/files/filesSlice';
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
     metadata: metadataReducer,
+    files: filesReducer,
   },
 });
 

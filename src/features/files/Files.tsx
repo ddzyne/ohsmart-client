@@ -22,6 +22,8 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import ListItemText from '@mui/material/ListItemText';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import { useAppSelector, useAppDispatch } from '../../app/hooks';
+import { getFiles, addFiles, removeFiles } from './filesSlice';
 
 const columns: any = [
   { field: 'fileName', headerName: 'Name' },
@@ -33,11 +35,20 @@ const columns: any = [
 ];
 
 const Files = () => {
-  const [selectedFiles, setSelectedFiles] = useState<any>([]);
+  const dispatch = useAppDispatch();
+  const selectedFiles = useAppSelector(getFiles);
+
+  console.log(selectedFiles)
+
   const [selectedProcessing, setSelectedProcessing] = useState<string[]>([]);
 
   const onDrop = (acceptedFiles: any) => {
-    setSelectedFiles([...selectedFiles, ...acceptedFiles]);
+    const serializedFiles = acceptedFiles.map( (file: any, i: number) => ({
+      fileName: file.name,
+      readableSize: `${(file.size*9.5367431640625*Math.pow(10, -7)).toFixed(2)} MB`, 
+      readableType: file.type.replace(/^.*\/(.*)$/, "$1"),
+    }));
+    dispatch(addFiles(serializedFiles));
   };
 
   const handleProcessingChange = (event: SelectChangeEvent<typeof selectedProcessing>) => {
@@ -55,11 +66,7 @@ const Files = () => {
     multiple: true,
   });
 
-  const deleteFile = (deleteFile: any) => {
-    const newFiles = selectedFiles.filter( (file: any) => file.path !== deleteFile.path);
-    setSelectedFiles(newFiles);
-  }
-
+  /*
   const files = selectedFiles.map( (file: any, i: number) => (
     { 
       ...file,
@@ -95,6 +102,7 @@ const Files = () => {
         </Select>
     }
   ));
+  */
 
   return (
     <Grid container spacing={2}>
@@ -125,10 +133,10 @@ const Files = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {files.map( (file: any) =>
+              {selectedFiles.map( (file: any) =>
                 <TableRow key={file.fileName}>
                   <TableCell>
-                    <IconButton color="primary" size="small" onClick={() => deleteFile(file)}>
+                    <IconButton color="primary" size="small" onClick={() => dispatch(removeFiles(file))}>
                       <DeleteIcon fontSize="small" />
                     </IconButton>
                   </TableCell>
@@ -141,7 +149,7 @@ const Files = () => {
               )}
             </TableBody>
           </Table>
-          {files.length === 0 && <Typography p={5} align="center">No files selected</Typography> }
+          {selectedFiles.length === 0 && <Typography p={5} align="center">No files selected</Typography> }
         </TableContainer>
       </Grid>
     </Grid>
