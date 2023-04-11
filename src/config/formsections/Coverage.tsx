@@ -5,13 +5,14 @@ export const section = {
   id: prefix,
   fields: [
     {
-      type: "select",
+      type: "autocomplete",
       label: "Subject location",
       id: `${prefix}_subject_location`,
       required: true,
       repeatable: true,
       description: "The location(s) that the interview material deals with",
       value: '',
+      options: [],
     },
     {
       type: "datetime-local",
@@ -23,13 +24,14 @@ export const section = {
       value: '',
     },
     {
-      type: "select",
+      type: "autocomplete",
       label: "Date available",
       id: `${prefix}_subject_keywords`,
       required: true,
       repeatable: true,
       description: "List of relevant keywords",
       value: '',
+      options: [],
     },
   ],
 };

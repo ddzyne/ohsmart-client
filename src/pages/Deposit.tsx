@@ -1,4 +1,4 @@
-import React, { ReactNode, ReactElement, SyntheticEvent, useState } from 'react';
+import React, { ReactElement, SyntheticEvent, useState } from 'react';
 import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -11,16 +11,7 @@ import Files from '../features/files/Files';
 import Preferences from '../features/preferences/Preferences';
 import Tools from '../features/tools/Tools';
 import Button from '@mui/material/Button';
-
-interface TabPanelProps {
-  children?: ReactNode;
-  index: number;
-  value: number;
-}
-
-interface ComponentTypes {
-  [key: string]: () => JSX.Element;
-}
+import type { TabPanelProps, ComponentTypes } from '../types/Pages';
 
 const components: ComponentTypes = {
   metadata: Metadata,
@@ -39,7 +30,7 @@ const Deposit = () => {
   return (
     <Container>
       <Grid container>
-        <Grid mdOffset={1} xs={12} md={10} mt={4}>
+        <Grid xs={12} mt={4}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange}>
               {tabs.map( (tab, i) =>
@@ -56,7 +47,7 @@ const Deposit = () => {
             )
           })}
         </Grid>
-        <Grid mdOffset={1} xs={12} md={10} mt={4} display="flex" justifyContent="end">
+        <Grid xs={12} mt={4} display="flex" justifyContent="end">
           <Button variant="contained" size="large">Submit data</Button>
         </Grid>
       </Grid>

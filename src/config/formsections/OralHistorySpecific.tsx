@@ -18,6 +18,7 @@ export const section = {
           required: true,
           private: true,
           value: '',
+          description: 'Discription',
         },
         {
           type: "text",
@@ -26,6 +27,7 @@ export const section = {
           required: true,
           private: true,
           value: '',
+          description: 'Discription',
         },
         {
           type: "date",
@@ -34,6 +36,7 @@ export const section = {
           required: true,
           private: true,
           value: '',
+          description: 'Discription',
         },
       ]
     },
@@ -51,6 +54,7 @@ export const section = {
           required: true,
           private: true,
           value: '',
+          description: 'Discription',
         },
         {
           type: "text",
@@ -59,6 +63,7 @@ export const section = {
           required: true,
           private: true,
           value: '',
+          description: 'Discription',
         },
       ],
     },
@@ -75,6 +80,7 @@ export const section = {
           id: `${prefix}_others_first_name`,
           private: true,
           value: '',
+          description: 'Discription',
         },
         {
           type: "text",
@@ -82,6 +88,7 @@ export const section = {
           id: `${prefix}_others_last_name`,
           private: true,
           value: '',
+          description: 'Discription',
         },
         {
           type: "text",
@@ -89,16 +96,19 @@ export const section = {
           id: `${prefix}_others_function`,
           private: true,
           value: '',
+          description: 'Discription',
         },
       ],
     },
     {
-      type: "select",
+      type: "autocomplete",
       label: "Location of interview",
       id: `${prefix}_location`,
       required: true,
       repeatable: true,
       value: '',
+      description: 'Discription',
+      options: [],
     },
     {
       type: "datetime-local",
@@ -107,6 +117,7 @@ export const section = {
       required: true,
       repeatable: true,
       value: '',
+      description: 'Discription',
     },
     {
       type: "text",
@@ -115,6 +126,7 @@ export const section = {
       required: true,
       repeatable: true,
       value: '',
+      description: 'Discription',
     },
     // recording format follows from file upload I'd say
     {
@@ -124,6 +136,7 @@ export const section = {
       required: false,
       repeatable: true,
       value: '',
+      description: 'Discription',
     },
     // transcript by human: should this be here, or in the files section?
     // transcription by machine, should be checkbox?

@@ -1,81 +1,81 @@
 export const fileRoles = [
   {
-    id: "data_file",
+    value: "data_file",
     label: "Data File"
   },
   {
-    id: "type_registry_value",
+    value: "type_registry_value",
     label: "Type Registry Value"
   },
   {
-    id: "video_file",
+    value: "video_file",
     label: "Video File",
   },
   {
-    id: "data_dictionary_code_book",
+    value: "data_dictionary_code_book",
     label: "Data Dictionary - Code Book",
   },
   {
-    id: "data_dictionary_other",
+    value: "data_dictionary_other",
     label: "Data Dictionary - Other",
   },
   {
-    id: "consent_form",
+    value: "consent_form",
     label: "Consent Form",
   },
   {
-    id: "methodology",
+    value: "methodology",
     label: "Methodology",
   },
   {
-    id: "report",
+    value: "report",
     label: "Report",
   },
   {
-    id: "rublication",
+    value: "rublication",
     label: "Publication",
   },
   {
-    id: "code",
+    value: "code",
     label: "Code",
   },
   {
-    id: "thumbnail",
+    value: "thumbnail",
     label: "Thumbnail",
   },
   {
-    id: "transcript_or_derived_file",
+    value: "transcript_or_derived_file",
     label: "Transcript or Derived File",
   },
   {
-    id: "dissemination_copy",
+    value: "dissemination_copy",
     label: "Dissemination Copy",
   },
   {
-    id: "preservation_copy",
+    value: "preservation_copy",
     label: "Preservation Copy",
   },
   {
-    id: "supplementary file",
+    value: "supplementary file",
     label: "Supplementary File",
   },
   {
-    id: "original_metadata",
+    value: "original_metadata",
     label: "Original Metadata",
   },
 ];
 
 export const fileProcessing = [
   {
-    id: "create_thumbnail",
-    label: "Create thumbnail"
+    label: "Create thumbnail",
+    value: "create_thumbnail",
   },
   {
-    id: "encrypt",
-    label: "Encrypt"
+    label: "Encrypt",
+    value: "encrypt",
   },
   {
-    id: "create_transcript",
-    label: "Create transcript"
+    label: "Create transcript",
+    value: "create_transcript",
   },
 ];

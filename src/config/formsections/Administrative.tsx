@@ -1,3 +1,5 @@
+import languageList from '../../data/languageList.json';
+
 const prefix = 'administrative';
 
 export const section = {
@@ -10,17 +12,17 @@ export const section = {
       label: 'Identifier',
       id: `${prefix}_identifier`,
       required: true,
-      description: '',
+      description: 'Assigned by interviewer, has to be unique by depositor',
       value: '',
     },
     {
-      type: 'select',
-      list: 'languages',
+      type: 'autocomplete',
       label: 'Language',
       id: `${prefix}_language`,
       required: true,
       description: '',
       value: '',
+      options: languageList,
     },
     {
       type: 'date',

@@ -5,20 +5,24 @@ export const section = {
   id: prefix,
   fields: [
     {
-      type: "select",
+      type: "autocomplete",
       label: "Audience",
       id: `${prefix}_audience`,
       required: false,
       repeatable: true,
       value: '',
+      description: 'Discription',
+      options: [],
     },
     {
-      type: "select",
+      type: "autocomplete",
       label: "Related to",
       id: `${prefix}_relation`,
       required: false,
       repeatable: true,
       value: '',
+      description: 'Discription',
+      options: [],
     },
   ],
 };

@@ -1,24 +1,29 @@
 import { createAsyncThunk, createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../../app/store';
 import formSections from '../../config/formsections';
+import { SelectedFile, ReduxFileActions } from '../../types/Files';
 
 // load the imported form and close all accordion panels by default
-const initialState: any = []
+const initialState: any[] = []
 
 export const filesSlice = createSlice({
   name: 'files',
   initialState,
   reducers: {
     // keep track file selection
-    addFiles: (state, action: PayloadAction<any>) => {
+    addFiles: (state, action: PayloadAction<SelectedFile[]>) => {
       state.push(...action.payload);
     },
-    removeFile: (state, action: PayloadAction<any>) => {
+    removeFile: (state, action: PayloadAction<SelectedFile>) => {
       return state.filter((file: any) => file.fileName !== action.payload.fileName)
     },
-    setFileMeta: (state, action: PayloadAction<any>) => {
+    setFileMeta: (state, action: PayloadAction<ReduxFileActions>) => {
       // set extra metadata for this file: restricted status, role and processing
-      
+      const file = state.find( (file: SelectedFile) => file.fileName === action.payload.fileName);
+      console.log(action.payload)
+      if (file) {
+        file[action.payload.type] = action.payload.value
+      }
     }
   }
 });

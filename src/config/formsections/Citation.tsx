@@ -19,6 +19,7 @@ export const section = {
           required: true,
           private: true,
           value: '',
+          description: 'Discription',
         },
         {
           type: 'text',
@@ -27,6 +28,7 @@ export const section = {
           required: true,
           private: true,
           value: '',
+          description: 'Discription',
         },
         {
           type: 'text',
@@ -35,6 +37,7 @@ export const section = {
           required: true,
           private: true,
           value: '',
+          description: 'Discription',
         },
       ]
     },
@@ -59,22 +62,24 @@ export const section = {
     {
       // todo: 
       // implement DANS schema 
-      type: 'select',
+      type: 'autocomplete',
       label: 'Subject',
       id: `${prefix}_subject`,
       required: true,
       repeatable: true,
       description: 'Broad Data Station End Use Community or Domain',
       value: '',
+      options: [],
     },
     {
-      type: 'select',
+      type: 'autocomplete',
       label: 'Publisher',
       id: `${prefix}_publisher`,
       required: true,
       list: 'custom',
       description: 'Institution - often the rights holder',
       value: '',
+      options: [],
     },
     {
       // I suppose this is read-only and pre-filled by system?
@@ -84,7 +89,7 @@ export const section = {
       required: true,
       disabled: true,
       description: 'Unique to you',
-      value: '',
+      value: 'User XXX',
     },
   ],
 };

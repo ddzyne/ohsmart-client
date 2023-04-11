@@ -25,7 +25,7 @@ export const metadataSlice = createSlice({
   initialState,
   reducers: {
     // keep track of form state
-    setMetadata: (state, action: PayloadAction<any>) => {
+    setField: (state, action: PayloadAction<any>) => {
       formatData(state.form, action.payload)
     },
     // keep track of the accordion state
@@ -35,7 +35,7 @@ export const metadataSlice = createSlice({
   }
 });
 
-export const { setMetadata, setOpenPanel } = metadataSlice.actions;
+export const { setField, setOpenPanel } = metadataSlice.actions;
 
 // Select values from state
 export const getMetadata = (state: RootState) => state.metadata.form;

@@ -5,12 +5,14 @@ export const section = {
   id: prefix,
   fields: [
     {
-      type: "select",
+      type: "autocomplete",
       label: "Domain-specific keywords",
       id: `${prefix}_keywords`,
       required: true,
       repeatable: true,
       value: '',
+      description: 'Discription',
+      options: [],
     },
   ],
 };
