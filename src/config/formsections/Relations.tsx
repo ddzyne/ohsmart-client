@@ -1,8 +1,10 @@
+import dummyList from '../../data/dummyList.json';
+
 const prefix = "relations";
 
 export const section = {
-  title: "Relations",
   id: prefix,
+  title: "Relations",
   fields: [
     {
       type: "autocomplete",
@@ -12,7 +14,7 @@ export const section = {
       repeatable: true,
       value: '',
       description: 'Discription',
-      options: [],
+      options: dummyList,
     },
     {
       type: "autocomplete",
@@ -22,7 +24,7 @@ export const section = {
       repeatable: true,
       value: '',
       description: 'Discription',
-      options: [],
+      options: dummyList,
     },
   ],
 };

@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getMetadata, setField, getOpenPanel, setOpenPanel } from './metadataSlice';
-import type { Field, FormType, FieldProps } from '../../types/Metadata';
+import type { Field, FormType, FieldProps, GroupFieldType } from '../../types/Metadata';
 import Autocomplete from '@mui/material/Autocomplete';
 
 export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => {
@@ -29,11 +29,14 @@ export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => 
         {(
           field.type === 'text' ||
           field.type === 'datetime-local' ||
-          field.type === 'date'
+          field.type === 'date' ||
+          field.type === 'number'
         ) &&
           <>
             <TextField 
-              fullWidth 
+              fullWidth
+              error={field.hasOwnProperty('valid') && !field.valid}
+              helperText={field.hasOwnProperty('valid') && !field.valid && 'Incorrectly entered'}
               variant="outlined" 
               type={field.type}
               label={field.label}
@@ -43,10 +46,11 @@ export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => 
               value={field.value}
               disabled={field.disabled}
               onChange={(e) => dispatch(setField({
+                sectionNumber: sectionNumber,
+                fieldNumber: fieldNumber,
                 field: field,
                 value: e.target.value
               }))}
-              color={color}
               InputLabelProps={{ 
                 shrink: field.type === 'date' || field.type === 'datetime-local' || field.disabled
               }}
@@ -74,11 +78,21 @@ export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => 
             <Autocomplete
               multiple={field.repeatable}
               fullWidth 
-              id="combo-box-demo"
+              id={field.id}
               options={field.options}
-              value={field.value}
-              renderInput={(params) => <TextField {...params} label={`${field.label}${field.required ? ' *' : ''}`} />}
+              value={field.value || (field.repeatable ? [] : '')}
+              renderInput={
+                (params) => 
+                  <TextField 
+                    {...params} 
+                    label={`${field.label}${field.required ? ' *' : ''}`}
+                    error={field.hasOwnProperty('valid') && !field.valid}
+                    helperText={field.hasOwnProperty('valid') && !field.valid && 'Incorrectly entered'}
+                  />
+              }
               onChange={(e: any, newValue: string | string[] | null) => dispatch(setField({
+                sectionNumber: sectionNumber,
+                fieldNumber: fieldNumber,
                 field: field,
                 value: newValue
               }))}
@@ -106,7 +120,7 @@ export const FieldGroup = ({field, sectionNumber, fieldNumber}: FieldProps) =>
       {field.fields &&
         <CardContent>
           <Grid container>
-            {field.fields.map((groupedField, k) =>
+            {(field as GroupFieldType).fields.map((groupedField, k) =>
               <SingleField key={`groupedField-${groupedField.id}`} field={groupedField} sectionNumber={sectionNumber} fieldNumber={fieldNumber} />
             )}
           </Grid>

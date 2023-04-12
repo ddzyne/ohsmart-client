@@ -1,8 +1,10 @@
+import dummyList from '../../data/dummyList.json';
+
 const prefix = "ohs";
 
 export const section = {
-  title: "Oral-history specific",
   id: prefix,
+  title: "Oral-history specific",
   fields: [
     {
       type: 'group',
@@ -108,7 +110,7 @@ export const section = {
       repeatable: true,
       value: '',
       description: 'Discription',
-      options: [],
+      options: dummyList,
     },
     {
       type: "datetime-local",

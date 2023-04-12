@@ -12,6 +12,9 @@ import Preferences from '../features/preferences/Preferences';
 import Tools from '../features/tools/Tools';
 import Button from '@mui/material/Button';
 import type { TabPanelProps, ComponentTypes } from '../types/Pages';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { getMetadata } from '../features/metadata/metadataSlice';
+import { getFiles } from '../features/files/filesSlice';
 
 const components: ComponentTypes = {
   metadata: Metadata,
@@ -22,6 +25,8 @@ const components: ComponentTypes = {
 
 const Deposit = () => {
   const [value, setValue] = useState(0);
+  const selectedFiles = useAppSelector(getFiles);
+  const metadata = useAppSelector(getMetadata);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -47,7 +52,7 @@ const Deposit = () => {
             )
           })}
         </Grid>
-        <Grid xs={12} mt={4} display="flex" justifyContent="end">
+        <Grid xs={12} mt={4} display="flex" justifyContent="end" alignItems="center">
           <Button variant="contained" size="large">Submit data</Button>
         </Grid>
       </Grid>

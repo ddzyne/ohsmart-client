@@ -1,8 +1,10 @@
+import dummyList from '../../data/dummyList.json';
+
 const prefix = "rights";
 
 export const section = {
-  title: "Rights & licensing",
   id: prefix,
+  title: "Rights & licensing",
   fields: [
     {
       type: "autocomplete",
@@ -11,7 +13,7 @@ export const section = {
       required: true,
       value: '',
       description: 'Discription',
-      options: [],
+      options: dummyList,
     },
     {
       type: "autocomplete",
@@ -20,7 +22,7 @@ export const section = {
       required: true,
       value: '',
       description: 'Discription',
-      options: [],
+      options: dummyList,
     },
   ],
 };

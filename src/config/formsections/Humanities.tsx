@@ -1,8 +1,10 @@
+import dummyList from '../../data/dummyList.json';
+
 const prefix = "humanities";
 
 export const section = {
-  title: "Humanities",
   id: prefix,
+  title: "Humanities",
   fields: [
     {
       type: "autocomplete",
@@ -12,7 +14,7 @@ export const section = {
       repeatable: true,
       value: '',
       description: 'Discription',
-      options: [],
+      options: dummyList,
     },
   ],
 };

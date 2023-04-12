@@ -5,7 +5,6 @@ const prefix = 'administrative';
 export const section = {
   id: prefix,
   title: 'Administrative',
-  icon: '',
   fields: [
     {
       type: 'text',
@@ -20,7 +19,7 @@ export const section = {
       label: 'Language',
       id: `${prefix}_language`,
       required: true,
-      description: '',
+      description: 'Language of interview',
       value: '',
       options: languageList,
     },

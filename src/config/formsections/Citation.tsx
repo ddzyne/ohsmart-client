@@ -1,9 +1,10 @@
+import dummyList from '../../data/dummyList.json';
+
 const prefix = 'citation';
 
 export const section = {
   id: prefix,
   title: 'Citation',
-  icon: '',
   fields: [
     {
       type: 'group',
@@ -69,7 +70,7 @@ export const section = {
       repeatable: true,
       description: 'Broad Data Station End Use Community or Domain',
       value: '',
-      options: [],
+      options: dummyList,
     },
     {
       type: 'autocomplete',
@@ -79,7 +80,7 @@ export const section = {
       list: 'custom',
       description: 'Institution - often the rights holder',
       value: '',
-      options: [],
+      options: dummyList,
     },
     {
       // I suppose this is read-only and pre-filled by system?

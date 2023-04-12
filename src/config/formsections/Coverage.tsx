@@ -1,8 +1,10 @@
+import dummyList from '../../data/dummyList.json';
+
 const prefix = "coverage";
 
 export const section = {
-  title: "Coverage",
   id: prefix,
+  title: "Coverage",
   fields: [
     {
       type: "autocomplete",
@@ -12,7 +14,7 @@ export const section = {
       repeatable: true,
       description: "The location(s) that the interview material deals with",
       value: '',
-      options: [],
+      options: dummyList,
     },
     {
       type: "datetime-local",
@@ -31,7 +33,7 @@ export const section = {
       repeatable: true,
       description: "List of relevant keywords",
       value: '',
-      options: [],
+      options: dummyList,
     },
   ],
 };

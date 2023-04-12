@@ -70,7 +70,7 @@ const Files = () => {
               p={3}
             >
               <input {...getInputProps()} />
-              <Typography color="grey">Click me or drag a file to upload!</Typography>
+              <Typography color="grey" sx={{textAlign: 'center', cursor: 'pointer'}}>Click me or drag a file to upload!</Typography>
             </Box>
           </CardContent>
         </Card>
