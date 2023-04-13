@@ -1,5 +1,4 @@
 import Grid from '@mui/material/Unstable_Grid2';
-import InfoIcon from '@mui/icons-material/Info';
 import InputAdornment from '@mui/material/InputAdornment';
 import Tooltip from '@mui/material/Tooltip';
 import TextField from '@mui/material/TextField';
@@ -15,10 +14,11 @@ import { useAppDispatch } from '../../app/hooks';
 import { setField } from './metadataSlice';
 import type { FieldProps, GroupFieldType } from '../../types/Metadata';
 import Autocomplete from '@mui/material/Autocomplete';
+import { StatusIcon } from '../generic/Icons';
 
 export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => {
   const dispatch = useAppDispatch();
-  const color = 
+  const status = 
     field.required && !field.value ? "error" : 
     !field.required && !field.value ? "warning" :
     "success";
@@ -58,9 +58,7 @@ export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => 
               InputProps={{
                 endAdornment: field.description && (
                   <InputAdornment position="end">
-                    <Tooltip title={field.description}>
-                      <InfoIcon sx={{ cursor: 'help' }} color={color} />
-                    </Tooltip>
+                    <StatusIcon status={status} title={field.description} />
                   </InputAdornment>
                 ),
               }}
@@ -99,9 +97,7 @@ export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => 
                 value: newValue
               }))}
             />
-            <Tooltip title={field.description}>
-              <InfoIcon sx={{ cursor: 'help', ml: 1 }} color={color} />
-            </Tooltip>
+            <StatusIcon margin="l" status={status} title={field.description} />
           </>
         }
       </Stack>

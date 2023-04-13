@@ -15,7 +15,7 @@ import type { TabPanelProps, ComponentTypes } from '../types/Pages';
 import { useAppSelector } from '../app/hooks';
 import { getMetadataStatus } from '../features/metadata/metadataSlice';
 import { getFiles } from '../features/files/filesSlice';
-import CircleIcon from '@mui/icons-material/Circle';
+import { StatusIcon } from '../features/generic/Icons';
 
 const components: ComponentTypes = {
   metadata: Metadata,
@@ -45,9 +45,9 @@ const Deposit = () => {
                   label={tab.label} 
                   icon={
                     tab.data === 'metadata' ? 
-                    <CircleIcon color={metadataStatus} /> : 
+                    <StatusIcon status={metadataStatus} margin="r" /> : 
                     tab.data === 'files' ? 
-                    <CircleIcon color={selectedFiles.length > 0 ? 'success' : 'warning'} /> : 
+                    <StatusIcon status={selectedFiles.length > 0 ? 'success' : 'warning'} margin="r"  /> : 
                     undefined
                   } 
                   iconPosition="start"/>
@@ -69,7 +69,7 @@ const Deposit = () => {
             {metadataStatus === 'warning' && 'You can submit, but consider making your data more complete'}
             {metadataStatus === 'success' && 'All set and ready to submit!'}
           </Typography>
-          <CircleIcon sx={{ml: 1, mr: 2}} color={metadataStatus} />
+          <StatusIcon margin="lr" status={metadataStatus} />
           <Button variant="contained" size="large" disabled={metadataStatus === 'error'}>Submit data</Button>
         </Grid>
       </Grid>

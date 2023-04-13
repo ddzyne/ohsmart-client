@@ -5,12 +5,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import InfoIcon from '@mui/icons-material/Info';
-import Tooltip from '@mui/material/Tooltip';
 import type { SectionType } from '../../types/Metadata';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ErrorIcon from '@mui/icons-material/Error';
 import { SingleField, FieldGroup } from './Fields';
+import { StatusIcon } from '../generic/Icons';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getMetadata, getOpenPanel, setOpenPanel, setSectionStatus } from './metadataSlice';
@@ -45,20 +42,7 @@ const Form = () => {
             aria-controls={`${section.id}-content`}
             id={`${section.id}-header`}
           >
-            <Tooltip 
-              title={
-                section.status === 'error' ? 
-                'Needs some more information' : 
-                section.status === 'warning' ? 
-                'Could be better' : 
-                'Good to go' 
-              }>
-              {
-                section.status === 'error' ? <ErrorIcon sx={{ cursor: 'help', mr: 1 }} color={section.status}/> :
-                section.status === 'warning' ? <InfoIcon sx={{ cursor: 'help', mr: 1 }} color={section.status}/> :
-                <CheckCircleIcon sx={{ cursor: 'help', mr: 1 }} color={section.status}/>
-              }
-            </Tooltip>
+            <StatusIcon status={section.status} margin="r" />
             <Typography>{section.title}</Typography>
           </AccordionSummary>
           <AccordionDetails>
