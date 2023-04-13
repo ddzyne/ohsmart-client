@@ -1,8 +1,5 @@
-import React, { forwardRef } from 'react';
 import { createTheme } from '@mui/material/styles';
 import grey from '@mui/material/colors/grey';
-import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
-import { LinkProps } from '@mui/material/Link';
 
 const customTheme = createTheme({
   palette: {

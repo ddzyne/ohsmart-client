@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice, PayloadAction, current } from '@reduxjs/toolkit';
-import { RootState, AppThunk } from '../../app/store';
-import formSections from '../../config/formsections';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 import { SelectedFile, ReduxFileActions } from '../../types/Files';
 
 // load the imported form and close all accordion panels by default

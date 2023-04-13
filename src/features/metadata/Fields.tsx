@@ -11,9 +11,9 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
-import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { getMetadata, setField, getOpenPanel, setOpenPanel } from './metadataSlice';
-import type { Field, SectionType, FieldProps, GroupFieldType } from '../../types/Metadata';
+import { useAppDispatch } from '../../app/hooks';
+import { setField } from './metadataSlice';
+import type { FieldProps, GroupFieldType } from '../../types/Metadata';
 import Autocomplete from '@mui/material/Autocomplete';
 
 export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => {
