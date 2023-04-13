@@ -1,7 +1,10 @@
-export interface FormType {
+export type SectionStatus = 'error' | 'warning' | 'success'
+
+export interface SectionType {
   id: string;
   title: string;
   fields: Field[];
+  status?: SectionStatus;
 }
 
 // note we use autocomplete for every selectbox
@@ -18,7 +21,7 @@ export interface TextFieldType {
   type: 'text' | 'datetime-local' | 'date' | 'number';
   id: string;
   label: string;
-  validation?: boolean | 'email' | 'number';
+  validation?: 'email' | 'number';
   maxValue?: number;
   minValue?: number; 
   value?: string;
@@ -80,11 +83,12 @@ export interface FieldProps {
 export interface FieldSetPayload {
   sectionNumber: number;
   fieldNumber: number;
+  fieldId: string;
   field: TextFieldType | AutoCompleteFieldType;
   value: string | string[] | null;
 };
 
 export type InitialStateType = {
-  form: FormType[];
+  form: SectionType[];
   panel: string;
 }

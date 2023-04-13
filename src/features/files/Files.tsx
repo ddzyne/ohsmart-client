@@ -1,10 +1,12 @@
-import { useCallback, useState, Fragment } from 'react';
+import { useState } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import {useDropzone} from 'react-dropzone';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Card from '@mui/material/Card';
+import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent';
 import Table from '@mui/material/Table';
@@ -16,17 +18,13 @@ import TableRow from '@mui/material/TableRow';
 import blue from '@mui/material/colors/blue';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
-import MenuItem from '@mui/material/MenuItem';
+import Button from '@mui/material/Button';
 import { fileRoles, fileProcessing } from '../../config/files/Files';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import ListItemText from '@mui/material/ListItemText';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getFiles, addFiles, removeFile, setFileMeta } from './filesSlice';
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import type { FileColumns, SelectedFile, FileActions } from '../../types/Files';
+import type { FileColumns, SelectedFile, FileLocation } from '../../types/Files';
 import Autocomplete from '@mui/material/Autocomplete';
 
 const columns: FileColumns[] = [
@@ -38,29 +36,39 @@ const columns: FileColumns[] = [
 const Files = () => {
   const dispatch = useAppDispatch();
   const selectedFiles = useAppSelector<SelectedFile[]>(getFiles);
-  const [open, setOpen] = useState('');
+  const [onlineFile, setOnlineFile] = useState('');
 
   const onDrop = (acceptedFiles: File[]) => {
     const serializedFiles = acceptedFiles.map( (file, i) => ({
       fileName: file.name,
       readableSize: `${(file.size*9.5367431640625*Math.pow(10, -7)).toFixed(2)} MB`, 
-      readableType: file.type.replace(/^.*\/(.*)$/, "$1"),
+      readableType: file.type ? file.type.replace(/^.*\/(.*)$/, "$1") : file.name.substring(file.name.lastIndexOf('.') + 1),
+      location: 'local' as FileLocation,
     }));
     dispatch(addFiles(serializedFiles));
+    setOnlineFile('');
   };
+
+  const onOnlineAdd = () => {
+    const fileToSubmit = {
+      fileName: onlineFile.replace(/^.*\/(.*)$/, "$1"),
+      readableSize: 'tbd',
+      readableType: onlineFile.substring(onlineFile.lastIndexOf('.') + 1),
+      location: 'online' as FileLocation,
+    }
+    dispatch(addFiles([fileToSubmit]));
+  }
 
   const {acceptedFiles, getRootProps, getInputProps, isDragActive} = useDropzone({
     onDrop,
     multiple: true,
   });
 
-  console.log(selectedFiles)
-
   return (
     <Grid container spacing={2}>
-      <Grid xs={12}>
+      <Grid xs={6}>
         <Card>
-          <CardHeader title="Add file(s)" />
+          <CardHeader title="Add local file(s)" />
           <CardContent {...getRootProps({className: 'dropzone'})} >
             <Box 
               sx={{
@@ -72,6 +80,22 @@ const Files = () => {
               <input {...getInputProps()} />
               <Typography color="grey" sx={{textAlign: 'center', cursor: 'pointer'}}>Click me or drag a file to upload!</Typography>
             </Box>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid xs={6} >
+        <Card sx={{height: '100%'}}>
+          <CardHeader title="Add files from URL" />
+          <CardContent>
+            <Stack
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={1}
+            > 
+              <TextField fullWidth size="small" label="Enter file URL" variant="outlined" onChange={e => setOnlineFile(e.target.value)}/>
+              <Button onClick={() => onOnlineAdd()} variant="text">Add</Button>
+            </Stack>
           </CardContent>
         </Card>
       </Grid>
@@ -104,6 +128,18 @@ const Files = () => {
                         sx={{ p: 1, textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: i === 0 ? 200 : 'auto', overflow: 'hidden'}}
                       >
                         {file[col.field]}
+                        {i === 0 && 
+                          <Chip 
+                            size="small" 
+                            label={file.location} 
+                            sx={{
+                              ml: 1,
+                              fontSize: 10,
+                              color: '#fff',
+                              backgroundColor: file.location === 'online' ? '#9575cd' : '#00acc1',
+                            }}
+                          />
+                        }
                       </TableCell>
                     )}
 

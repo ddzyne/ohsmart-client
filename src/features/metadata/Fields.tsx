@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getMetadata, setField, getOpenPanel, setOpenPanel } from './metadataSlice';
-import type { Field, FormType, FieldProps, GroupFieldType } from '../../types/Metadata';
+import type { Field, SectionType, FieldProps, GroupFieldType } from '../../types/Metadata';
 import Autocomplete from '@mui/material/Autocomplete';
 
 export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => {
@@ -48,6 +48,7 @@ export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => 
               onChange={(e) => dispatch(setField({
                 sectionNumber: sectionNumber,
                 fieldNumber: fieldNumber,
+                fieldId: field.id,
                 field: field,
                 value: e.target.value
               }))}
@@ -80,11 +81,11 @@ export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => 
               fullWidth 
               id={field.id}
               options={field.options}
-              value={field.value || (field.repeatable ? [] : '')}
+              value={field.value || (field.repeatable ? [] : null)}
               renderInput={
                 (params) => 
                   <TextField 
-                    {...params} 
+                    {...params}
                     label={`${field.label}${field.required ? ' *' : ''}`}
                     error={field.hasOwnProperty('valid') && !field.valid}
                     helperText={field.hasOwnProperty('valid') && !field.valid && 'Incorrectly entered'}
@@ -93,6 +94,7 @@ export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => 
               onChange={(e: any, newValue: string | string[] | null) => dispatch(setField({
                 sectionNumber: sectionNumber,
                 fieldNumber: fieldNumber,
+                fieldId: field.id,
                 field: field,
                 value: newValue
               }))}

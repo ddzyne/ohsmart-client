@@ -1,4 +1,4 @@
-import React, { ReactElement, SyntheticEvent, useState } from 'react';
+import React, { SyntheticEvent, useState } from 'react';
 import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -12,9 +12,10 @@ import Preferences from '../features/preferences/Preferences';
 import Tools from '../features/tools/Tools';
 import Button from '@mui/material/Button';
 import type { TabPanelProps, ComponentTypes } from '../types/Pages';
-import { useAppSelector, useAppDispatch } from '../app/hooks';
-import { getMetadata } from '../features/metadata/metadataSlice';
+import { useAppSelector } from '../app/hooks';
+import { getMetadataStatus } from '../features/metadata/metadataSlice';
 import { getFiles } from '../features/files/filesSlice';
+import CircleIcon from '@mui/icons-material/Circle';
 
 const components: ComponentTypes = {
   metadata: Metadata,
@@ -26,7 +27,7 @@ const components: ComponentTypes = {
 const Deposit = () => {
   const [value, setValue] = useState(0);
   const selectedFiles = useAppSelector(getFiles);
-  const metadata = useAppSelector(getMetadata);
+  const metadataStatus = useAppSelector(getMetadataStatus);
 
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -39,7 +40,17 @@ const Deposit = () => {
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Tabs value={value} onChange={handleChange}>
               {tabs.map( (tab, i) =>
-                <Tab key={i} label={tab.label} />
+                <Tab 
+                  key={i} 
+                  label={tab.label} 
+                  icon={
+                    tab.data === 'metadata' ? 
+                    <CircleIcon color={metadataStatus} /> : 
+                    tab.data === 'files' ? 
+                    <CircleIcon color={selectedFiles.length > 0 ? 'success' : 'warning'} /> : 
+                    undefined
+                  } 
+                  iconPosition="start"/>
               )}
             </Tabs>
           </Box>
@@ -53,7 +64,13 @@ const Deposit = () => {
           })}
         </Grid>
         <Grid xs={12} mt={4} display="flex" justifyContent="end" alignItems="center">
-          <Button variant="contained" size="large">Submit data</Button>
+          <Typography>
+            {metadataStatus === 'error' && 'Before you can submit, complete the sections and fields indicated'}
+            {metadataStatus === 'warning' && 'You can submit, but consider making your data more complete'}
+            {metadataStatus === 'success' && 'All set and ready to submit!'}
+          </Typography>
+          <CircleIcon sx={{ml: 1, mr: 2}} color={metadataStatus} />
+          <Button variant="contained" size="large" disabled={metadataStatus === 'error'}>Submit data</Button>
         </Grid>
       </Grid>
     </Container>

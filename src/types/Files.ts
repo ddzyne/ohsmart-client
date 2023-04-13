@@ -14,10 +14,13 @@ export interface ReduxFileActions {
   value: FileActions | FileActions[] | boolean | null;
 }
 
+export type FileLocation = 'local' | 'online';
+
 export interface SelectedFile {
   fileName: string;
   readableSize: string;
   readableType: string;
+  location: FileLocation;
   restricted?: boolean;
   role?: FileActions;
   process?: FileActions[];

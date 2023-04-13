@@ -1,20 +1,16 @@
-import { createAsyncThunk, createSlice, PayloadAction, current } from '@reduxjs/toolkit';
-import { RootState, AppThunk } from '../../app/store';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from '../../app/store';
 import formSections from '../../config/formsections';
 import type { 
   FieldSetPayload, 
-  FieldType, 
   Field, 
   InitialStateType, 
-  FormType, 
-  GroupFieldType, 
-  TextFieldType, 
-  AutoCompleteFieldType 
+  SectionType, 
 } from '../../types/Metadata';
 
 // load the imported form and close all accordion panels by default
 const initialState: InitialStateType = {
-  form: <FormType[]>formSections,
+  form: formSections as SectionType[],
   panel: '',
 }
 
@@ -30,12 +26,12 @@ function validateData(type: string, value: string) {
 }
 
 // Recursive function to find this field in the state and update its value.
-// This is a bit slow, so if indefinite field depth is not needed, could also update by array index directly in setField reducer
+// This is a bit slow, so if indefinite field depth is not needed, can also update by array index directly in setField reducer
 function formatData(items: any, payload: FieldSetPayload) {
   items && items.forEach( (item: any) => {
     if ( item.id === payload.field.id ) {
       item.value = payload.value;
-      item.valid = item.validation ? validateData(item.validation, <string>payload.value) : payload.value ? true : false;
+      item.valid = item.validation ? validateData(item.validation, payload.value as string) : payload.value ? true : false;
       return;
     } else {
       formatData(item.fields, payload);
@@ -48,22 +44,81 @@ export const metadataSlice = createSlice({
   initialState,
   reducers: {
     // keep track of form state
-    // todo: maybe just throw fields into a new state section that has nothing to do with the formsections import
-    // so we can add debounce on change, partially uncontrolled inputs, better performance?
     setField: (state, action: PayloadAction<FieldSetPayload>) => {
-      formatData(state.form, action.payload)
+      const section: SectionType = state.form[action.payload.sectionNumber];
+      const field: Field = section.fields[action.payload.fieldNumber];
+
+      if (field.fields) {
+        const fieldInGroup = (field.fields as Field[]).find( f => f.id === action.payload.fieldId )
+        if (fieldInGroup) {
+          fieldInGroup.value = action.payload.value;
+          fieldInGroup.valid = fieldInGroup.validation ? validateData(fieldInGroup.validation, action.payload.value as string) : action.payload.value ? true : false;
+        }
+      }
+      else {
+        field.value = action.payload.value;
+        field.valid = field.validation ? validateData(field.validation, action.payload.value as string) : action.payload.value ? true : false;
+      }
+
+      metadataSlice.caseReducers.setSectionStatus(state, action);
+
+      // Or do this recursively, bit slower
+      // formatData(state.form, action.payload)
     },
     // keep track of the accordion state
-    setOpenPanel: (state, action: PayloadAction<any>) => {
+    setOpenPanel: (state, action: PayloadAction<string>) => {
       state.panel = action.payload;
+    },
+    setSectionStatus: (state, action: PayloadAction<any>) => {
+      if (action.payload) {
+        set(action.payload.sectionNumber)
+      }
+      else {
+        Array.from(Array(state.form.length).keys()).forEach( (i: number) => set(i) );
+      }
+
+      function set(number: number) {
+        const status = state.form[number].fields.map( (field) => {
+          if ( field.type === 'group' ) {
+            return field.fields && field.fields.map( (groupedField) => 
+              groupedField.required && !groupedField.value ?
+              'error' :
+              !groupedField.required && !groupedField.value ?
+              'warning' : 
+              'success'
+            )
+          } else {
+            return field.required && !field.value ? 'error' : !field.required && !field.value ? 'warning' : 'success';
+          }
+        });
+
+        const statusIndicator = 
+          status.indexOf('error') !== -1 ? 
+          'error' : 
+          status.indexOf('warning') !== -1 ? 
+          'warning' : 
+          'success';
+
+        state.form[number].status = statusIndicator;
+      }
     }
   }
 });
 
-export const { setField, setOpenPanel } = metadataSlice.actions;
+export const { setField, setOpenPanel, setSectionStatus } = metadataSlice.actions;
 
 // Select values from state
 export const getMetadata = (state: RootState) => state.metadata.form;
 export const getOpenPanel = (state: RootState) => state.metadata.panel;
+export const getMetadataStatus = (state: RootState) => {
+  const statusArray = state.metadata.form.map( section => section.status);
+  return (
+    statusArray.indexOf('error') !== -1 ? 
+    'error' : 
+    statusArray.indexOf('warning') !== -1 ? 
+    'warning' : 
+    'success'
+  );
+}
 
 export default metadataSlice.reducer;
