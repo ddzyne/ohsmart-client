@@ -33,10 +33,14 @@ const columns: FileColumns[] = [
   { field: 'readableType', headerName: 'Type' },
 ];
 
+const URLExpression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+const URLRegex = new RegExp(URLExpression);
+
 const Files = () => {
   const dispatch = useAppDispatch();
   const selectedFiles = useAppSelector<SelectedFile[]>(getFiles);
-  const [onlineFile, setOnlineFile] = useState('');
+  const [onlineFile, setOnlineFile] = useState<string>('');
+  const [onlineFileError, setOnlineFileError] = useState<boolean>(false);
 
   const onDrop = (acceptedFiles: File[]) => {
     const serializedFiles = acceptedFiles.map( (file, i) => ({
@@ -46,10 +50,15 @@ const Files = () => {
       location: 'local' as FileLocation,
     }));
     dispatch(addFiles(serializedFiles));
-    setOnlineFile('');
   };
 
-  const onOnlineAdd = () => {
+  const checkOnlineFile = (value: string) => {
+    const valid = value.match(URLRegex);
+    setOnlineFile( value );
+    setOnlineFileError( valid ? false : true );
+  }
+
+  const addOnlineFile = () => {
     const fileToSubmit = {
       fileName: onlineFile.replace(/^.*\/(.*)$/, "$1"),
       readableSize: 'tbd',
@@ -57,6 +66,7 @@ const Files = () => {
       location: 'online' as FileLocation,
     }
     dispatch(addFiles([fileToSubmit]));
+    setOnlineFile('');
   }
 
   const {acceptedFiles, getRootProps, getInputProps, isDragActive} = useDropzone({
@@ -93,8 +103,17 @@ const Files = () => {
               alignItems="center"
               spacing={1}
             > 
-              <TextField fullWidth size="small" label="Enter file URL" variant="outlined" onChange={e => setOnlineFile(e.target.value)}/>
-              <Button onClick={() => onOnlineAdd()} variant="text">Add</Button>
+              <TextField 
+                fullWidth 
+                size="small" 
+                label="Enter file URL" 
+                variant="outlined" 
+                onChange={e => checkOnlineFile(e.target.value)}
+                error={onlineFileError}
+                value={onlineFile}
+                helperText={onlineFileError && 'Invalid URL'}
+              />
+              <Button disabled={onlineFileError || onlineFile === ''} onClick={() => addOnlineFile()} variant="text">Add</Button>
             </Stack>
           </CardContent>
         </Card>
