@@ -6,7 +6,7 @@ const customTheme = createTheme({
     primary: {
       light: '#E4F9FF',
       main: '#38a7d4',
-      dark: '#23baf8',
+      dark: '#1f97c8',
       contrastText: '#fff',
     },
     secondary: {
@@ -28,8 +28,8 @@ const customTheme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         colorPrimary: {
-          backgroundColor: grey[200],
-          color: 'black',
+          // backgroundColor: grey[200],
+          color: 'white',
         }
       }
     },

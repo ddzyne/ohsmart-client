@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import footer from '../config/footer.json';
+import styles from './Footer.module.css';
 
 const Footer = () =>
   <>
@@ -16,9 +17,9 @@ const Footer = () =>
       }}
     >
       <Container>
-        <Grid container columns={4}>
+        <Grid container columns={4} spacing={2}>
           {footer.map( (item, i) => 
-            <Grid xs={2} md={1} key={i}>
+            <Grid xs={4} sm={2} md={1} key={i}>
               <Stack direction="column" alignItems="start">
                 {item.header && <h4>{item.header}</h4>}
                 {item.links && item.links.map( (link, j) =>
@@ -26,7 +27,7 @@ const Footer = () =>
                     {link.name}
                   </Link>
                 )}
-                {item.freetext && <span dangerouslySetInnerHTML={{__html: item.freetext}} />}
+                {item.freetext && <span dangerouslySetInnerHTML={{__html: item.freetext}} className={styles.footerFreeText} />}
               </Stack>
             </Grid>
           )}

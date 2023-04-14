@@ -1,8 +1,9 @@
-import React, { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState, useRef, useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import tabs from '../config/tabs.json';
@@ -16,6 +17,12 @@ import { useAppSelector } from '../app/hooks';
 import { getMetadataStatus } from '../features/metadata/metadataSlice';
 import { getFiles } from '../features/files/filesSlice';
 import { StatusIcon } from '../features/generic/Icons';
+
+import CircularProgress from '@mui/material/CircularProgress';
+import { green } from '@mui/material/colors';
+import CheckIcon from '@mui/icons-material/Check';
+import SendIcon from '@mui/icons-material/Send';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 const components: ComponentTypes = {
   metadata: Metadata,
@@ -64,13 +71,7 @@ const Deposit = () => {
           })}
         </Grid>
         <Grid xs={12} mt={4} display="flex" justifyContent="end" alignItems="center">
-          <Typography>
-            {metadataStatus === 'error' && 'Before you can submit, complete the sections and fields indicated'}
-            {metadataStatus === 'warning' && 'You can submit, but consider making your data more complete'}
-            {metadataStatus === 'success' && 'All set and ready to submit!'}
-          </Typography>
-          <StatusIcon margin="lr" status={metadataStatus} />
-          <Button variant="contained" size="large" disabled={metadataStatus === 'error'}>Submit data</Button>
+          <SubmitButton />
         </Grid>
       </Grid>
     </Container>
@@ -94,6 +95,97 @@ const TabPanel = (props: TabPanelProps) => {
         </Box>
       )}
     </div>
+  );
+}
+
+const SubmitButton = () => {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const selectedFiles = useAppSelector(getFiles);
+  const metadataStatus = useAppSelector(getMetadataStatus);
+
+  const timer = useRef<number>();
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer.current);
+    };
+  }, []);
+
+  const handleButtonClick = () => {
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      timer.current = window.setTimeout(() => {
+        setSuccess(true);
+        setLoading(false);
+      }, 2000);
+    }
+  };
+
+  const iconSx = {
+    color: 'white',
+  }
+
+  return (
+    <Stack direction="row" alignItems="center">
+      <Typography mr={2}>
+        {
+          metadataStatus === 'error' ?
+          'We need some more information before you can submit' :
+          metadataStatus === 'warning' || selectedFiles.length === 0  ?
+          'You can submit, but your metadata could be more complete' :
+          success ?
+          'Thanks!' :
+          loading ?
+          'Hold on, submitting your data' : 
+          'All set, ready to submit!'
+        }
+      </Typography>
+      <Box sx={{ mr: 2, position: 'relative' }} display="flex" justifyContent="center" alignItems="center">
+        <Box display="flex" justifyContent="center" alignItems="center" sx={{
+          p: 1.2,
+          borderRadius: '50%',
+          backgroundColor: `${
+            metadataStatus === 'error' ?
+            'error' :
+            metadataStatus === 'warning' || selectedFiles.length === 0 ?
+            'warning' :
+            success ?
+            'success' :
+            'primary'
+          }.main`,
+        }}>
+          {
+            metadataStatus === 'error' ?
+            <ErrorOutlineOutlinedIcon sx={iconSx} /> :
+            metadataStatus === 'warning'?
+            <SendIcon sx={iconSx} /> :
+            success ?
+            <CheckIcon sx={iconSx} /> :
+            <SendIcon sx={iconSx} />
+          }
+        </Box>
+        {loading && (
+          <CircularProgress
+            size={54}
+            sx={{
+              color: green[500],
+              position: 'absolute',
+              zIndex: 1,
+            }}
+          />
+        )}
+      </Box>
+      <Button
+        variant="contained"
+        disabled={loading || metadataStatus === 'error' || success}
+        onClick={handleButtonClick}
+        size="large"
+      >
+        Submit data
+      </Button>
+    </Stack>
   );
 }
 

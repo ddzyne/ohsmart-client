@@ -9,12 +9,13 @@ const LanguageBar = () =>
   <Box sx={{
     zIndex: 2,
     position: 'relative',
-    bgcolor: 'neutral.main',
+    bgcolor: 'primary.dark',
+    color: 'white',
   }}>
     <Container>
-      <Stack direction="row" justifyContent="end" pt={1} pb={1}>
-        <Button startIcon={<GB className={styles.flag} />} sx={{mr:1, color: '#222'}}>English</Button>
-        <Button startIcon={<NL className={styles.flag} />} sx={{color: '#222'}}>Nederlands</Button>
+      <Stack direction="row" justifyContent="end" pt={0.5} pb={0.5}>
+        <Button size="small" startIcon={<GB className={styles.flag} />} sx={{mr:2, color: '#fff'}}>English</Button>
+        <Button size="small" startIcon={<NL className={styles.flag} />} sx={{color: '#fff'}}>Nederlands</Button>
       </Stack>
     </Container>
   </Box>

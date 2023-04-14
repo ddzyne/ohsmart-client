@@ -14,7 +14,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import logo from '../images/logo-dans.svg';
 import pages from '../config/pages.json';
-import { Link as RouterLink } from 'react-router-dom';
+import { NavLink as RouterLink } from 'react-router-dom';
+import UserIcon from '@mui/icons-material/Person';
+import { grey } from '@mui/material/colors';
 
 const settings = ['Account', 'Logout'];
 
@@ -93,7 +95,7 @@ const MenuBar = () => {
               <Button
                 key={i}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'black', display: 'block' }}
+                sx={{ my: 2, color: 'white', display: 'block' }}
                 component={RouterLink} 
                 to={page.link}
               >
@@ -106,7 +108,7 @@ const MenuBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User" src="/static/images/avatar/2.jpg" />
+                <Avatar sx={{bgcolor: grey[300]}}><UserIcon sx={{color: 'black'}}/></Avatar>
               </IconButton>
             </Tooltip>
             <Menu

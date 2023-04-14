@@ -1,17 +1,24 @@
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
+import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import logo from '../images/logo-ohsmart.png';
+import { Link } from 'react-router-dom';
 
 const Home = () =>
   <Container>
     <Grid container>
-      <Grid xs={12} mdOffset={2.5} md={7}>
-        <h1>Oh Smart</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vulputate, justo posuere aliquam ullamcorper, felis dui posuere urna, ac vestibulum nunc enim et magna. Aliquam dapibus placerat lacus in efficitur. Ut eu lacus libero. Praesent a sem turpis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi euismod rhoncus neque vitae ultrices. </p>
-        <p>Vestibulum dictum vitae nulla sed commodo. Proin nunc eros, vulputate non quam nec, finibus laoreet ante. Aliquam quis quam sagittis metus commodo posuere nec in neque. Nam dapibus, diam nec gravida faucibus, turpis dui venenatis erat, quis sagittis enim tellus id neque. Sed sit amet ante eu diam semper porta. Donec eget elit sed risus auctor pellentesque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. </p>
+      <Grid mdOffset={4} md={4} smOffset={3} sm={6} xs={8} xsOffset={2}>
+        <h1><img src={logo} alt="OH-SMArt" title="OH-SMArt" /></h1>
       </Grid>
-      <Grid mdOffset={3.5} md={5}>
-        <img src={logo} alt="" title="" />
+      <Grid xs={12} mdOffset={2.5} md={7}>
+        <Typography>
+          DANS collaborates with the OH-SMART project to provide infrastructure for the deposit, preservation, processing and application of audiovisual materials collected by museums and research institutions. OH-SMART concentrates on oral histories - interviews conducted at art museums.
+        </Typography>
+        <Box mt={4} display="flex" justifyContent="center">
+          <Link to="/deposit"><Button variant="contained" size="large">Deposit data</Button></Link>
+        </Box>
       </Grid>
     </Grid>
   </Container>
