@@ -6,6 +6,7 @@ import type {
   Field, 
   InitialStateType, 
   SectionType, 
+  SectionStatus,
 } from '../../types/Metadata';
 
 // load the imported form and close all accordion panels by default
@@ -39,6 +40,32 @@ function formatData(items: any, payload: FieldSetPayload) {
   });
 }
 
+function getStatus(field?: Field, statusArray?: SectionStatus[]) {
+  const check1 = 
+    statusArray ? statusArray.indexOf('error') !== -1 :
+    field && field.required && (!field.value || field.value.length === 0);
+  const check2 = 
+    statusArray ? statusArray.indexOf('warning') !== -1 :
+    field && !field.required && (!field.value || field.value.length === 0)
+  return (
+    check1 ?
+    'error' : 
+    check2 ?
+    'warning' :
+    'success'
+  )
+}
+
+function getValid(value: string, validation?: string) {
+  return (
+    validation ? 
+    validateData(validation, value) : 
+    value && value.length !== 0 ? 
+    true :
+    false
+  )
+}
+
 export const metadataSlice = createSlice({
   name: 'metadata',
   initialState,
@@ -52,28 +79,23 @@ export const metadataSlice = createSlice({
         const fieldInGroup = (field.fields as Field[]).find( f => f.id === action.payload.fieldId )
         if (fieldInGroup) {
           fieldInGroup.value = action.payload.value;
-          fieldInGroup.valid = 
-            fieldInGroup.validation ? 
-            validateData(fieldInGroup.validation, action.payload.value as string) :
-            action.payload.value && action.payload.value.length !== 0 ?
-            true :
-            false;
+          fieldInGroup.valid = getValid(action.payload.value as string, fieldInGroup.validation);
         }
       }
       else {
         field.value = action.payload.value;
-        field.valid = 
-          field.validation ? 
-          validateData(field.validation, action.payload.value as string) : 
-          action.payload.value && action.payload.value.length !== 0 ? 
-          true :
-          false;
+        field.valid = getValid(action.payload.value as string, field.validation);
       }
 
-      metadataSlice.caseReducers.setSectionStatus(state, action);
-
-      // Or do this recursively, bit slower
+      // Or do this recursively, slower
       // formatData(state.form, action.payload)
+
+      // set accordion valid/invalid state
+      metadataSlice.caseReducers.setSectionStatus(state, action);
+    },
+    // functionality for adding new single (repeatable) textfields 
+    addField: (state, action: PayloadAction<any>) => {
+      console.log(action)
     },
     // keep track of the accordion state
     setOpenPanel: (state, action: PayloadAction<string>) => {
@@ -88,53 +110,28 @@ export const metadataSlice = createSlice({
       }
 
       function set(number: number) {
-        const status = state.form[number].fields.map( (field) => {
+        const statusArray: SectionStatus[] = state.form[number].fields.map( (field) => {
           if ( field.type === 'group' ) {
-            return field.fields && field.fields.map( (groupedField) => 
-              groupedField.required && (!groupedField.value || groupedField.value.length === 0) ?
-              'error' :
-              !groupedField.required && (!groupedField.value || groupedField.value.length === 0) ?
-              'warning' : 
-              'success'
-            )
+            return field.fields.map( (groupedField) => getStatus(groupedField))
           } else {
-            return (
-              field.required && (!field.value || field.value.length === 0) ?
-              'error' : 
-              !field.required && (!field.value || field.value.length === 0) ?
-              'warning' :
-              'success'
-            )
+            return getStatus(field, undefined)
           }
-        });
-
-        const statusIndicator = 
-          status.indexOf('error') !== -1 ? 
-          'error' : 
-          status.indexOf('warning') !== -1 ? 
-          'warning' : 
-          'success';
-
-        state.form[number].status = statusIndicator;
+        }).flat();
+        const status = getStatus(undefined, statusArray);
+        state.form[number].status = status;
       }
     }
   }
 });
 
-export const { setField, setOpenPanel, setSectionStatus } = metadataSlice.actions;
+export const { setField, setOpenPanel, setSectionStatus, addField } = metadataSlice.actions;
 
 // Select values from state
 export const getMetadata = (state: RootState) => state.metadata.form;
 export const getOpenPanel = (state: RootState) => state.metadata.panel;
 export const getMetadataStatus = (state: RootState) => {
-  const statusArray = state.metadata.form.map( section => section.status);
-  return (
-    statusArray.indexOf('error') !== -1 ? 
-    'error' : 
-    statusArray.indexOf('warning') !== -1 ? 
-    'warning' : 
-    'success'
-  );
+  const statusArray = state.metadata.form.map(section => section.status);
+  return getStatus(undefined, statusArray);
 }
 
 export default metadataSlice.reducer;

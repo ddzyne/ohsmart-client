@@ -1,4 +1,4 @@
-export type SectionStatus = 'error' | 'warning' | 'success'
+export type SectionStatus = 'error' | 'warning' | 'success' | undefined;
 
 export interface SectionType {
   id: string;

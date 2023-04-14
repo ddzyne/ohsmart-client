@@ -95,7 +95,7 @@ const Files = () => {
       </Grid>
       <Grid xs={6} >
         <Card sx={{height: '100%'}}>
-          <CardHeader title="Add files from URL" />
+          <CardHeader title="Add file from URL" />
           <CardContent>
             <Stack
               direction="row"
