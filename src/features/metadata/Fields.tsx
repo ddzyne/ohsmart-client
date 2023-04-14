@@ -19,8 +19,9 @@ import { StatusIcon } from '../generic/Icons';
 export const SingleField = ({field, sectionNumber, fieldNumber}: FieldProps) => {
   const dispatch = useAppDispatch();
   const status = 
-    field.required && !field.value ? "error" : 
-    !field.required && !field.value ? "warning" :
+    !field.required && !field.valid ? "warning" :
+    !field.valid ? 
+    "error" : 
     "success";
 
   return (

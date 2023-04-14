@@ -52,12 +52,22 @@ export const metadataSlice = createSlice({
         const fieldInGroup = (field.fields as Field[]).find( f => f.id === action.payload.fieldId )
         if (fieldInGroup) {
           fieldInGroup.value = action.payload.value;
-          fieldInGroup.valid = fieldInGroup.validation ? validateData(fieldInGroup.validation, action.payload.value as string) : action.payload.value ? true : false;
+          fieldInGroup.valid = 
+            fieldInGroup.validation ? 
+            validateData(fieldInGroup.validation, action.payload.value as string) :
+            action.payload.value && action.payload.value.length !== 0 ?
+            true :
+            false;
         }
       }
       else {
         field.value = action.payload.value;
-        field.valid = field.validation ? validateData(field.validation, action.payload.value as string) : action.payload.value ? true : false;
+        field.valid = 
+          field.validation ? 
+          validateData(field.validation, action.payload.value as string) : 
+          action.payload.value && action.payload.value.length !== 0 ? 
+          true :
+          false;
       }
 
       metadataSlice.caseReducers.setSectionStatus(state, action);
@@ -81,14 +91,20 @@ export const metadataSlice = createSlice({
         const status = state.form[number].fields.map( (field) => {
           if ( field.type === 'group' ) {
             return field.fields && field.fields.map( (groupedField) => 
-              groupedField.required && !groupedField.value ?
+              groupedField.required && (!groupedField.value || groupedField.value.length === 0) ?
               'error' :
-              !groupedField.required && !groupedField.value ?
+              !groupedField.required && (!groupedField.value || groupedField.value.length === 0) ?
               'warning' : 
               'success'
             )
           } else {
-            return field.required && !field.value ? 'error' : !field.required && !field.value ? 'warning' : 'success';
+            return (
+              field.required && (!field.value || field.value.length === 0) ?
+              'error' : 
+              !field.required && (!field.value || field.value.length === 0) ?
+              'warning' :
+              'success'
+            )
           }
         });
 

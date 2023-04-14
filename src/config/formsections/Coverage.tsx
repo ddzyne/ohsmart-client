@@ -27,7 +27,7 @@ export const section = {
     },
     {
       type: "autocomplete",
-      label: "Date available",
+      label: "Subject keywords",
       id: `${prefix}_subject_keywords`,
       required: true,
       repeatable: true,
