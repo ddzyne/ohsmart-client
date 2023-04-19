@@ -9,9 +9,9 @@ export const section = {
     {
       type: "autocomplete",
       label: "Subject location",
-      id: `${prefix}_subject_location`,
+      name: `${prefix}_subject_location`,
       required: true,
-      repeatable: true,
+      multiselect: true,
       description: "The location(s) that the interview material deals with",
       value: '',
       options: dummyList,
@@ -19,7 +19,7 @@ export const section = {
     {
       type: "datetime-local",
       label: "Subject time and date",
-      id: `${prefix}_subject_date_time`,
+      name: `${prefix}_subject_date_time`,
       required: true,
       repeatable: true,
       description: "The start and end times that the interview material deals with",
@@ -28,9 +28,9 @@ export const section = {
     {
       type: "autocomplete",
       label: "Subject keywords",
-      id: `${prefix}_subject_keywords`,
+      name: `${prefix}_subject_keywords`,
       required: true,
-      repeatable: true,
+      multiselect: true,
       description: "List of relevant keywords",
       value: '',
       options: dummyList,

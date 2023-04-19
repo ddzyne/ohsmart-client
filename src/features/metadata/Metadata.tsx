@@ -30,7 +30,7 @@ const Form = () => {
 
   return (
     <>
-      {(metadata as SectionType[]).map((section, sectionNumber) => 
+      {(metadata as SectionType[]).map((section, sectionIndex) => 
         <Accordion 
           key={`section-${section.id}`} 
           expanded={openPanel === section.id} 
@@ -47,10 +47,10 @@ const Form = () => {
           </AccordionSummary>
           <AccordionDetails>
             <Grid container spacing={2}>
-              {section.fields.map((field, fieldNumber) => 
+              {section.fields.map((field, i) => 
                 field.type === 'group' ?
-                  <FieldGroup key={`fieldGroup-${field.id}`} field={field} sectionNumber={sectionNumber} fieldNumber={fieldNumber} /> :
-                  <SingleField key={`field-${field.id}`} field={field} sectionNumber={sectionNumber} fieldNumber={fieldNumber} />
+                <FieldGroup key={i} field={field} sectionIndex={sectionIndex} /> :
+                <SingleField key={i} field={field} sectionIndex={sectionIndex} />
               )}
             </Grid>
           </AccordionDetails>
@@ -59,7 +59,5 @@ const Form = () => {
     </>
   )
 }
-
-
 
 export default Form;

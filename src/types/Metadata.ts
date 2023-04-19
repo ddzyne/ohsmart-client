@@ -15,7 +15,14 @@ export type OptionsType = {
   value: string;
 };
 
-export type Field = TextFieldType | AutoCompleteFieldType | GroupFieldType;
+export type Field = TextFieldType | AutocompleteFieldType | GroupFieldType | RepeatTextFieldType;
+export type InputField = TextFieldType | AutocompleteFieldType;
+
+export interface RepeatTextFieldType {
+  type: 'repeatSingleField';
+  id: string;
+  fields: TextFieldType[];
+}
 
 export interface TextFieldType {
   type: 'text' | 'datetime-local' | 'date' | 'number';
@@ -26,66 +33,71 @@ export interface TextFieldType {
   minValue?: number; 
   value?: string;
   repeatable?: boolean;
-  valid?: boolean;
+  valid?: boolean | '';
   disabled?: boolean;
   multiline?: boolean;
   description?: string;
   required?: boolean;
   private?: boolean;
-  fields?: never;
-  options?: never;
+}
+
+export interface AutocompleteFieldType {
+  type: 'autocomplete';
+  id: string;
+  label: string;
+  validation?: never;
+  value?: string | string[] | null;
+  multiselect?: boolean;
+  valid?: boolean | '';
+  disabled?: boolean;
+  description?: string;
+  required?: boolean;
+  private?: boolean;
+  options?: OptionsType[] | any;
 }
 
 export interface GroupFieldType {
   type: 'group';
   id: string;
   label: string;
-  validation?: never;
-  maxValue?: never;
-  minValue?: never; 
-  value?: never;
   repeatable?: boolean;
-  valid?: never;
-  disabled?: never;
-  multiline?: never;
   description?: string;
-  required?: never;
-  private?: never;
-  fields: AutoCompleteFieldType[] | TextFieldType[];
-  options?: never;
-}
-
-export interface AutoCompleteFieldType {
-  type: 'autocomplete';
-  id: string;
-  label: string;
-  validation?: never;
-  maxValue?: never;
-  minValue?: never; 
-  value?: string | string[] | null;
-  repeatable?: boolean;
-  valid?: boolean;
-  disabled?: boolean;
-  multiline?: never;
-  description?: string;
-  required?: boolean;
-  private?: boolean;
-  fields?: never;
-  options?: OptionsType[] | any;
+  fields: InputField[] | InputField[][];
 }
 
 export interface FieldProps {
   field: Field;
-  sectionNumber: number;
-  fieldNumber: number;
+  sectionIndex: number;
+  groupedFieldId?: string;
+  currentField?: number;
+  totalFields?: number;
+}
+
+export interface GroupFieldProps extends FieldProps {
+  field: GroupFieldType;
+}
+
+export interface TextFieldProps extends FieldProps {
+  field: TextFieldType;
+}
+
+export interface AutocompleteFieldProps extends FieldProps {
+  field: AutocompleteFieldType;
+}
+
+export interface FieldButtonProps {
+  sectionIndex: number;
+  groupedFieldId?: string;
+  deleteFieldIndex?: number;
+  type?: 'single' | 'group';
+  size?: 'small' | 'medium' | 'large';
 }
 
 export interface FieldSetPayload {
-  sectionNumber: number;
-  fieldNumber: number;
-  fieldId: string;
-  field: TextFieldType | AutoCompleteFieldType;
+  sectionIndex: number;
+  id: string;
   value: string | string[] | null;
+  groupedFieldId?: string;
 };
 
 export type InitialStateType = {

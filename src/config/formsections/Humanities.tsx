@@ -9,9 +9,9 @@ export const section = {
     {
       type: "autocomplete",
       label: "Domain-specific keywords",
-      id: `${prefix}_keywords`,
+      name: `${prefix}_keywords`,
       required: true,
-      repeatable: true,
+      multiselect: true,
       value: '',
       description: 'Discription',
       options: dummyList,

@@ -9,7 +9,7 @@ export const section = {
     {
       type: 'text',
       label: 'Identifier',
-      id: `${prefix}_identifier`,
+      name: `${prefix}_identifier`,
       required: true,
       description: 'Assigned by interviewer, has to be unique by depositor',
       value: '',
@@ -17,7 +17,7 @@ export const section = {
     {
       type: 'autocomplete',
       label: 'Language',
-      id: `${prefix}_language`,
+      name: `${prefix}_language`,
       required: true,
       description: 'Language of interview',
       value: '',
@@ -26,7 +26,7 @@ export const section = {
     {
       type: 'date',
       label: 'Date available',
-      id: `${prefix}_date_available`,
+      name: `${prefix}_date_available`,
       required: true,
       description: 'In case of an embargo, else publication date',
       value: '',

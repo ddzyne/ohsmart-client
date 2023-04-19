@@ -9,9 +9,9 @@ export const section = {
     {
       type: "autocomplete",
       label: "Audience",
-      id: `${prefix}_audience`,
+      name: `${prefix}_audience`,
       required: false,
-      repeatable: true,
+      multiselect: true,
       value: '',
       description: 'Discription',
       options: dummyList,
@@ -19,9 +19,9 @@ export const section = {
     {
       type: "autocomplete",
       label: "Related to",
-      id: `${prefix}_relation`,
+      name: `${prefix}_relation`,
       required: false,
-      repeatable: true,
+      multiselect: true,
       value: '',
       description: 'Discription',
       options: dummyList,

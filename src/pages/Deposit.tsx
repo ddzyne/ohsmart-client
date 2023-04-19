@@ -71,7 +71,7 @@ const Deposit = () => {
           })}
         </Grid>
         <Grid xs={12} mt={4} display="flex" justifyContent="end" alignItems="center">
-          <SubmitButton />
+          <SubmitButton metadataStatus={metadataStatus} />
         </Grid>
       </Grid>
     </Container>
@@ -98,11 +98,10 @@ const TabPanel = (props: TabPanelProps) => {
   );
 }
 
-const SubmitButton = () => {
+const SubmitButton = ({metadataStatus}: any) => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const selectedFiles = useAppSelector(getFiles);
-  const metadataStatus = useAppSelector(getMetadataStatus);
 
   const timer = useRef<number>();
 

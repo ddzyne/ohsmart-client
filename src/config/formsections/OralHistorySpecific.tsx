@@ -9,14 +9,14 @@ export const section = {
     {
       type: 'group',
       label: 'Interviewee',
-      id: `${prefix}_group_interviewee`,
+      name: `${prefix}_interviewee_group`,
       repeatable: true,
       description: 'Information about the person being interviewed. This data will not be public.',
       fields: [
         {
           type: "text",
           label: "Initials",
-          id: `${prefix}_interviewee_initials`,
+          name: `${prefix}_interviewee_initials`,
           required: true,
           private: true,
           value: '',
@@ -25,7 +25,7 @@ export const section = {
         {
           type: "text",
           label: "Last name",
-          id: `${prefix}_interviewee_last_name`,
+          name: `${prefix}_interviewee_last_name`,
           required: true,
           private: true,
           value: '',
@@ -34,7 +34,7 @@ export const section = {
         {
           type: "date",
           label: "Date of birth",
-          id: `${prefix}_interviewee_dob`,
+          name: `${prefix}_interviewee_dob`,
           required: true,
           private: true,
           value: '',
@@ -45,14 +45,14 @@ export const section = {
     {
       type: 'group',
       label: 'Interviewer',
-      id: `${prefix}_group_interviewer`,
+      name: `${prefix}_interviewer_group`,
       repeatable: true,
       description: 'Information about the person doing the interview. This data will not be public.',
       fields: [
         {
           type: "text",
           label: "First name",
-          id: `${prefix}_interviewer_first_name`,
+          name: `${prefix}_interviewer_first_name`,
           required: true,
           private: true,
           value: '',
@@ -61,7 +61,7 @@ export const section = {
         {
           type: "text",
           label: "Last name",
-          id: `${prefix}_interviewer_last_name`,
+          name: `${prefix}_interviewer_last_name`,
           required: true,
           private: true,
           value: '',
@@ -72,14 +72,14 @@ export const section = {
     {
       type: 'group',
       label: 'Others present',
-      id: `${prefix}_group_others`,
+      name: `${prefix}_others_group`,
       repeatable: true,
       description: 'Information about other people present during the interview. This data will not be public.',
       fields: [
         {
           type: "text",
           label: "First name",
-          id: `${prefix}_others_first_name`,
+          name: `${prefix}_others_first_name`,
           private: true,
           value: '',
           description: 'Discription',
@@ -87,7 +87,7 @@ export const section = {
         {
           type: "text",
           label: "Last name",
-          id: `${prefix}_others_last_name`,
+          name: `${prefix}_others_last_name`,
           private: true,
           value: '',
           description: 'Discription',
@@ -95,7 +95,7 @@ export const section = {
         {
           type: "text",
           label: "Function",
-          id: `${prefix}_others_function`,
+          name: `${prefix}_others_function`,
           private: true,
           value: '',
           description: 'Discription',
@@ -105,9 +105,9 @@ export const section = {
     {
       type: "autocomplete",
       label: "Location of interview",
-      id: `${prefix}_location`,
+      name: `${prefix}_location`,
       required: true,
-      repeatable: true,
+      multiselect: true,
       value: '',
       description: 'Discription',
       options: dummyList,
@@ -115,7 +115,7 @@ export const section = {
     {
       type: "datetime-local",
       label: "Date and time of interview",
-      id: `${prefix}_date_time_interview`,
+      name: `${prefix}_date_time_interview`,
       required: true,
       repeatable: true,
       value: '',
@@ -124,7 +124,7 @@ export const section = {
     {
       type: "text",
       label: "Recorded by",
-      id: `${prefix}_recorded_by`,
+      name: `${prefix}_recorded_by`,
       required: true,
       repeatable: true,
       value: '',
@@ -134,7 +134,7 @@ export const section = {
     {
       type: "text",
       label: "Recording equipment",
-      id: `${prefix}_recording_equipment`,
+      name: `${prefix}_recording_equipment`,
       required: false,
       repeatable: true,
       value: '',

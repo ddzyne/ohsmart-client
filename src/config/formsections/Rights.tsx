@@ -9,7 +9,7 @@ export const section = {
     {
       type: "autocomplete",
       label: "Rights holder",
-      id: `${prefix}_rightsholder`,
+      name: `${prefix}_rightsholder`,
       required: true,
       value: '',
       description: 'Discription',
@@ -18,7 +18,7 @@ export const section = {
     {
       type: "autocomplete",
       label: "Licence",
-      id: `${prefix}_licence_type`,
+      name: `${prefix}_licence_type`,
       required: true,
       value: '',
       description: 'Discription',
