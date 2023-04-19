@@ -19,13 +19,22 @@ import blue from '@mui/material/colors/blue';
 import Checkbox from '@mui/material/Checkbox';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
 import { fileRoles, fileProcessing } from '../../config/files/Files';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getFiles, addFiles, removeFile, setFileMeta } from './filesSlice';
 import type { FileColumns, SelectedFile, FileLocation } from '../../types/Files';
 import Autocomplete from '@mui/material/Autocomplete';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import CloseIcon from '@mui/icons-material/Close';
+import Collapse from '@mui/material/Collapse';
 
 const columns: FileColumns[] = [
   { field: 'fileName', headerName: 'Name' },
@@ -42,13 +51,23 @@ const Files = () => {
   const [onlineFile, setOnlineFile] = useState<string>('');
   const [onlineFileError, setOnlineFileError] = useState<boolean>(false);
 
-  const onDrop = (acceptedFiles: File[]) => {
+  // TODO some file validation
+  const onDrop = async (acceptedFiles: File[]) => {
     const serializedFiles = acceptedFiles.map( (file, i) => ({
       fileName: file.name,
       readableSize: `${(file.size*9.5367431640625*Math.pow(10, -7)).toFixed(2)} MB`, 
       readableType: file.type ? file.type.replace(/^.*\/(.*)$/, "$1") : file.name.substring(file.name.lastIndexOf('.') + 1),
       location: 'local' as FileLocation,
     }));
+
+    // file validation
+    let reader = new FileReader();
+    reader.onload = (e: any) => {
+      const contents = e.target.result;
+      console.log(contents);
+    };
+    acceptedFiles.map( (file) => reader.readAsText(file))
+    
     dispatch(addFiles(serializedFiles));
   };
 
@@ -69,9 +88,13 @@ const Files = () => {
     setOnlineFile('');
   }
 
-  const {acceptedFiles, getRootProps, getInputProps, isDragActive} = useDropzone({
+  const {acceptedFiles, getRootProps, getInputProps, isDragActive, fileRejections} = useDropzone({
     onDrop,
     multiple: true,
+    accept: {
+      'image/jpeg': [],
+      'image/png': [],
+    },
   });
 
   return (
@@ -79,17 +102,19 @@ const Files = () => {
       <Grid xs={6}>
         <Card>
           <CardHeader title="Add local file(s)" />
-          <CardContent {...getRootProps({className: 'dropzone'})} >
+          <CardContent>
             <Box 
               sx={{
                 border: '1px dashed grey',
                 backgroundColor: isDragActive ? blue[100] : 'white',
               }}
               p={3}
+              {...getRootProps({className: 'dropzone'})}
             >
               <input {...getInputProps()} />
               <Typography color="grey" sx={{textAlign: 'center', cursor: 'pointer'}}>Click me or drag a file to upload!</Typography>
             </Box>
+            {fileRejections.length > 0 && <RejectedFiles fileRejections={fileRejections} />}
           </CardContent>
         </Card>
       </Grid>
@@ -181,6 +206,44 @@ const Files = () => {
     </Grid>
   )
 }
+
+const RejectedFiles = ({fileRejections}: any) => {
+  const [open, setOpen] = useState(true);
+  return (
+    <Collapse in={open}>
+      <Alert 
+        severity="error" 
+        sx={{mt:2}} 
+        action={
+          <IconButton
+            aria-label="close"
+            color="inherit"
+            size="small"
+            onClick={() => {
+              setOpen(false);
+            }}
+          >
+            <CloseIcon fontSize="inherit" />
+          </IconButton>
+        }>
+        <AlertTitle>Sorry, the following files cannot be uploaded</AlertTitle>
+        <List dense={true}>
+          {fileRejections.map( (file: any, i: number) => 
+            <ListItem disableGutters>
+              <ListItemIcon>
+                <InsertDriveFileIcon />
+              </ListItemIcon>
+              <ListItemText 
+                primary={file.file.name}
+                secondary={file.errors.map( (error: any, i: number) => `${error.message}${i < file.errors.length - 1 ? ' | ' : ''}`)} />
+            </ListItem>
+          )}
+        </List>
+      </Alert>
+    </Collapse>
+  )
+}
+  
 
 interface OptionProps {
   file: SelectedFile;
