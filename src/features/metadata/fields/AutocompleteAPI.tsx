@@ -10,6 +10,12 @@ import { StatusIcon } from '../../generic/Icons';
 import { setField } from '../metadataSlice';
 import type { AutocompleteFieldProps } from '../../../types/Metadata';
 
+// TODO: 
+// Make selection process foul-proof, bit hacky atm.
+// Typeahead API selection based on field.options setting
+// API error handling
+// ?
+
 const AutocompleteFieldAPI = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
   const [inputValue, setInputValue] = useState('');
