@@ -80,7 +80,7 @@ export const section = {
       list: 'custom',
       description: 'Institution - often the rights holder',
       value: '',
-      options: dummyList,
+      options: 'ror',
     },
     {
       // I suppose this is read-only and pre-filled by system?

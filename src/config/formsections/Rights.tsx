@@ -14,7 +14,6 @@ export const section = {
       value: '',
       description: 'Discription',
       options: 'orcid',
-      multiselect: true,
     },
     {
       type: "autocomplete",

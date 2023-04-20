@@ -8,8 +8,8 @@ import { memo } from 'react';
 import type { FieldProps, GroupFieldProps, TextFieldType, InputField } from '../../types/Metadata';
 import grey from '@mui/material/colors/grey';
 import { DeleteButton, AddButtonText } from './MetadataButtons';
-import AutocompleteAPI from './fields/AutocompleteAPI';
-import Autocomplete from './fields/Autocomplete';
+import { OrcidField, RorField } from './fields/AutocompleteAPIField';
+import AutocompleteField from './fields/AutocompleteField';
 import TextField from './fields/TextField';
 
 // Memoized Field function, so only the affected field rerenders when form/metadata props change
@@ -28,10 +28,14 @@ const SingleField = memo(({field, sectionIndex, groupedFieldId}: FieldProps) => 
         )
       }
       { field.type === 'autocomplete' && Array.isArray(field.options) &&
-        <Autocomplete field={field} sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} />
+        <AutocompleteField field={field} sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} />
       }
-      { field.type === 'autocomplete' && field.options === 'orcid' &&
-        <AutocompleteAPI field={field} sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} />
+      { field.type === 'autocomplete' && (
+        field.options === 'orcid' ?
+        <OrcidField field={field} sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} /> :
+        field.options === 'ror' ?
+        <RorField field={field} sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} /> :
+        null )
       }
     </Grid>
   )

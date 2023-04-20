@@ -42,7 +42,7 @@ export interface TextFieldType {
   private?: boolean;
 }
 
-type TypeaheadAPI = 'orcid';
+type TypeaheadAPI = 'orcid' | 'ror';
 
 export interface AutocompleteFieldType {
   type: 'autocomplete';
