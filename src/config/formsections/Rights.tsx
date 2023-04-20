@@ -13,7 +13,8 @@ export const section = {
       required: true,
       value: '',
       description: 'Discription',
-      options: dummyList,
+      options: 'orcid',
+      multiselect: true,
     },
     {
       type: "autocomplete",
@@ -22,7 +23,7 @@ export const section = {
       required: true,
       value: '',
       description: 'Discription',
-      options: dummyList,
+      options: 'orcid',
     },
   ],
 };

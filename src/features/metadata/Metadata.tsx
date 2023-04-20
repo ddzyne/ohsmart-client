@@ -6,7 +6,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { SectionType } from '../../types/Metadata';
-import { SingleField, FieldGroup } from './Fields';
+import { SingleField, FieldGroup } from './MetadataFields';
 import { StatusIcon } from '../generic/Icons';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';

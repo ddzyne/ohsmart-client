@@ -6,7 +6,7 @@ import type {
   InitialStateType, 
   SectionType, 
 } from '../../types/Metadata';
-import { getValid, getStatus, formatInitialState, findById } from './helpers';
+import { getValid, getStatus, formatInitialState, findById } from './metadataHelpers';
 import { v4 as uuidv4 } from 'uuid';
 
 // load the imported form and close all accordion panels by default

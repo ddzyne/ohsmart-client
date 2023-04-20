@@ -27,6 +27,7 @@ export interface RepeatTextFieldType {
 export interface TextFieldType {
   type: 'text' | 'datetime-local' | 'date' | 'number';
   id: string;
+  name: string;
   label: string;
   validation?: 'email' | 'number';
   maxValue?: number;
@@ -41,24 +42,28 @@ export interface TextFieldType {
   private?: boolean;
 }
 
+type TypeaheadAPI = 'orcid';
+
 export interface AutocompleteFieldType {
   type: 'autocomplete';
   id: string;
+  name: string;
   label: string;
   validation?: never;
-  value?: string | string[] | null;
+  value?: any;
   multiselect?: boolean;
   valid?: boolean | '';
   disabled?: boolean;
   description?: string;
   required?: boolean;
   private?: boolean;
-  options?: OptionsType[] | any;
+  options?: OptionsType[] | TypeaheadAPI;
 }
 
 export interface GroupFieldType {
   type: 'group';
   id: string;
+  name: string;
   label: string;
   repeatable?: boolean;
   description?: string;
