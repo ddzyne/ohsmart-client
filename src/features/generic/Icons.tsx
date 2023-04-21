@@ -1,16 +1,27 @@
 import InfoIcon from '@mui/icons-material/Info';
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import type { StatusIconProps } from '../../types/Generic';
+import { styled } from '@mui/material/styles';
+
+const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(({ theme }) => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    padding: 0,
+    boxShadow: theme.shadows[1],
+  },
+}));
 
 export const StatusIcon = ({status, title, margin}: StatusIconProps) => {
   const statusTitle = 
     status === 'error' ? 
-    'Needs some more information' : 
+    'Please enter some more data' : 
     status === 'warning' ? 
-    'Could be better' : 
+    'Consider making your data more complete' : 
     'Good to go';
 
   const iconSx = {
@@ -19,12 +30,31 @@ export const StatusIcon = ({status, title, margin}: StatusIconProps) => {
   }
 
   return (
-    <Tooltip
+    <LightTooltip
       title={
         <>
-          {title && <Typography sx={{mb: 1, p: 1}}>{title}</Typography>}
-          {title && <hr/>}
-          <Typography sx={{fontSize: 12, p: 1}}>Status: {statusTitle}</Typography>
+          {title && 
+            <Typography 
+              sx={{
+                fontSize: 14, 
+                p: 2
+              }}
+            >
+              {title}
+            </Typography>
+          }
+          <Typography
+            sx={{
+              fontSize: 12, 
+              pl: 2,
+              pr: 2,
+              pb: 1,
+              pt: 1, 
+              backgroundColor: `${status}.main`,
+            }}
+          >
+            {statusTitle}
+          </Typography>
         </>
       }>
       {
@@ -34,6 +64,6 @@ export const StatusIcon = ({status, title, margin}: StatusIconProps) => {
         <InfoIcon sx={iconSx} color={status}/> :
         <CheckCircleIcon sx={iconSx} color={status}/>
       }
-    </Tooltip>
+    </LightTooltip>
   )
 }
