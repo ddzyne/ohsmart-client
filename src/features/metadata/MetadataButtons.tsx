@@ -5,9 +5,9 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useAppDispatch } from '../../app/hooks';
 import { addField, deleteField } from './metadataSlice';
-import type { FieldButtonProps } from '../../types/Metadata';
+import type { AddFieldButtonProps, DeleteFieldButtonProps } from '../../types/Metadata';
 
-export const DeleteButton = ({sectionIndex, groupedFieldId, deleteFieldIndex, size = 'small'}: FieldButtonProps) => {
+export const DeleteButton = ({sectionIndex, groupedFieldId, deleteFieldIndex, size = 'small'}: DeleteFieldButtonProps) => {
   const dispatch = useAppDispatch();
   return (
     <Tooltip title="Remove">
@@ -28,7 +28,7 @@ export const DeleteButton = ({sectionIndex, groupedFieldId, deleteFieldIndex, si
   )
 }
 
-export const AddButton = ({sectionIndex, groupedFieldId, type, size = 'small'}: FieldButtonProps) => {
+export const AddButton = ({sectionIndex, groupedFieldId, type, size = 'small'}: AddFieldButtonProps) => {
   const dispatch = useAppDispatch();
   return (
     <Tooltip title="Add another">
@@ -49,7 +49,7 @@ export const AddButton = ({sectionIndex, groupedFieldId, type, size = 'small'}: 
   )
 }
 
-export const AddButtonText = ({sectionIndex, groupedFieldId, type, size = 'medium'}: FieldButtonProps) => {
+export const AddButtonText = ({sectionIndex, groupedFieldId, type, size = 'medium'}: AddFieldButtonProps) => {
   const dispatch = useAppDispatch();
   return (
     <Button 

@@ -5,7 +5,7 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import { memo } from 'react';
-import type { FieldProps, GroupFieldProps, TextFieldType, InputField } from '../../types/Metadata';
+import type { SingleFieldProps, GroupedFieldProps, TextFieldType, InputField } from '../../types/Metadata';
 import grey from '@mui/material/colors/grey';
 import { DeleteButton, AddButtonText } from './MetadataButtons';
 import { OrcidField, RorField } from './fields/AutocompleteAPIField';
@@ -13,14 +13,14 @@ import AutocompleteField from './fields/AutocompleteField';
 import TextField from './fields/TextField';
 
 // Memoized Field function, so only the affected field rerenders when form/metadata props change
-const SingleField = memo(({field, sectionIndex, groupedFieldId}: FieldProps) => {
+const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
   return (
     <Grid xs={12} md={6}>
       {(field.type === 'text' || 
         field.type === 'datetime-local' ||
         field.type === 'date' ||
         field.type === 'number') &&
-        <TextField field={field} sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} />
+        <TextField field={field} sectionIndex={sectionIndex} />
       }
       { field.type === 'repeatSingleField' &&
         field.fields.map( (f: TextFieldType, i: number) => 
@@ -28,20 +28,20 @@ const SingleField = memo(({field, sectionIndex, groupedFieldId}: FieldProps) => 
         )
       }
       { field.type === 'autocomplete' && Array.isArray(field.options) &&
-        <AutocompleteField field={field} sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} />
+        <AutocompleteField field={field} sectionIndex={sectionIndex} />
       }
       { field.type === 'autocomplete' && (
         field.options === 'orcid' ?
-        <OrcidField field={field} sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} /> :
+        <OrcidField field={field} sectionIndex={sectionIndex} /> :
         field.options === 'ror' ?
-        <RorField field={field} sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} /> :
+        <RorField field={field} sectionIndex={sectionIndex} /> :
         null )
       }
     </Grid>
   )
 });
 
-const FieldGroup = ({field, sectionIndex}: GroupFieldProps) => {
+const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
   // check if group is repeatable. If not, lets wrap that single fieldgroup in an array, so we can use the same map function over it
   const fieldArray = field.repeatable ? field.fields as InputField[][] : [field.fields as InputField[]];
 
@@ -97,4 +97,4 @@ const FieldGroup = ({field, sectionIndex}: GroupFieldProps) => {
   )
 }
 
-export { SingleField, FieldGroup }
+export { SingleField, GroupedField }

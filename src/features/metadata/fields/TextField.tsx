@@ -6,9 +6,9 @@ import { StatusIcon } from '../../generic/Icons';
 import { AddButton, DeleteButton } from '../MetadataButtons';
 import { setField } from '../metadataSlice';
 import { getStatus } from '../metadataHelpers';
-import type { TextFieldProps } from '../../../types/Metadata';
+import type { SingleTextFieldProps } from '../../../types/Metadata';
 
-const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: TextFieldProps) => {
+const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: SingleTextFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
 
@@ -45,7 +45,7 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
           ),
         }}
       />
-      {field.repeatable && [
+      {groupedFieldId && [
         totalFields > 1 && 
         <DeleteButton key="delete" sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} deleteFieldIndex={currentField} />,
         currentField + 1 === totalFields && 

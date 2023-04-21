@@ -30,7 +30,7 @@ const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
               helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && 'Incorrectly entered'}
             />
         }
-        onChange={(e: any, newValue: any) => dispatch(setField({
+        onChange={(e, newValue) => dispatch(setField({
           sectionIndex: sectionIndex,
           id: field.id,
           value: newValue

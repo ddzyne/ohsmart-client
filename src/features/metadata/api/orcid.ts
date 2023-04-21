@@ -1,5 +1,4 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import {RootState} from '../../../app/store';
 
 export const orcidAPI = createApi({
   reducerPath: 'orcid',

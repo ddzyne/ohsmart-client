@@ -1,5 +1,3 @@
-import dummyList from '../../data/dummyList.json';
-
 const prefix = "rights";
 
 export const section = {
@@ -22,7 +20,7 @@ export const section = {
       required: true,
       value: '',
       description: 'Discription',
-      options: 'orcid',
+      options: [],
     },
   ],
 };

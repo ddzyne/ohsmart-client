@@ -6,7 +6,7 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import type { SectionType } from '../../types/Metadata';
-import { SingleField, FieldGroup } from './MetadataFields';
+import { SingleField, GroupedField } from './MetadataFields';
 import { StatusIcon } from '../generic/Icons';
 
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
@@ -19,7 +19,7 @@ const Form = () => {
 
   // initialize section statusses on initial render
   useEffect(() => {
-    dispatch(setSectionStatus(''));
+    dispatch(setSectionStatus(null));
   }, []);
 
   // handles accordion open/close actions, sends to redux store
@@ -49,7 +49,7 @@ const Form = () => {
             <Grid container spacing={2}>
               {section.fields.map((field, i) => 
                 field.type === 'group' ?
-                <FieldGroup key={i} field={field} sectionIndex={sectionIndex} /> :
+                <GroupedField key={i} field={field} sectionIndex={sectionIndex} /> :
                 <SingleField key={i} field={field} sectionIndex={sectionIndex} />
               )}
             </Grid>
