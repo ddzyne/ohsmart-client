@@ -1,6 +1,7 @@
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
+import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../../../app/hooks';
 import { StatusIcon } from '../../generic/Icons';
 import { AddButton, DeleteButton } from '../MetadataButtons';
@@ -11,13 +12,14 @@ import type { SingleTextFieldProps } from '../../../types/Metadata';
 const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: SingleTextFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
+  const { t } = useTranslation('metadata');
 
   return (
     <Stack direction="row" alignItems="center">
       <TextField 
         fullWidth
         error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '')}
-        helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && 'Incorrectly entered'}
+        helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
         variant="outlined" 
         type={field.type}
         label={field.label}

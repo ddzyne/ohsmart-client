@@ -4,6 +4,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useDebounce } from 'use-debounce';
+import { useTranslation } from 'react-i18next';
 import { useFetchOrcidQuery } from '../api/orcid';
 import { useFetchRorByNameQuery } from '../api/ror';
 import { useAppDispatch } from '../../../app/hooks';
@@ -66,6 +67,7 @@ const RorField = ({field, sectionIndex}: AutocompleteFieldProps) => {
 const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, debouncedInputValue, data, isLoading, isFetching}: AutocompleteAPIFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
+  const { t } = useTranslation('metadata');
 
   return (
     <Stack direction="row" alignItems="center">
@@ -84,7 +86,7 @@ const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, d
               {...params}
               label={`${field.label}${field.required ? ' *' : ''}`}
               error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '')}
-              helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && 'Incorrectly entered'}
+              helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
             />
         }
         onChange={(e, newValue) => {
@@ -104,10 +106,10 @@ const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, d
         }}
         noOptionsText={
           !inputValue ?
-          'Start typing to search' :
+          t('startTyping') :
           isFetching || isLoading || debouncedInputValue !== inputValue ?
-          <Stack direction="row" justifyContent="space-between" alignItems="end">Loading... <CircularProgress size={18} /></Stack> :
-          'No results'
+          <Stack direction="row" justifyContent="space-between" alignItems="end">{t('loading')} <CircularProgress size={18} /></Stack> :
+          t('noResults')
         }
         renderOption={(props, option) => 
           <li {...props} key={option.value}>

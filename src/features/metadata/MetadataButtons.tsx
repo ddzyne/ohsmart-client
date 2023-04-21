@@ -3,17 +3,19 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../../app/hooks';
 import { addField, deleteField } from './metadataSlice';
 import type { AddFieldButtonProps, DeleteFieldButtonProps } from '../../types/Metadata';
 
 export const DeleteButton = ({sectionIndex, groupedFieldId, deleteFieldIndex, size = 'small'}: DeleteFieldButtonProps) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation('metadata');
   return (
-    <Tooltip title="Remove">
+    <Tooltip title={t('delete') as string}>
       <IconButton 
         color="error" 
-        aria-label="Remove" 
+        aria-label={t('delete') as string} 
         size={size} 
         onClick={() => dispatch(
           deleteField({
@@ -30,11 +32,12 @@ export const DeleteButton = ({sectionIndex, groupedFieldId, deleteFieldIndex, si
 
 export const AddButton = ({sectionIndex, groupedFieldId, type, size = 'small'}: AddFieldButtonProps) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation('metadata');
   return (
-    <Tooltip title="Add another">
+    <Tooltip title={t('add') as string}>
       <IconButton 
         color="primary" 
-        aria-label="Add another" 
+        aria-label={t('add') as string} 
         size={size} 
         onClick={() => dispatch(
           addField({
@@ -51,6 +54,7 @@ export const AddButton = ({sectionIndex, groupedFieldId, type, size = 'small'}: 
 
 export const AddButtonText = ({sectionIndex, groupedFieldId, type, size = 'medium'}: AddFieldButtonProps) => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation('metadata');
   return (
     <Button 
       onClick={() => dispatch(addField({
@@ -61,7 +65,7 @@ export const AddButtonText = ({sectionIndex, groupedFieldId, type, size = 'mediu
       size={size} 
       startIcon={<AddCircleOutlineIcon />}
     >
-      Add another
+      {t('add')}
     </Button>
   )
 }

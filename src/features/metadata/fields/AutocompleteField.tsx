@@ -1,6 +1,7 @@
 import Stack from '@mui/material/Stack';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import { useTranslation } from 'react-i18next';
 import { useAppDispatch } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
@@ -10,6 +11,7 @@ import type { AutocompleteFieldProps } from '../../../types/Metadata';
 const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
+  const { t } = useTranslation('metadata');
 
   const options = Array.isArray(field.options) ? field.options : [];
 
@@ -27,7 +29,7 @@ const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
               {...params}
               label={`${field.label}${field.required ? ' *' : ''}`}
               error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '')}
-              helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && 'Incorrectly entered'}
+              helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
             />
         }
         onChange={(e, newValue) => dispatch(setField({

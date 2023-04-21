@@ -29,18 +29,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getFiles, addFiles, removeFile, setFileMeta } from './filesSlice';
-import type { FileColumns, SelectedFile, FileLocation } from '../../types/Files';
+import type { FileColumn, SelectedFile, FileLocation } from '../../types/Files';
 import Autocomplete from '@mui/material/Autocomplete';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import CloseIcon from '@mui/icons-material/Close';
 import Collapse from '@mui/material/Collapse';
+import { useTranslation } from 'react-i18next';
 
-const columns: FileColumns[] = [
-  { field: 'fileName', headerName: 'Name' },
-  { field: 'readableSize', headerName: 'Size' },
-  { field: 'readableType', headerName: 'Type' },
-];
+const columns: FileColumn[] = [ 'fileName', 'readableSize', 'readableType' ];
 
 const URLExpression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
 const URLRegex = new RegExp(URLExpression);
@@ -50,6 +47,7 @@ const Files = () => {
   const selectedFiles = useAppSelector<SelectedFile[]>(getFiles);
   const [onlineFile, setOnlineFile] = useState<string>('');
   const [onlineFileError, setOnlineFileError] = useState<boolean>(false);
+  const { t } = useTranslation('files');
 
   // TODO some file validation
   const onDrop = async (acceptedFiles: File[]) => {
@@ -101,7 +99,7 @@ const Files = () => {
     <Grid container spacing={2}>
       <Grid xs={6}>
         <Card>
-          <CardHeader title="Add local file(s)" />
+          <CardHeader title={t('addLocal') as string} />
           <CardContent>
             <Box 
               sx={{
@@ -112,7 +110,7 @@ const Files = () => {
               {...getRootProps({className: 'dropzone'})}
             >
               <input {...getInputProps()} />
-              <Typography color="grey" sx={{textAlign: 'center', cursor: 'pointer'}}>Click me or drag a file to upload!</Typography>
+              <Typography color="grey" sx={{textAlign: 'center', cursor: 'pointer'}}>{t('drop')}</Typography>
             </Box>
             {fileRejections.length > 0 && <RejectedFiles fileRejections={fileRejections} />}
           </CardContent>
@@ -120,7 +118,7 @@ const Files = () => {
       </Grid>
       <Grid xs={6} >
         <Card sx={{height: '100%'}}>
-          <CardHeader title="Add file from URL" />
+          <CardHeader title={t('addURL') as string} />
           <CardContent>
             <Stack
               direction="row"
@@ -131,14 +129,14 @@ const Files = () => {
               <TextField 
                 fullWidth 
                 size="small" 
-                label="Enter file URL" 
+                label={t('enterURL') as string}
                 variant="outlined" 
                 onChange={e => checkOnlineFile(e.target.value)}
                 error={onlineFileError}
                 value={onlineFile}
-                helperText={onlineFileError && 'Invalid URL'}
+                helperText={onlineFileError && t('errorURL')}
               />
-              <Button disabled={onlineFileError || onlineFile === ''} onClick={() => addOnlineFile()} variant="text">Add</Button>
+              <Button disabled={onlineFileError || onlineFile === ''} onClick={() => addOnlineFile()} variant="text">{t('add')}</Button>
             </Stack>
           </CardContent>
         </Card>
@@ -150,10 +148,10 @@ const Files = () => {
               <TableHead>
                 <TableRow>
                   <TableCell sx={{p: 1, width: 10}}/>
-                  {columns.map( (col) => <TableCell sx={{p: 1}} key={col.field}>{col.headerName}</TableCell>)}
-                  <TableCell sx={{p: 1, width: 10}}>Private</TableCell>
-                  <TableCell sx={{p: 1, width: 230}}>Role</TableCell>
-                  <TableCell sx={{p: 1, width: 280}}>Processing</TableCell>
+                  {columns.map( (col) => <TableCell sx={{p: 1}} key={col}>{t(col)}</TableCell>)}
+                  <TableCell sx={{p: 1, width: 10}}>{t('private')}</TableCell>
+                  <TableCell sx={{p: 1, width: 230}}>{t('role')}</TableCell>
+                  <TableCell sx={{p: 1, width: 280}}>{t('processing')}</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -168,10 +166,10 @@ const Files = () => {
 
                     {columns.map( (col, i) => 
                       <TableCell 
-                        key={`${file.fileName}_${col.field}`} 
+                        key={`${file.fileName}_${col}`} 
                         sx={{ p: 1, textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: i === 0 ? 200 : 'auto', overflow: 'hidden'}}
                       >
-                        {file[col.field]}
+                        {file[col]}
                         {i === 0 && 
                           <Chip 
                             size="small" 
@@ -209,6 +207,7 @@ const Files = () => {
 
 const RejectedFiles = ({fileRejections}: any) => {
   const [open, setOpen] = useState(true);
+  const { t } = useTranslation('files');
   return (
     <Collapse in={open}>
       <Alert 
@@ -226,7 +225,7 @@ const RejectedFiles = ({fileRejections}: any) => {
             <CloseIcon fontSize="inherit" />
           </IconButton>
         }>
-        <AlertTitle>Sorry, the following files cannot be uploaded</AlertTitle>
+        <AlertTitle>{t('fileTypeError')}</AlertTitle>
         <List dense={true}>
           {fileRejections.map( (file: any, i: number) => 
             <ListItem disableGutters>

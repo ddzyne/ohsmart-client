@@ -1,0 +1,17 @@
+{
+  "fileName": "Name",
+  "readableSize": "Size",
+  "readableType": "Type",
+  "local": "Local",
+  "online": "Online",
+  "addLocal": "Add local file(s)",
+  "drop": "Click me or drag a file to upload!",
+  "addURL": "Add file from URL",
+  "enterURL": "Enter file URL",
+  "errorURL": "Invalid URL",
+  "add": "Add",
+  "private": "Private",
+  "role": "Role",
+  "processing": "Processing",
+  "fileTypeError": "Sorry, the following files cannot be uploaded"
+}

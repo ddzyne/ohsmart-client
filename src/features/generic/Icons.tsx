@@ -3,6 +3,7 @@ import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
+import { useTranslation } from 'react-i18next';
 import type { StatusIconProps } from '../../types/Generic';
 import { styled } from '@mui/material/styles';
 
@@ -17,13 +18,7 @@ const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
 }));
 
 export const StatusIcon = ({status, title, margin}: StatusIconProps) => {
-  const statusTitle = 
-    status === 'error' ? 
-    'Please enter some more data' : 
-    status === 'warning' ? 
-    'Consider making your data more complete' : 
-    'Good to go';
-
+  const { t } = useTranslation('generic');
   const iconSx = {
     cursor: 'help', 
     mr: margin === 'r' || margin === 'lr' ? 1 : 0, ml: margin === 'l' || margin === 'lr' ? 1 : 0,
@@ -53,7 +48,7 @@ export const StatusIcon = ({status, title, margin}: StatusIconProps) => {
               backgroundColor: `${status}.main`,
             }}
           >
-            {statusTitle}
+            {t(status as string)}
           </Typography>
         </>
       }>

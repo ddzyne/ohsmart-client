@@ -1,7 +1,4 @@
-export interface FileColumns {
-  field: 'fileName' | 'readableSize' | 'readableType';
-  headerName: string;
-}
+export type FileColumn = 'fileName' | 'readableSize' | 'readableType';
 
 export interface FileActions {
   label: string;
