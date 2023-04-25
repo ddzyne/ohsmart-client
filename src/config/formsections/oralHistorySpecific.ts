@@ -2,7 +2,7 @@ import dummyList from '../../data/dummyList.json';
 
 const prefix = "ohs";
 
-export const section = {
+const section = {
   id: prefix,
   title: "Oral-history specific",
   fields: [

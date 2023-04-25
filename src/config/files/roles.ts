@@ -1,4 +1,4 @@
-export const fileRoles = [
+const roles = [
   {
     value: "data_file",
     label: "Data File"
@@ -65,17 +65,4 @@ export const fileRoles = [
   },
 ];
 
-export const fileProcessing = [
-  {
-    label: "Create thumbnail",
-    value: "create_thumbnail",
-  },
-  {
-    label: "Encrypt",
-    value: "encrypt",
-  },
-  {
-    label: "Create transcript",
-    value: "create_transcript",
-  },
-];
+export default roles;

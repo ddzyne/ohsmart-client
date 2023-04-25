@@ -1,6 +1,6 @@
 const prefix = "rights";
 
-export const section = {
+const section = {
   id: prefix,
   title: "Rights & licensing",
   fields: [

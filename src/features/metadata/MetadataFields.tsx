@@ -50,7 +50,8 @@ const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
 });
 
 const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
-  // check if group is repeatable. If not, lets wrap that single fieldgroup in an array, so we can use the same map function over it
+  // Check if group is repeatable. If not, lets wrap that single fieldgroup in an array, so we can use the same map function over it.
+  // We use the id of the first field of the group as key for transitions
   const fieldArray = field.repeatable ? field.fields as InputField[][] : [field.fields as InputField[]];
 
   return (

@@ -2,7 +2,7 @@ import languageList from '../../data/languageList.json';
 
 const prefix = 'administrative';
 
-export const section = {
+const section = {
   id: prefix,
   title: 'Administrative',
   fields: [

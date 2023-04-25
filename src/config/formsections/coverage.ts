@@ -2,7 +2,7 @@ import dummyList from '../../data/dummyList.json';
 
 const prefix = "coverage";
 
-export const section = {
+const section = {
   id: prefix,
   title: "Coverage",
   fields: [

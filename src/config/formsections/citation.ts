@@ -2,7 +2,7 @@ import dummyList from '../../data/dummyList.json';
 
 const prefix = 'citation';
 
-export const section = {
+const section = {
   id: prefix,
   title: 'Citation',
   fields: [
