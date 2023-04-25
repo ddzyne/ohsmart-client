@@ -43,8 +43,8 @@ const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
         <OrcidField field={field} sectionIndex={sectionIndex} /> :
         field.options === 'ror' ?
         <RorField field={field} sectionIndex={sectionIndex} /> :
-        null )
-      }
+        null
+      ) }
     </Grid>
   )
 });
