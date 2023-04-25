@@ -9,6 +9,29 @@ export interface SectionType {
   status?: SectionStatus;
 }
 
+export interface InitialSectionType {
+  id: string;
+  title: string;
+  fields: InitialField[];
+}
+
+export interface InitialField {
+  type: FieldType;
+  name: string;
+  label: string;
+  validation?: 'email' | 'number';
+  maxValue?: number;
+  minValue?: number; 
+  value?: string;
+  repeatable?: boolean;
+  disabled?: boolean;
+  multiline?: boolean;
+  description?: string;
+  required?: boolean;
+  private?: boolean;
+  fields?: InitialField[];
+}
+
 // note we use autocomplete for every selectbox
 export type FieldType = 'text' | 'datetime-local' | 'date' | 'checkbox' | 'radiobutton' | 'autocomplete' | 'group';
 
@@ -19,12 +42,6 @@ export type OptionsType = {
 
 export type Field = TextFieldType | AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType;
 export type InputField = TextFieldType | AutocompleteFieldType;
-
-export interface RepeatTextFieldType {
-  type: 'repeatSingleField';
-  id: string;
-  fields: TextFieldType[];
-}
 
 export interface TextFieldType {
   type: 'text' | 'datetime-local' | 'date' | 'number';
@@ -62,6 +79,7 @@ export interface AutocompleteFieldType {
   disabled?: boolean;
   validation?: never;
   fields?: never;
+  repeatable?: never;
 }
 
 export interface GroupedFieldType {
@@ -71,11 +89,24 @@ export interface GroupedFieldType {
   label: string;
   repeatable?: boolean;
   description?: string;
+  value?: never;
   fields: InputField[] | InputField[][];
+  validation?: never;
+  valid?: never;
 }
 
 export interface RepeatGroupedFieldType extends Omit<GroupedFieldType, 'fields'> {
   fields: InputField[][];
+}
+
+export interface RepeatTextFieldType {
+  type: 'repeatSingleField';
+  id: string;
+  fields: TextFieldType[];
+  value?: never;
+  validation?: never;
+  valid?: never;
+  repeatable?: never;
 }
 
 export interface SingleFieldProps {

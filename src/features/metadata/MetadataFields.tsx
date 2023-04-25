@@ -4,6 +4,9 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
+import Fade from '@mui/material/Fade';
+import Collapse from '@mui/material/Collapse';
+import Grow from '@mui/material/Grow';
 import { memo } from 'react';
 import type { SingleFieldProps, GroupedFieldProps, TextFieldType, InputField } from '../../types/Metadata';
 import grey from '@mui/material/colors/grey';
@@ -11,6 +14,7 @@ import { DeleteButton, AddButtonText } from './MetadataButtons';
 import { OrcidField, RorField } from './fields/AutocompleteAPIField';
 import AutocompleteField from './fields/AutocompleteField';
 import TextField from './fields/TextField';
+import { TransitionGroup } from 'react-transition-group';
 
 // Memoized Field function, so only the affected field rerenders when form/metadata props change
 const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
@@ -23,9 +27,13 @@ const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
         <TextField field={field} sectionIndex={sectionIndex} />
       }
       { field.type === 'repeatSingleField' &&
-        field.fields.map( (f: TextFieldType, i: number) => 
-          <TextField key={f.id} field={f} sectionIndex={sectionIndex} groupedFieldId={field.id} currentField={i} totalFields={field.fields.length} />
-        )
+        <TransitionGroup>
+          {field.fields.map( (f: TextFieldType, i: number) => 
+            <Collapse key={f.id}>
+              <TextField field={f} sectionIndex={sectionIndex} groupedFieldId={field.id} currentField={i} totalFields={field.fields.length} />
+            </Collapse>
+          )}
+        </TransitionGroup>
       }
       { field.type === 'autocomplete' && Array.isArray(field.options) &&
         <AutocompleteField field={field} sectionIndex={sectionIndex} />
@@ -57,32 +65,36 @@ const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
         />
         {fieldArray &&
           <CardContent>
-            {fieldArray.map((groupedField, i) =>
-              <Stack 
-                direction="row" 
-                alignItems="center" 
-                key={i} 
-                sx={{
-                  borderTop: i > 0 ? '1px solid' : 'none',
-                  borderColor: grey[300],
-                  pt: i > 0 ? 1 : 0,
-                  mt: i > 0 ? 1 : 0
-                }}
-              >
-                <Grid container sx={{flex: 1}}>
-                  {groupedField.map( f => 
-                    <SingleField 
-                      key={f.id} 
-                      field={f} 
-                      sectionIndex={sectionIndex} 
-                    />
-                  )}
-                </Grid>
-                {field.repeatable && fieldArray.length > 1 &&
-                  <DeleteButton sectionIndex={sectionIndex} groupedFieldId={field.id} deleteFieldIndex={i} size="medium" />
-                }
-              </Stack>
-            )}
+            <TransitionGroup>
+              {fieldArray.map((groupedField, i) =>
+                <Collapse key={groupedField[0].id}>
+                  <Stack 
+                    direction="row" 
+                    alignItems="center" 
+                    key={i} 
+                    sx={{
+                      borderTop: i > 0 ? '1px solid' : 'none',
+                      borderColor: grey[300],
+                      pt: i > 0 ? 1 : 0,
+                      mt: i > 0 ? 1 : 0
+                    }}
+                  >
+                    <Grid container sx={{flex: 1}}>
+                      {groupedField.map( f => 
+                        <SingleField 
+                          key={f.id} 
+                          field={f} 
+                          sectionIndex={sectionIndex} 
+                        />
+                      )}
+                    </Grid>
+                    {field.repeatable && fieldArray.length > 1 &&
+                      <DeleteButton sectionIndex={sectionIndex} groupedFieldId={field.id} deleteFieldIndex={i} size="medium" />
+                    }
+                  </Stack>
+                </Collapse>
+              )}
+            </TransitionGroup>
           </CardContent>
         }
         {field.repeatable &&

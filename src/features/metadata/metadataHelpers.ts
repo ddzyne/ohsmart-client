@@ -2,6 +2,8 @@ import { v4 as uuidv4 } from 'uuid';
 import type { 
   SectionStatus,
   InputField,
+  Field,
+  InitialSectionType,
 } from '../../types/Metadata';
 
 // Helper functions for the Metadata form
@@ -17,10 +19,10 @@ export const validateData = (type: string, value: string) => {
   }
 }
 
-// Recursive function that finds and returns a single field
+// Recursive function that finds and returns a single field or nothing if not found
 // id: field's ID
 // fields: an array of fields
-export const findById = (id: string, fields: any): InputField | undefined => {
+export const findById = (id: string, fields: Field[]): Field | undefined => {
   for (let item of fields) {
     if (item.id === id) {
       return item;
@@ -37,13 +39,13 @@ export const findById = (id: string, fields: any): InputField | undefined => {
 
 // Simple logic to check the status (color of indicator) for a specific field,
 // needed in multiple functions
-export const getStatus = (field?: InputField, statusArray?: SectionStatus[]) => {
+export const getStatus = (toCheck: InputField | SectionStatus[]) => {
   const check1 = 
-    statusArray ? statusArray.indexOf('error') !== -1 :
-    field && field.required && (!field.value || field.value.length === 0);
+    Array.isArray(toCheck) ? toCheck.indexOf('error') !== -1 :
+    toCheck.required && (!toCheck.value || toCheck.value.length === 0);
   const check2 = 
-    statusArray ? statusArray.indexOf('warning') !== -1 :
-    field && !field.required && (!field.value || field.value.length === 0)
+    Array.isArray(toCheck) ? toCheck.indexOf('warning') !== -1 :
+    !toCheck.required && (!toCheck.value || toCheck.value.length === 0)
   return (
     check1 ?
     'error' : 
@@ -85,17 +87,16 @@ Structure we want:
   ]},
 ]
 */
-export const formatInitialState = (form: any) => {
-  const newForm = form.map( (section: any) => ({
+export const formatInitialState = (form: InitialSectionType[]) => {
+  const newForm = form.map( section => ({
     ...section, 
-    fields: section.fields.map( (field: any) => {
-      if( field.repeatable && field.type === 'group' ) {
-        const newFieldGroup = field.fields.map( (f: any) => ({...f, id: uuidv4()}));
+    fields: section.fields.map( field => {
+      if( field.repeatable && field.type === 'group' && field.fields ) {
+        const newFieldGroup = field.fields.map( f => ({...f, id: uuidv4()}));
         return ({...field, id: uuidv4(), fields: [newFieldGroup] });
       }
       if ( field.repeatable && field.type !== 'group' ) {
         return ({id: uuidv4(), type: 'repeatSingleField', fields: [{...field, id: uuidv4()}]});
-        // return [{...field, id: uuidv4()}];
       }
       else {
         return {...field, id: uuidv4()};

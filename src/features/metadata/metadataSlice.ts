@@ -10,14 +10,15 @@ import type {
   RepeatTextFieldType,
   RepeatGroupedFieldType,
   InputField,
-  TextFieldType
+  TextFieldType,
+  InitialSectionType
 } from '../../types/Metadata';
 import { getValid, getStatus, formatInitialState, findById } from './metadataHelpers';
 import { v4 as uuidv4 } from 'uuid';
 
 // load the imported form and close all accordion panels by default
 const initialState: InitialStateType = {
-  form: formatInitialState(formSections) as SectionType[],
+  form: formatInitialState(formSections as InitialSectionType[]) as SectionType[],
   panel: '',
 }
 
@@ -81,8 +82,7 @@ export const metadataSlice = createSlice({
       }
 
       function set(sectionIndex: number) {
-        const status = getStatus(undefined,
-          state.form[sectionIndex].fields.flatMap(field => {
+        const status = getStatus(state.form[sectionIndex].fields.flatMap(field => {
             if (field.type !== 'group' && field.fields) {
               // this is a single repeatable field
               return field.fields.flatMap( f => getStatus(f));
@@ -113,7 +113,7 @@ export const getMetadata = (state: RootState) => state.metadata.form;
 export const getOpenPanel = (state: RootState) => state.metadata.panel;
 export const getMetadataStatus = (state: RootState) => {
   const statusArray = state.metadata.form.map(section => section.status);
-  return getStatus(undefined, statusArray);
+  return getStatus(statusArray);
 }
 
 export default metadataSlice.reducer;
