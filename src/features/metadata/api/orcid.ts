@@ -6,7 +6,7 @@ export const orcidAPI = createApi({
   endpoints: (build) => ({
     fetchOrcid: build.query<any, string>({
       query: (content) => ({
-        url: `https://pub.orcid.org/v3.0/expanded-search/?q=${content}`,
+        url: `?q=${content}`,
         headers: {Accept: "application/vnd.orcid+json"},
       }),
       transformResponse: (response: any, meta, arg) => {

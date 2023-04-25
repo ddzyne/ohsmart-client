@@ -8,6 +8,7 @@ import humanities from './humanities';
 
 // Make sure to import all sections of the form here, and add them to the sections export
 // Section data are formatted as js/ts, so we can easily import things like option lists, or set a variable that gets reused
+// For now, see types/Metadata.ts to check the types of input fields you can use
 
 const sections = [
   administrative,
