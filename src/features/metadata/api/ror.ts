@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-export const rorAPI = createApi({
+export const rorApi = createApi({
   reducerPath: 'ror',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://api.ror.org' }),
   endpoints: (build) => ({
@@ -24,4 +24,4 @@ export const rorAPI = createApi({
 
 export const {
   useFetchRorByNameQuery,
-} = rorAPI;
+} = rorApi;

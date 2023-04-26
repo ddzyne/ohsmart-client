@@ -20,6 +20,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getFiles, addFiles } from './filesSlice';
 import type { FileLocation } from '../../types/Files';
+import { v4 as uuidv4 } from 'uuid';
 
 const FilesUpload = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +29,7 @@ const FilesUpload = () => {
 
   // Prevent duplicate selections
   const fileValidator = (file: File) => {
-    if (currentFiles.find(f => f.fileName === file.name)) {
+    if (currentFiles.find(f => f.name === file.name && f.size === file.size)) {
       return {
         code: "file-exists",
         message: `File ${file.name} has already been added`
@@ -41,11 +42,12 @@ const FilesUpload = () => {
     // Need to figure out how to best save file reference to store for uploading later on
     const serializedFiles = acceptedFiles.map( (file, i) => 
       ({
-        fileName: file.name,
-        readableSize: `${(file.size*9.5367431640625*Math.pow(10, -7)).toFixed(2)} MB`, 
-        readableType: file.type ? file.type.replace(/^.*\/(.*)$/, "$1") : file.name.substring(file.name.lastIndexOf('.') + 1),
+        id: uuidv4(),
+        name: file.name,
+        size: `${(file.size*9.5367431640625*Math.pow(10, -7)).toFixed(2)} MB`, 
+        type: file.type ? file.type.replace(/^.*\/(.*)$/, "$1") : file.name.substring(file.name.lastIndexOf('.') + 1),
         location: 'local' as FileLocation,
-        // url: URL.createObjectURL(file),
+        url: URL.createObjectURL(file),
       }));
 
     // file validation
@@ -56,6 +58,7 @@ const FilesUpload = () => {
     // };
     // acceptedFiles.map( (file) => reader.readAsText(file))
 
+    console.log(acceptedFiles)
     console.log(serializedFiles)
     
     dispatch(addFiles(serializedFiles));

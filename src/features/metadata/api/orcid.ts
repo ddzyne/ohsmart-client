@@ -1,6 +1,6 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
-export const orcidAPI = createApi({
+export const orcidApi = createApi({
   reducerPath: 'orcid',
   baseQuery: fetchBaseQuery({ baseUrl: 'https://pub.orcid.org/v3.0/expanded-search/' }),
   endpoints: (build) => ({
@@ -28,4 +28,4 @@ export const orcidAPI = createApi({
 
 export const {
   useFetchOrcidQuery,
-} = orcidAPI;
+} = orcidApi;

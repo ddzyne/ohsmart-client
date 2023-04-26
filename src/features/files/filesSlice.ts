@@ -14,11 +14,11 @@ export const filesSlice = createSlice({
       state.push(...action.payload);
     },
     removeFile: (state, action: PayloadAction<SelectedFile>) => {
-      return state.filter((file: any) => file.fileName !== action.payload.fileName)
+      return state.filter((file: any) => file.id !== action.payload.id)
     },
     setFileMeta: (state, action: PayloadAction<ReduxFileActions>) => {
       // set extra metadata for this file: restricted status, role and processing
-      const file = state.find( (file: SelectedFile) => file.fileName === action.payload.fileName);
+      const file = state.find( (file: SelectedFile) => file.id === action.payload.id);
       console.log(action.payload)
       if (file) {
         file[action.payload.type] = action.payload.value

@@ -1,20 +1,23 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import metadataReducer from '../features/metadata/metadataSlice';
 import filesReducer from '../features/files/filesSlice';
-import { orcidAPI } from '../features/metadata/api/orcid';
-import { rorAPI } from '../features/metadata/api/ror';
+import { orcidApi } from '../features/metadata/api/orcid';
+import { rorApi } from '../features/metadata/api/ror';
+import { submitApi } from '../features/submit/submitApi';
 
 export const store = configureStore({
   reducer: {
     metadata: metadataReducer,
     files: filesReducer,
-    [orcidAPI.reducerPath]: orcidAPI.reducer,
-    [rorAPI.reducerPath]: rorAPI.reducer,
+    [orcidApi.reducerPath]: orcidApi.reducer,
+    [rorApi.reducerPath]: rorApi.reducer,
+    [submitApi.reducerPath]: submitApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
-      .concat(orcidAPI.middleware)
-      .concat(rorAPI.middleware)
+      .concat(orcidApi.middleware)
+      .concat(rorApi.middleware)
+      .concat(submitApi.middleware)
 });
 
 export type AppDispatch = typeof store.dispatch;

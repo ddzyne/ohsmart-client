@@ -18,7 +18,7 @@ import fileRoles from '../../config/files/roles';
 import fileProcessing from '../../config/files/processing';
 import type { FileColumn, SelectedFile } from '../../types/Files';
 
-const columns: FileColumn[] = [ 'fileName', 'readableSize', 'readableType' ];
+const columns: FileColumn[] = [ 'name', 'size', 'type' ];
 
 const FilesTable = () => {
   const dispatch = useAppDispatch();
@@ -40,7 +40,7 @@ const FilesTable = () => {
         </TableHead>
         <TableBody>
           {selectedFiles.map( (file) =>
-            <TableRow key={file.fileName}>
+            <TableRow key={file.name}>
 
               <TableCell sx={{p: 0, pl: 1}}>
                 <IconButton color="primary" size="small" onClick={() => dispatch(removeFile(file))}>
@@ -50,7 +50,7 @@ const FilesTable = () => {
 
               {columns.map( (col, i) => 
                 <TableCell 
-                  key={`${file.fileName}_${col}`} 
+                  key={`${file.name}_${col}`} 
                   sx={{ p: 1, textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: i === 0 ? 200 : 'auto', overflow: 'hidden'}}
                 >
                   {file[col]}
@@ -72,7 +72,7 @@ const FilesTable = () => {
               <TableCell sx={{p: 0}}>
                 <Checkbox 
                   checked={file.restricted}
-                  onChange={(e) => dispatch(setFileMeta({fileName: file.fileName, type: 'restricted', value: e.target.checked}))}
+                  onChange={(e) => dispatch(setFileMeta({id: file.id, type: 'restricted', value: e.target.checked}))}
                 />
               </TableCell>
               <TableCell sx={{p: 1}}><FileActionOptions type="role" file={file} /></TableCell>
@@ -99,12 +99,12 @@ const FileActionOptions = ({file, type}: OptionProps) => {
 
   return (
     <Autocomplete
-      id={`${file.fileName}_${type}`}
+      id={`${file.name}_${type}`}
       size="small"
       multiple={type === 'process'}
       onChange={
         (e: any, newValue: any) => 
-          dispatch(setFileMeta({fileName: file.fileName, type: type, value: newValue}))
+          dispatch(setFileMeta({id: file.id, type: type, value: newValue}))
       }
       renderInput={(params) => <TextField {...params} label="Select options" />}
       options={type === 'process' ? fileProcessing : fileRoles}

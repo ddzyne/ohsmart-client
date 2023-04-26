@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import { addFiles } from './filesSlice';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import type { FileLocation } from '../../types/Files';
+import { v4 as uuidv4 } from 'uuid';
 
 const URLExpression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
 const URLRegex = new RegExp(URLExpression);
@@ -31,9 +32,10 @@ const FilesOnline = () => {
 
   const addOnlineFile = () => {
     const fileToSubmit = {
-      fileName: onlineFile.replace(/^.*\/(.*)$/, "$1"),
-      readableSize: 'tbd',
-      readableType: 'tbd',
+      id: uuidv4(),
+      name: onlineFile.replace(/^.*\/(.*)$/, "$1"),
+      size: 'tbd',
+      type: 'tbd',
       location: 'online' as FileLocation,
       url: encodeURIComponent(onlineFile),
     }

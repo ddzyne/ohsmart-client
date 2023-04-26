@@ -1,4 +1,4 @@
-export type FileColumn = 'fileName' | 'readableSize' | 'readableType';
+export type FileColumn = 'name' | 'size' | 'type';
 
 export interface FileActions {
   label: string;
@@ -6,7 +6,7 @@ export interface FileActions {
 }
 
 export interface ReduxFileActions {
-  fileName: string;
+  id: string;
   type: 'process' | 'role' | 'restricted';
   value: FileActions | FileActions[] | boolean | null;
 }
@@ -14,10 +14,12 @@ export interface ReduxFileActions {
 export type FileLocation = 'local' | 'online';
 
 export interface SelectedFile {
-  fileName: string;
-  readableSize: string;
-  readableType: string;
+  id: string;
+  name: string;
+  size: string;
+  type: string;
   location: FileLocation;
+  url: string;
   restricted?: boolean;
   role?: FileActions;
   process?: FileActions[];
