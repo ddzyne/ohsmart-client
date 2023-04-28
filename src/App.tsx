@@ -13,6 +13,7 @@ import '@fontsource/roboto/700.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import Deposit from './pages/Deposit';
+import NotificationList from './features/notification/Notification';
 
 const App = () =>
   <ThemeProvider theme={theme}>
@@ -26,6 +27,7 @@ const App = () =>
       </Routes>
     </BrowserRouter>
     <Footer />
+    <NotificationList />
   </ThemeProvider>
 
 export default App;

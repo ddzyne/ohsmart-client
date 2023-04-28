@@ -23,11 +23,14 @@ export const filesSlice = createSlice({
       if (file) {
         file[action.payload.type] = action.payload.value
       }
+    },
+    resetFiles: (state) => {
+      return state = initialState;
     }
   }
 });
 
-export const { addFiles, removeFile, setFileMeta } = filesSlice.actions;
+export const { addFiles, removeFile, setFileMeta, resetFiles } = filesSlice.actions;
 
 // Select values from state
 export const getFiles = (state: RootState) => state.files;

@@ -1,6 +1,8 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import metadataReducer from '../features/metadata/metadataSlice';
 import filesReducer from '../features/files/filesSlice';
+import submitReducer from '../features/submit/submitSlice';
+import notificationReducer from '../features/notification/notificationSlice';
 import { orcidApi } from '../features/metadata/api/orcid';
 import { rorApi } from '../features/metadata/api/ror';
 import { submitApi } from '../features/submit/submitApi';
@@ -12,6 +14,8 @@ export const store = configureStore({
     [orcidApi.reducerPath]: orcidApi.reducer,
     [rorApi.reducerPath]: rorApi.reducer,
     [submitApi.reducerPath]: submitApi.reducer,
+    submit: submitReducer,
+    notification: notificationReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

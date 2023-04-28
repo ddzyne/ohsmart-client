@@ -39,7 +39,7 @@ const FilesUpload = () => {
   }
 
   const onDrop = async (acceptedFiles: File[]) => {
-    // Need to figure out how to best save file reference to store for uploading later on
+    // Transform the file to a file blob URL so we can save it to the Redux store
     const serializedFiles = acceptedFiles.map( (file, i) => 
       ({
         id: uuidv4(),
@@ -49,17 +49,6 @@ const FilesUpload = () => {
         location: 'local' as FileLocation,
         url: URL.createObjectURL(file),
       }));
-
-    // file validation
-    // let reader = new FileReader();
-    // reader.onload = (e: any) => {
-    //   const contents = e.target.result;
-    //   console.log(contents);
-    // };
-    // acceptedFiles.map( (file) => reader.readAsText(file))
-
-    console.log(acceptedFiles)
-    console.log(serializedFiles)
     
     dispatch(addFiles(serializedFiles));
   };

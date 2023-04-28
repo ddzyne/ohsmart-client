@@ -6,7 +6,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
 import './app/i18n';
-import './features/files/filesOverrides';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

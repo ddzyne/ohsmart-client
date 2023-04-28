@@ -102,11 +102,14 @@ export const metadataSlice = createSlice({
         );
         state.form[sectionIndex].status = status;
       }
+    },
+    resetMetadata: (state) => {
+      return state = initialState;
     }
   }
 });
 
-export const { setField, setOpenPanel, setSectionStatus, addField, deleteField } = metadataSlice.actions;
+export const { setField, setOpenPanel, setSectionStatus, addField, deleteField, resetMetadata } = metadataSlice.actions;
 
 // Select values from state
 export const getMetadata = (state: RootState) => state.metadata.form;

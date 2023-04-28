@@ -1,3 +1,5 @@
+// TODO need spec on submission data!!
+
 const extractNameValue = (metadata: any): any => {
   let result: any[] = [];
   for (let i = 0; i < metadata.length; i++) {

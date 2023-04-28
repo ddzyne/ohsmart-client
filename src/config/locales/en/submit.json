@@ -1,0 +1,13 @@
+{
+  "metadataError": "We need some more information before you can submit",
+  "metadataWarning": "You can submit, but your metadata could be more complete",
+  "metadataSuccess": "All set, ready to submit!",
+  "isLoading": "Contacting the server...",
+  "hasProgress": "Uploading your data...",
+  "isWaiting": "Data sent. Waiting for response from server...",
+  "isSuccess": "Your data has successfully been submitted",
+  "isError": "Oh no! Something has gone wrong",
+  "reset": "Reset form",
+  "submit": "Submit data",
+  "errorRetry": "Please try again or contact an administrator"
+}

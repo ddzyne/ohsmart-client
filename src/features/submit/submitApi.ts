@@ -1,11 +1,13 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn } from '@reduxjs/toolkit/query'
 import axios from 'axios'
-import type { AxiosRequestConfig, AxiosError } from 'axios'
+import type { AxiosRequestConfig, AxiosError, AxiosProgressEvent } from 'axios'
+import { setProgress } from './submitSlice';
+import { store } from '../../app/store';
 
-// TODO Switch to axios to track upload/submission progress
+// TODO
 // Error handling
-// Status
+// Status updates
 
 const axiosBaseQuery =
   (
@@ -27,8 +29,10 @@ const axiosBaseQuery =
         method, 
         data, 
         params,
-        onUploadProgress: (progressEvent: any) => {
-          console.log(progressEvent)
+        onUploadProgress: (progressEvent: AxiosProgressEvent) => {
+          // Calculate progress percentage and set state in submitSlice
+          const percentCompleted = progressEvent.total ? Math.round( (progressEvent.loaded * 100) / progressEvent.total ) : 0;
+          store.dispatch(setProgress(percentCompleted));
         }
       })
       return { data: result.data }
@@ -44,7 +48,7 @@ const axiosBaseQuery =
   }
 
 export const submitApi = createApi({
-  reducerPath: 'submit',
+  reducerPath: 'submitApi',
   baseQuery: axiosBaseQuery({ baseUrl: 'https://httpbin.org/' }),
   endpoints: (build) => ({
     submitData: build.mutation({
