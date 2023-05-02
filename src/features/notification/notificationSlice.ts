@@ -10,14 +10,14 @@ const initialState: NotificationState = {
   open: false,
 };
 
-const notificationSlice = createSlice({
+export const notificationSlice = createSlice({
   name: 'notification',
   initialState,
   reducers: {
-    setNotification: (state, {payload}: PayloadAction<Omit<Notification, 'id'>>) => {
+    setNotification: (state, action: PayloadAction<Omit<Notification, 'id'>>) => {
       const notification: Notification = {
         id: uuidv4(),
-        ...payload,
+        ...action.payload,
       }
       return state = {data: notification, open: true};
     },

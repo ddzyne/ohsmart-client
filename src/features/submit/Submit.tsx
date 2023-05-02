@@ -18,7 +18,7 @@ import { useTranslation } from 'react-i18next';
 import type { SubmitErrorProps } from '../../types/Submit';
 import { setNotification } from '../notification/notificationSlice';
 
-// TODO proper error handling
+// TODO better error handling
 // Spec for submission data
 
 const Submit = () => {
@@ -30,11 +30,7 @@ const Submit = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation('submit');
 
-  const [submitData, { isUninitialized, isLoading, isSuccess, isError, error, data, reset }]: any = useSubmitDataMutation();
-
-  useEffect(() => {
-    error && dispatch(setNotification({message: error!.data, type: 'error'}));
-  }, [error])
+  const [submitData, { isUninitialized, isLoading, isSuccess, isError, data, reset }] = useSubmitDataMutation();
 
   useEffect(() => {
     // reset progress bar on error and success

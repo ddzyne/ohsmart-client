@@ -6,6 +6,7 @@ import notificationReducer from '../features/notification/notificationSlice';
 import { orcidApi } from '../features/metadata/api/orcid';
 import { rorApi } from '../features/metadata/api/ror';
 import { submitApi } from '../features/submit/submitApi';
+import { rtkQueryErrorLogger } from './error';
 
 export const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ export const store = configureStore({
       .concat(orcidApi.middleware)
       .concat(rorApi.middleware)
       .concat(submitApi.middleware)
+      .concat(rtkQueryErrorLogger)
 });
 
 export type AppDispatch = typeof store.dispatch;

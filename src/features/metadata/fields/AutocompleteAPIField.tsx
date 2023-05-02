@@ -13,10 +13,6 @@ import { StatusIcon } from '../../generic/Icons';
 import { setField } from '../metadataSlice';
 import type { AutocompleteFieldProps, AutocompleteAPIFieldProps } from '../../../types/Metadata';
 
-// TODO: 
-// API error handling. Toast functionality?
-// ?
-
 /*
  *  Type ahead fields for different API endpoints
  *  Create a Component for every endpoint, as we cannot call a hook conditionally
@@ -77,7 +73,7 @@ const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, d
         fullWidth 
         includeInputInList
         id={field.id}
-        options={inputValue && debouncedInputValue === inputValue && data ? data : []}
+        options={inputValue && debouncedInputValue === inputValue && data && data.arg === debouncedInputValue ? data.response : []}
         value={field.value || (field.multiselect ? [] : null)}
         inputValue={inputValue || (!inputValue && field.value && field.value.label) || ''}
         renderInput={
