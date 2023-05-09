@@ -1,6 +1,7 @@
+import {lazy} from 'react';
 import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import formSections from '../../config/formsections';
+// import formSections from '../../config/default/form';
 import type { 
   SetFieldPayload, 
   AddFieldPayload,
@@ -15,6 +16,9 @@ import type {
 } from '../../types/Metadata';
 import { getValid, getStatus, formatInitialState, findById } from './metadataHelpers';
 import { v4 as uuidv4 } from 'uuid';
+
+// dynamic section load
+const formSections = require(`../../config/${process.env.REACT_APP_CONFIG_FOLDER}/form`).default;
 
 // load the imported form and close all accordion panels by default
 const initialState: InitialStateType = {

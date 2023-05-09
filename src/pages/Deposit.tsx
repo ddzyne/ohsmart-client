@@ -4,7 +4,6 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
-import tabs from '../config/tabs.json';
 import Metadata from '../features/metadata/Metadata';
 import Files from '../features/files/Files';
 import Preferences from '../features/preferences/Preferences';
@@ -15,6 +14,8 @@ import { getMetadataStatus } from '../features/metadata/metadataSlice';
 import { getFiles } from '../features/files/filesSlice';
 import { StatusIcon } from '../features/generic/Icons';
 import Submit from '../features/submit/Submit';
+// Maybe just move tabs here, unconfigurable...
+import tabs from '../config/global/tabs';
 
 const components: ComponentTypes = {
   metadata: Metadata,

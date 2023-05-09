@@ -5,29 +5,52 @@ import MenuBar from './layout/MenuBar';
 import Footer from './layout/Footer';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './config/theme';
+import theme from './config/global/theme';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home';
+import Generic from './pages/Generic';
 import Deposit from './pages/Deposit';
 import NotificationList from './features/notification/Notification';
+import type { Page, ComponentTypes } from './types/Pages';
+import { useTranslation } from 'react-i18next';
 
-const App = () =>
-  <ThemeProvider theme={theme}>
-    <CssBaseline />
-    <BrowserRouter>
-      <LanguageBar />
-      <MenuBar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="deposit" element={<Deposit />} />
-      </Routes>
-    </BrowserRouter>
-    <Footer />
-    <NotificationList />
-  </ThemeProvider>
+// Load pages
+const pages: Page[] = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/pages`).default;
+
+const components: ComponentTypes = {
+  generic: Generic,
+  deposit: Deposit,
+}
+
+const App = () => {
+  const { i18n } = useTranslation();
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <BrowserRouter>
+        <LanguageBar />
+        <MenuBar pages={pages} />
+        <Routes>
+          {pages.map( (page, i) => {
+            const Comp = components[page.template];
+            return (
+              <Route 
+                key={page.id} 
+                path={`/:lang?/${page.slug[i18n.language] || page.slug}`} 
+                element={<Comp page={page} />} 
+              />
+            )
+          }
+          )}
+        </Routes>
+      </BrowserRouter>
+      <Footer />
+      <NotificationList />
+    </ThemeProvider>
+  )
+}
 
 export default App;

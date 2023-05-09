@@ -14,8 +14,8 @@ import IconButton from '@mui/material/IconButton';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getFiles, removeFile, setFileMeta } from './filesSlice';
-import fileRoles from '../../config/files/roles';
-import fileProcessing from '../../config/files/processing';
+import fileRoles from '../../config/global/files/roles';
+import fileProcessing from '../../config/global/files/processing';
 import type { FileColumn, SelectedFile } from '../../types/Files';
 
 const columns: FileColumn[] = [ 'name', 'size', 'type' ];

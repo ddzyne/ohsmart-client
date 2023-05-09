@@ -13,16 +13,18 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import logo from '../images/logo-dans.svg';
-import pages from '../config/pages.json';
 import { NavLink as RouterLink } from 'react-router-dom';
 import UserIcon from '@mui/icons-material/Person';
 import { grey } from '@mui/material/colors';
+import type { MenuBarProps } from '../types/Pages';
+import { useTranslation } from 'react-i18next';
 
 const settings = ['Account', 'Logout'];
 
-const MenuBar = () => {
+const MenuBar = ({pages}: MenuBarProps) => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const { i18n } = useTranslation();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -75,11 +77,18 @@ const MenuBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page, i) => (
-                <MenuItem key={i} onClick={handleCloseNavMenu}>
-                  <Link underline="none" color="inherit" component={RouterLink} to={page.link}>{page.name}</Link>
-                </MenuItem>
-              ))}
+            {pages && pages.map((page, i) => ( page.inMenu &&
+              <MenuItem key={i} onClick={handleCloseNavMenu}>
+                <Link 
+                  underline="none" 
+                  color="inherit" 
+                  component={RouterLink} 
+                  to={(i18n.language !== 'en' ? i18n.language + '/' : '' ) + (page.slug[i18n.language] || page.slug)}
+                >
+                  {page.menuTitle[i18n.language] || page.menuTitle}
+                </Link>
+              </MenuItem>
+            ))}
             </Menu>
             <Link component={RouterLink} to="/" sx={{ ml: 2, width: 120, display: { xs: 'flex', md: 'none' } }}>
               <img src={logo} alt="" title="" />
@@ -91,15 +100,15 @@ const MenuBar = () => {
             <img src={logo} alt="" title="" />
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page, i) => (
+            {pages && pages.map((page, i) => ( page.inMenu &&
               <Button
                 key={i}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
                 component={RouterLink} 
-                to={page.link}
+                to={(i18n.language !== 'en' ? i18n.language + '/' : '' ) + (page.slug[i18n.language] || page.slug)}
               >
-                {page.name}
+                {page.menuTitle[i18n.language] || page.menuTitle}
               </Button>
             ))}
           </Box>

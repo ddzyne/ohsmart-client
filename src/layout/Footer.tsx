@@ -3,7 +3,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import footer from '../config/footer.json';
+import footer from '../config/global/footer';
 import styles from './Footer.module.css';
 
 const Footer = () =>
@@ -22,7 +22,7 @@ const Footer = () =>
             <Grid xs={4} sm={2} md={1} key={i}>
               <Stack direction="column" alignItems="start">
                 {item.header && <h4>{item.header}</h4>}
-                {item.links && item.links.map( (link, j) =>
+                {item.links && item.links.map( (link: any, j: number) =>
                   <Link href={link.link} underline="none" key={`link-${link.name}`}>
                     {link.name}
                   </Link>

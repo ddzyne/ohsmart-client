@@ -5,3 +5,7 @@ export interface StatusIconProps {
   title?: string;
   margin?: 'l' | 'r' | 'lr';
 }
+
+export interface MultiLocaleString {
+  [key: string]: string;
+}
