@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from 'react';
+import { SyntheticEvent, useState, Suspense } from 'react';
 import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -16,6 +16,7 @@ import { StatusIcon } from '../features/generic/Icons';
 import Submit from '../features/submit/Submit';
 // Maybe just move tabs here, unconfigurable...
 import tabs from '../config/global/tabs';
+import { lookupLanguageString } from '../app/helpers';
 
 const components: ComponentTypes = {
   metadata: Metadata,
@@ -42,12 +43,12 @@ const Deposit = () => {
               {tabs.map( (tab, i) =>
                 <Tab 
                   key={i} 
-                  label={tab.label} 
+                  label={lookupLanguageString(tab.label)} 
                   icon={
                     tab.data === 'metadata' ? 
-                    <StatusIcon status={metadataStatus} margin="r" /> : 
+                    <Suspense fallback=""><StatusIcon status={metadataStatus} margin="r" /></Suspense> : 
                     tab.data === 'files' ? 
-                    <StatusIcon status={selectedFiles.length > 0 ? 'success' : 'warning'} margin="r"  /> : 
+                    <Suspense fallback=""><StatusIcon status={selectedFiles.length > 0 ? 'success' : 'warning'} margin="r" /></Suspense> : 
                     undefined
                   } 
                   iconPosition="start"/>
@@ -64,7 +65,9 @@ const Deposit = () => {
           })}
         </Grid>
         <Grid xs={12} mt={4} display="flex" justifyContent="end" alignItems="center">
-          <Submit />
+          <Suspense fallback="">
+            <Submit />
+          </Suspense>
         </Grid>
       </Grid>
     </Container>

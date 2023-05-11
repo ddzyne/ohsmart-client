@@ -6,12 +6,10 @@ import Typography from '@mui/material/Typography';
 import logo from '../images/logo-ohsmart.png';
 import { Link } from 'react-router-dom';
 import type { PageProps } from '../types/Pages';
-import { useTranslation } from 'react-i18next';
+import type { Language } from '../types/Language';
+import { lookupLanguageString } from '../app/helpers';
 
-// TODO Link by ID
-
-const Home = ({page}: PageProps) => {
-  const { i18n } = useTranslation();
+const Generic = ({page}: PageProps) => {
   return (
     <Container>
       <Grid container>
@@ -27,17 +25,19 @@ const Home = ({page}: PageProps) => {
           <h1>
             {page.logo ? 
               <img src={logo} alt="OH-SMArt" title="OH-SMArt" /> :
-              page.name[i18n.language] || page.name
+              lookupLanguageString(page.name)
             }
           </h1>
         </Grid>
 
         <Grid xs={12} mdOffset={2.5} md={7}>
-          {page.content && <div dangerouslySetInnerHTML={{__html: page.content[i18n.language] || page.content}} />}
+          {page.content && 
+            <div dangerouslySetInnerHTML={{__html: lookupLanguageString(page.content) || ''}} />
+          }
           {page.action && 
             <Box mt={4} display="flex" justifyContent="center">
               <Link to={`/${page.action.link}`}>
-                <Button variant="contained" size="large">{page.action.text[i18n.language] || page.action.text}</Button>
+                <Button variant="contained" size="large">{lookupLanguageString(page.action.text)}</Button>
               </Link>
             </Box>
           }
@@ -47,4 +47,4 @@ const Home = ({page}: PageProps) => {
   )
 }
 
-export default Home;
+export default Generic;

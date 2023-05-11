@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import { SelectedFile, ReduxFileActions } from '../../types/Files';
+import { SelectedFile, FileActions, ReduxFileActions, FileActionType } from '../../types/Files';
 
-// load the imported form and close all accordion panels by default
-const initialState: any[] = []
+const initialState: SelectedFile[] = []
 
 export const filesSlice = createSlice({
   name: 'files',
@@ -14,14 +13,27 @@ export const filesSlice = createSlice({
       state.push(...action.payload);
     },
     removeFile: (state, action: PayloadAction<SelectedFile>) => {
-      return state.filter((file: any) => file.id !== action.payload.id)
+      return state.filter((file: SelectedFile) => file.id !== action.payload.id)
     },
     setFileMeta: (state, action: PayloadAction<ReduxFileActions>) => {
       // set extra metadata for this file: restricted status, role and processing
       const file = state.find( (file: SelectedFile) => file.id === action.payload.id);
-      console.log(action.payload)
+
       if (file) {
-        file[action.payload.type] = action.payload.value
+        switch (action.payload.type) {
+          // keep typescript happy...
+          case 'restricted':
+            file.restricted = action.payload.value as boolean;
+            break;
+          case 'role':
+            file.role = action.payload.value as FileActions;
+            break;
+          case 'process':
+            file.process = action.payload.value as FileActions[];
+            break;
+          default:
+            break;
+        }
       }
     },
     resetFiles: (state) => {

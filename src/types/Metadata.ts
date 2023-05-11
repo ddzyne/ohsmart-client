@@ -1,10 +1,11 @@
 import type { Dispatch, SetStateAction } from 'react';
+import type { Language, LanguageStrings } from './Language';
 
 export type SectionStatus = 'error' | 'warning' | 'success' | undefined;
 
 export interface SectionType {
   id: string;
-  title: string;
+  title: string | LanguageStrings;
   fields: Field[];
   status?: SectionStatus;
 }
@@ -18,7 +19,7 @@ export interface InitialSectionType {
 export interface InitialField {
   type: FieldType;
   name: string;
-  label: string;
+  label: string | LanguageStrings;
   validation?: 'email' | 'number';
   maxValue?: number;
   minValue?: number; 
@@ -26,7 +27,7 @@ export interface InitialField {
   repeatable?: boolean;
   disabled?: boolean;
   multiline?: boolean;
-  description?: string;
+  description?: string | LanguageStrings;
   required?: boolean;
   private?: boolean;
   fields?: InitialField[];
@@ -36,7 +37,7 @@ export interface InitialField {
 export type FieldType = 'text' | 'datetime-local' | 'date' | 'checkbox' | 'radiobutton' | 'autocomplete' | 'group';
 
 export type OptionsType = {
-  label: string;
+  label: string | LanguageStrings;
   value: string;
 };
 
@@ -47,7 +48,7 @@ export interface TextFieldType {
   type: 'text' | 'datetime-local' | 'date' | 'number';
   id: string;
   name: string;
-  label: string;
+  label: string | LanguageStrings;
   validation?: 'email' | 'number';
   maxValue?: number;
   minValue?: number; 
@@ -56,43 +57,46 @@ export interface TextFieldType {
   valid?: boolean | '';
   disabled?: boolean;
   multiline?: boolean;
-  description?: string;
+  description?: string | LanguageStrings;
   required?: boolean;
   private?: boolean;
   fields?: never;
+  multiApiValue?: never;
 }
 
-type TypeaheadAPI = 'orcid' | 'ror';
+export type TypeaheadAPI = 'orcid' | 'ror';
 
 export interface AutocompleteFieldType {
   type: 'autocomplete';
   id: string;
   name: string;
-  label: string;
+  label: string | LanguageStrings;
   multiselect?: boolean;
   value?: any;
-  description?: string;
+  description?: string | LanguageStrings;
   required?: boolean;
   private?: boolean;
-  options: OptionsType[] | TypeaheadAPI;
+  options: OptionsType[] | TypeaheadAPI[] | TypeaheadAPI;
   valid?: boolean | '';
   disabled?: boolean;
   validation?: never;
   fields?: never;
   repeatable?: never;
+  multiApiValue?: TypeaheadAPI;
 }
 
 export interface GroupedFieldType {
   type: 'group';
   id: string;
   name: string;
-  label: string;
+  label: string | LanguageStrings;
   repeatable?: boolean;
-  description?: string;
+  description?: string | LanguageStrings;
   value?: never;
   fields: InputField[] | InputField[][];
   validation?: never;
   valid?: never;
+  multiApiValue?: never;
 }
 
 export interface RepeatGroupedFieldType extends Omit<GroupedFieldType, 'fields'> {
@@ -107,6 +111,7 @@ export interface RepeatTextFieldType {
   validation?: never;
   valid?: never;
   repeatable?: never;
+  multiApiValue?: never;
 }
 
 export interface SingleFieldProps {
@@ -145,6 +150,7 @@ interface FieldButtonProps {
   sectionIndex: number;
   groupedFieldId: string;
   size?: 'small' | 'medium' | 'large';
+  mt?: number;
 }
 
 export interface DeleteFieldButtonProps extends FieldButtonProps {
@@ -158,7 +164,7 @@ export interface AddFieldButtonProps extends FieldButtonProps {
 export interface SetFieldPayload {
   sectionIndex: number;
   id: string;
-  value: string | string[] | null;
+  value: string | string[] | TypeaheadAPI | null;
 };
 
 export interface AddFieldPayload {

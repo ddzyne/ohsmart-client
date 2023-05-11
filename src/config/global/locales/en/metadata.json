@@ -4,5 +4,6 @@
   "loading": "Loading...",
   "noResults": "No results",
   "add": "Add another",
-  "delete": "Delete"
+  "delete": "Delete",
+  "multiApiSelectLabel": "Select registry"
 }

@@ -11,10 +11,11 @@ import { memo } from 'react';
 import type { SingleFieldProps, GroupedFieldProps, TextFieldType, InputField } from '../../types/Metadata';
 import grey from '@mui/material/colors/grey';
 import { DeleteButton, AddButtonText } from './MetadataButtons';
-import { OrcidField, RorField } from './fields/AutocompleteAPIField';
+import { OrcidField, RorField, MultiApiField } from './fields/AutocompleteAPIField';
 import AutocompleteField from './fields/AutocompleteField';
 import TextField from './fields/TextField';
 import { TransitionGroup } from 'react-transition-group';
+import { lookupLanguageString } from '../../app/helpers';
 
 // Memoized Field function, so only the affected field rerenders when form/metadata props change
 const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
@@ -35,7 +36,7 @@ const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
           )}
         </TransitionGroup>
       }
-      { field.type === 'autocomplete' && Array.isArray(field.options) &&
+      { field.type === 'autocomplete' && Array.isArray(field.options) && !field.multiApiValue &&
         <AutocompleteField field={field} sectionIndex={sectionIndex} />
       }
       { field.type === 'autocomplete' && (
@@ -43,6 +44,8 @@ const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
         <OrcidField field={field} sectionIndex={sectionIndex} /> :
         field.options === 'ror' ?
         <RorField field={field} sectionIndex={sectionIndex} /> :
+        field.multiApiValue ?
+        <MultiApiField field={field} sectionIndex={sectionIndex} /> :
         null
       ) }
     </Grid>
@@ -58,8 +61,8 @@ const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
     <Grid xs={12}>
       <Card>
         <CardHeader 
-          title={field.label} 
-          subheader={field.description} 
+          title={lookupLanguageString(field.label)} 
+          subheader={field.description && lookupLanguageString(field.description)} 
           titleTypographyProps={{fontSize: 16}}
           subheaderTypographyProps={{fontSize: 12}}
           sx={{pb: 0, pl: 3, pr: 3}} 

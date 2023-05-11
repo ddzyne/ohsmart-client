@@ -1,18 +1,30 @@
 const tabs = [
   {
-    label: "Metadata",
+    label: {
+      en: "Metadata",
+      nl: "Metadata",
+    },
     data: "metadata"
   },
   {
-    label: "Files",
+    label: {
+      en: "Files",
+      nl: "Bestanden",
+    },
     data: "files"
   },
   {
-    label: "Preferences",
+    label: {
+      en: "Preferences",
+      nl: "Voorkeuren",
+    },
     data: "preferences"
   },
   {
-    label: "Tools",
+    label: {
+      en: "Tools",
+      nl: "Tools",
+    },
     data: "tools"
   }
 ];

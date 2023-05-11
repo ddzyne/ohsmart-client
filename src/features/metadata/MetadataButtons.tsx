@@ -8,7 +8,7 @@ import { useAppDispatch } from '../../app/hooks';
 import { addField, deleteField } from './metadataSlice';
 import type { AddFieldButtonProps, DeleteFieldButtonProps } from '../../types/Metadata';
 
-export const DeleteButton = ({sectionIndex, groupedFieldId, deleteFieldIndex, size = 'small'}: DeleteFieldButtonProps) => {
+export const DeleteButton = ({sectionIndex, groupedFieldId, deleteFieldIndex, size = 'small', mt}: DeleteFieldButtonProps) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation('metadata');
   return (
@@ -16,7 +16,8 @@ export const DeleteButton = ({sectionIndex, groupedFieldId, deleteFieldIndex, si
       <IconButton 
         color="error" 
         aria-label={t('delete') as string} 
-        size={size} 
+        size={size}
+        sx={{mt: mt}}
         onClick={() => dispatch(
           deleteField({
             sectionIndex: sectionIndex, 
@@ -30,7 +31,7 @@ export const DeleteButton = ({sectionIndex, groupedFieldId, deleteFieldIndex, si
   )
 }
 
-export const AddButton = ({sectionIndex, groupedFieldId, type, size = 'small'}: AddFieldButtonProps) => {
+export const AddButton = ({sectionIndex, groupedFieldId, type, size = 'small', mt}: AddFieldButtonProps) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation('metadata');
   return (
@@ -39,6 +40,7 @@ export const AddButton = ({sectionIndex, groupedFieldId, type, size = 'small'}: 
         color="primary" 
         aria-label={t('add') as string} 
         size={size} 
+        sx={{mt: mt}}
         onClick={() => dispatch(
           addField({
             sectionIndex: sectionIndex, 

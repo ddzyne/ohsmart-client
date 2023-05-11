@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import './App.css';
 import LanguageBar from './layout/LanguageBar';
 import MenuBar from './layout/MenuBar';
@@ -39,7 +39,7 @@ const App = () => {
             return (
               <Route 
                 key={page.id} 
-                path={`/:lang?/${page.slug[i18n.language] || page.slug}`} 
+                path={page.slug} 
                 element={<Comp page={page} />} 
               />
             )

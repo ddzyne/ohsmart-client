@@ -1,0 +1,17 @@
+{
+  "fileName": "Naam",
+  "readableSize": "Grootte",
+  "readableType": "Type",
+  "local": "Lokaal",
+  "online": "Online",
+  "addLocal": "Voeg lokale bestand(en) toe",
+  "drop": "Click of drag & drop om te uploaden",
+  "addURL": "Voeg bestand toe vanuit URL",
+  "enterURL": "Voer URL in",
+  "errorURL": "Foutief URL",
+  "add": "Voeg toe",
+  "private": "Privé",
+  "role": "Rol",
+  "processing": "Taken",
+  "fileTypeError": "Sorry, deze bestanden kunnen niet worden geupload"
+}

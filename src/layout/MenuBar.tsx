@@ -17,14 +17,13 @@ import { NavLink as RouterLink } from 'react-router-dom';
 import UserIcon from '@mui/icons-material/Person';
 import { grey } from '@mui/material/colors';
 import type { MenuBarProps } from '../types/Pages';
-import { useTranslation } from 'react-i18next';
+import { lookupLanguageString } from '../app/helpers';
 
 const settings = ['Account', 'Logout'];
 
 const MenuBar = ({pages}: MenuBarProps) => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  const { i18n } = useTranslation();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -77,15 +76,15 @@ const MenuBar = ({pages}: MenuBarProps) => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-            {pages && pages.map((page, i) => ( page.inMenu &&
+            {pages && pages.map((page, i) => ( page.inMenu && page.menuTitle &&
               <MenuItem key={i} onClick={handleCloseNavMenu}>
                 <Link 
                   underline="none" 
                   color="inherit" 
                   component={RouterLink} 
-                  to={(i18n.language !== 'en' ? i18n.language + '/' : '' ) + (page.slug[i18n.language] || page.slug)}
+                  to={page.slug}
                 >
-                  {page.menuTitle[i18n.language] || page.menuTitle}
+                  {lookupLanguageString(page.menuTitle)}
                 </Link>
               </MenuItem>
             ))}
@@ -100,15 +99,15 @@ const MenuBar = ({pages}: MenuBarProps) => {
             <img src={logo} alt="" title="" />
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages && pages.map((page, i) => ( page.inMenu &&
+            {pages && pages.map((page, i) => ( page.inMenu && page.menuTitle &&
               <Button
                 key={i}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: 'white', display: 'block' }}
                 component={RouterLink} 
-                to={(i18n.language !== 'en' ? i18n.language + '/' : '' ) + (page.slug[i18n.language] || page.slug)}
+                to={page.slug}
               >
-                {page.menuTitle[i18n.language] || page.menuTitle}
+                {lookupLanguageString(page.menuTitle)}
               </Button>
             ))}
           </Box>

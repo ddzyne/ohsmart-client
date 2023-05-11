@@ -1,22 +1,24 @@
+import type { LanguageStrings } from './Language';
+
 export type FileColumn = 'name' | 'size' | 'type';
 
 export interface FileActions {
-  label: string;
+  label: string | LanguageStrings;
   value: string;
 }
 
+export type FileActionType = 'process' | 'role' | 'restricted';
+
 export interface ReduxFileActions {
   id: string;
-  type: 'process' | 'role' | 'restricted';
+  type: FileActionType;
   value: FileActions | FileActions[] | boolean | null;
 }
-
-export type FileLocation = 'local' | 'online';
 
 export interface SelectedFile {
   id: string;
   name: string;
-  size: string;
+  size: number;
   type: string;
   location: FileLocation;
   url: string;
@@ -24,3 +26,19 @@ export interface SelectedFile {
   role?: FileActions;
   process?: FileActions[];
 }
+
+interface FileError {
+  code: string;
+  message: string;
+}
+
+export interface RejectedFiles {
+  file: File;
+  errors: FileError[];
+}
+
+export interface RejectedFilesProps {
+  fileRejections: RejectedFiles[];
+}
+
+export type FileLocation = 'local' | 'online';

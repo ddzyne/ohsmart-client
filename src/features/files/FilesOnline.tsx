@@ -35,7 +35,7 @@ const FilesOnline = () => {
     const fileToSubmit = {
       id: uuidv4(),
       name: onlineFile.replace(/^.*\/(.*)$/, "$1"),
-      size: 'tbd',
+      size: 0,
       type: 'tbd',
       location: 'online' as FileLocation,
       url: encodeURIComponent(onlineFile),

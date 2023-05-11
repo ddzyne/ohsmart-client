@@ -19,7 +19,7 @@ import blue from '@mui/material/colors/blue';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getFiles, addFiles } from './filesSlice';
-import type { FileLocation } from '../../types/Files';
+import type { FileLocation, SelectedFile, RejectedFilesProps } from '../../types/Files';
 import { v4 as uuidv4 } from 'uuid';
 
 const FilesUpload = () => {
@@ -44,7 +44,7 @@ const FilesUpload = () => {
       ({
         id: uuidv4(),
         name: file.name,
-        size: `${(file.size*9.5367431640625*Math.pow(10, -7)).toFixed(2)} MB`, 
+        size: file.size, 
         type: file.type ? file.type.replace(/^.*\/(.*)$/, "$1") : file.name.substring(file.name.lastIndexOf('.') + 1),
         location: 'local' as FileLocation,
         url: URL.createObjectURL(file),
@@ -84,9 +84,10 @@ const FilesUpload = () => {
   )
 }
 
-const RejectedFiles = ({fileRejections}: any) => {
+const RejectedFiles = ({fileRejections}: RejectedFilesProps) => {
   const [open, setOpen] = useState(true);
   const { t } = useTranslation('files');
+  console.log(fileRejections)
   return (
     <Collapse in={open}>
       <Alert 
@@ -106,14 +107,14 @@ const RejectedFiles = ({fileRejections}: any) => {
         }>
         <AlertTitle>{t('fileTypeError')}</AlertTitle>
         <List dense={true}>
-          {fileRejections.map( (file: any, i: number) => 
-            <ListItem disableGutters>
+          {fileRejections.map( (file, i) => 
+            <ListItem key={i} disableGutters>
               <ListItemIcon>
                 <InsertDriveFileIcon />
               </ListItemIcon>
               <ListItemText 
                 primary={file.file.name}
-                secondary={file.errors.map( (error: any, i: number) => `${error.message}${i < file.errors.length - 1 ? ' | ' : ''}`)} />
+                secondary={file.errors.map( (error, i) => `${error.message}${i < file.errors.length - 1 ? ' | ' : ''}`)} />
             </ListItem>
           )}
         </List>

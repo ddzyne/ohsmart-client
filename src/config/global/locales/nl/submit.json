@@ -1,3 +1,13 @@
 {
-  "submit": "Stuur op"
+  "metadataError": "We hebben nog wat meer informatie nodig voordat je kunt submitten",
+  "metadataWarning": "Je kunt submitten, maar je data zou nog wat completer kunnen zijn",
+  "metadataSuccess": "Helemaal klaar om te submitten!",
+  "isLoading": "Maakt contact met de server...",
+  "hasProgress": "Data wordt upgeload...",
+  "isWaiting": "Data verstuurd. Wachten op antwoord van de server...",
+  "isSuccess": "Je data is succesvol opgestuurd!",
+  "isError": "Oh nee! Er is iets misgegaan",
+  "reset": "Reset formulier",
+  "submit": "Submit data",
+  "errorRetry": "Probeer het nog eens of neem contact met ons op"
 }

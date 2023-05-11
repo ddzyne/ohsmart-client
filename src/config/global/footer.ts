@@ -1,93 +1,150 @@
 const footer = [
   {
-    header: "Contact and service",
+    header: {
+      en: "Contact and service",
+      nl: "Contact en service",
+    },
     links: [
       {
-        name: "Contact",
+        name: {
+          en: "Contact",
+          nl: "Contact",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "Legal Information",
+        name: {
+          en: "Legal Information",
+          nl: "",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "DANS Products and Services",
+        name: {
+          en: "DANS Products and Services",
+          nl: "DANS producten en services",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "Rate Information",
+        name: {
+          en: "Rate Information",
+          nl: "",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "Using the DANS Data Stations",
+        name: {
+          en: "Using the DANS Data Stations",
+          nl: "Gebruik van DANS Data Stations",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "Terms and Conditions",
+        name: {
+          en: "Terms and Conditions",
+          nl: "",
+        },
         link: "",
         icon: ""
       }
     ]
   },
   {
-    header: "About DANS",
+    header: { 
+      en: "About DANS",
+      nl: "",
+        },
     links: [
       {
-        name: "Mission",
+        name: { 
+          en: "Mission",
+          nl: "",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "Our Team",
+        name: { 
+          en: "Our Team",
+          nl: "",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "Working at DANS",
+        name: { 
+          en: "Working at DANS",
+          nl: "",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "Press Releases",
+        name: { 
+          en: "Press Releases",
+          nl: "",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "Disclaimer",
+        name: { 
+          en: "Disclaimer",
+          nl: "",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "Data Licenses",
+        name: { 
+          en: "Data Licenses",
+          nl: "",
+        },
         link: "",
         icon: ""
       },{
-        name: "Privacy",
+        name: { 
+          en: "Privacy",
+          nl: "",
+        },
         link: "",
         icon: ""
       }
     ]
   },
   {
-    header: "Follow us",
+    header: {
+      en: "Follow us",
+      nl: "",
+        },
     links: [
       {
-        name: "Newsletter",
+        name: {
+          en: "Newsletter",
+          nl: "",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "YouTube",
+        name: {
+          en: "YouTube",
+          nl: "",
+        },
         link: "",
         icon: ""
       },
       {
-        name: "Twitter",
+        name: {
+          en: "Twitter",
+          nl: "",
+        },
         link: "",
         icon: ""
       }
@@ -95,7 +152,10 @@ const footer = [
   },
   {
     header: "",
-    freetext: "DANS is an institute of <a href=\"\">KNAW</a> and <a href=\"\">NWO</a>"
+    freetext: {
+      en: "DANS is an institute of <a href=\"\">KNAW</a> and <a href=\"\">NWO</a>",
+      nl: "",
+    },
   }
 ]
 

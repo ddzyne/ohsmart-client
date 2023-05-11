@@ -7,6 +7,7 @@ import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { setField } from '../metadataSlice';
 import type { AutocompleteFieldProps } from '../../../types/Metadata';
+import { lookupLanguageString } from '../../../app/helpers';
 
 const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
@@ -27,7 +28,7 @@ const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
           (params) => 
             <TextField 
               {...params}
-              label={`${field.label}${field.required ? ' *' : ''}`}
+              label={`${lookupLanguageString(field.label)}${field.required ? ' *' : ''}`}
               error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '')}
               helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
             />
@@ -38,7 +39,7 @@ const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
           value: newValue
         }))}
       />
-      <StatusIcon margin="l" status={status} title={field.description} />
+      {field.description && <StatusIcon margin="l" status={status} title={lookupLanguageString(field.description)} />}
     </Stack>
   )
 }

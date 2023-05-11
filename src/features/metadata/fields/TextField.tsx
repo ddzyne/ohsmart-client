@@ -8,6 +8,7 @@ import { AddButton, DeleteButton } from '../MetadataButtons';
 import { setField } from '../metadataSlice';
 import { getStatus } from '../metadataHelpers';
 import type { SingleTextFieldProps } from '../../../types/Metadata';
+import { lookupLanguageString } from '../../../app/helpers';
 
 const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: SingleTextFieldProps) => {
   const dispatch = useAppDispatch();
@@ -15,14 +16,14 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
   const { t } = useTranslation('metadata');
 
   return (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" alignItems="start">
       <TextField 
         fullWidth
-        error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '')}
+        error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required}
         helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
         variant="outlined" 
         type={field.type}
-        label={field.label}
+        label={lookupLanguageString(field.label)}
         required={field.required}
         multiline={field.multiline}
         rows={field.multiline ? 4 : ''}
@@ -37,21 +38,21 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
           shrink: field.type === 'date' || field.type === 'datetime-local' || field.disabled
         }}
         sx={{
-          mt: groupedFieldId ? 1 : 0,
+          mt: groupedFieldId && currentField !== 0 ? 1 : 0,
         }}
         InputProps={{
           endAdornment: field.description && (
             <InputAdornment position="end">
-              <StatusIcon status={status} title={field.description} />
+              <StatusIcon status={status} title={lookupLanguageString(field.description)} />
             </InputAdornment>
           ),
         }}
       />
       {groupedFieldId && [
         totalFields > 1 && 
-        <DeleteButton key="delete" sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} deleteFieldIndex={currentField} />,
+        <DeleteButton key="delete" sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} deleteFieldIndex={currentField} mt={currentField === 0 ? 1.75 : 2.75} />,
         currentField + 1 === totalFields && 
-        <AddButton key="add" sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} type="single" />
+        <AddButton key="add" sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} type="single" mt={currentField === 0 ? 1.75 : 2.75} />
       ]}
     </Stack>
   )

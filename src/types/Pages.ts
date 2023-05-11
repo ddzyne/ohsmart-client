@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import type { MultiLocaleString } from './Generic';
+import type { Language, LanguageStrings } from './Language';
 
 export interface TabPanelProps {
   children?: ReactNode;
@@ -13,24 +13,31 @@ export interface ComponentTypes {
 
 interface PageAction {
   link: string;
-  // text: string | MultiLocaleString;
-  text: any;
+  text: string | LanguageStrings;
 }
 
 export interface Page {
   id: string;
-  // name: string | MultiLocaleString;
-  name: any;
-  // slug: string | MultiLocaleString;
-  slug: any;
+  name: string | LanguageStrings;
+  slug: string;
   template: 'deposit' | 'generic';
   inMenu: boolean;
-  // menuTitle?: string | MultiLocaleString;
-  menuTitle?: any;
-  // content?: string | MultiLocaleString;
-  content?: any;
+  menuTitle?: string | LanguageStrings;
+  content?: string | LanguageStrings;
   action?: PageAction;
   logo?: boolean;
+}
+
+export interface Link {
+  name: string | LanguageStrings;
+  link: string;
+  icon: string;
+}
+
+export interface Footer {
+  header?: string | LanguageStrings;
+  links?: Link[];
+  freetext?: string | LanguageStrings;
 }
 
 export interface MenuBarProps {

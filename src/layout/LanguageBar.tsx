@@ -1,3 +1,4 @@
+import { useEffect, Suspense } from 'react';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -6,16 +7,15 @@ import { NL, GB } from 'country-flag-icons/react/1x1';
 import { useTranslation } from 'react-i18next';
 import styles from './LanguageBar.module.css';
 import { languages } from '../config/global/languages';
-import { useMatch, useParams, useLocation } from 'react-router-dom';
+import Skeleton from '@mui/material/Skeleton';
 
 const LanguageBar = () => {
   const { t, i18n } = useTranslation('languagebar');
-  const match = useMatch('/:lang/:page');
-  const params = useParams();
-  const location = useLocation();
-  console.log(match)
-  console.log(params)
-  console.log(location)
+  // const location = useLocation();
+  // const navigate = useNavigate();
+  // const routes = [{ path: "/:lang/:page" }, { path: "/:page" }];
+  // const route = matchRoutes(routes, location);
+
   return (
     <Box sx={{
       zIndex: 2,
@@ -25,21 +25,27 @@ const LanguageBar = () => {
     }}>
       <Container>
         <Stack direction="row" justifyContent="end" pt={0.5} pb={0.5}>
-          {languages.map((lang: string, i: number) => 
-            <Button 
-              key={lang} 
-              size="small" 
-              startIcon={
-                lang === 'en' ? <GB className={styles.flag} /> :
-                lang === 'nl' ? <NL className={styles.flag} /> :
-                ''
-              }
-              sx={{mr: i === languages.length - 1 ? 0 : 2, color: '#fff'}}
-              onClick={() => i18n.language !== lang && i18n.changeLanguage(lang)}
-            >
-              {t(lang)}
-            </Button>
-          )}
+          <Suspense fallback={<Skeleton />}>
+            {languages.map((lang: string, i: number) => 
+              <Button 
+                key={lang} 
+                size="small" 
+                startIcon={
+                  lang === 'en' ? <GB className={styles.flag} /> :
+                  lang === 'nl' ? <NL className={styles.flag} /> :
+                  ''
+                }
+                sx={{mr: i === languages.length - 1 ? 0 : 2, color: '#fff'}}
+                onClick={() => {
+                  if (i18n.language !== lang) {
+                    i18n.changeLanguage(lang)
+                  } 
+                }}
+              >
+                {t(lang)}
+              </Button>
+            )}
+          </Suspense>
         </Stack>
       </Container>
     </Box>

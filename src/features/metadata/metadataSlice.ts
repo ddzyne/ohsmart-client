@@ -12,7 +12,8 @@ import type {
   RepeatGroupedFieldType,
   InputField,
   TextFieldType,
-  InitialSectionType
+  InitialSectionType,
+  TypeaheadAPI
 } from '../../types/Metadata';
 import { getValid, getStatus, formatInitialState, findById } from './metadataHelpers';
 import { v4 as uuidv4 } from 'uuid';
@@ -46,6 +47,13 @@ export const metadataSlice = createSlice({
           metadataSlice.caseReducers.setSectionStatus(state, action);
           field.valid = getValid(action.payload.value as string, field.validation);
         }
+      }
+    },
+    setMultiApiField: (state, action: PayloadAction<SetFieldPayload>) => {
+      const section = state.form[action.payload.sectionIndex];
+      const field = findById(action.payload.id, section.fields);
+      if (field) {
+        field.multiApiValue = action.payload.value as TypeaheadAPI;
       }
     },
     // functionality for adding new single (repeatable) fields/field groups
@@ -113,7 +121,7 @@ export const metadataSlice = createSlice({
   }
 });
 
-export const { setField, setOpenPanel, setSectionStatus, addField, deleteField, resetMetadata } = metadataSlice.actions;
+export const { setField, setMultiApiField, setOpenPanel, setSectionStatus, addField, deleteField, resetMetadata } = metadataSlice.actions;
 
 // Select values from state
 export const getMetadata = (state: RootState) => state.metadata.form;

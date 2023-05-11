@@ -10,8 +10,13 @@ import { useFetchRorByNameQuery } from '../api/ror';
 import { useAppDispatch } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
-import { setField } from '../metadataSlice';
-import type { AutocompleteFieldProps, AutocompleteAPIFieldProps } from '../../../types/Metadata';
+import { setField, setMultiApiField } from '../metadataSlice';
+import type { AutocompleteFieldProps, AutocompleteAPIFieldProps, TypeaheadAPI } from '../../../types/Metadata';
+import { lookupLanguageString } from '../../../app/helpers';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import MenuItem from '@mui/material/MenuItem';
 
 /*
  *  Type ahead fields for different API endpoints
@@ -60,13 +65,51 @@ const RorField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   )
 }
 
+const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+  const dispatch = useAppDispatch();
+  const { t } = useTranslation('metadata');
+
+  return (
+    <Stack direction="row" alignItems="start">
+       <FormControl  sx={{ minWidth: 110, mr: 1 }}>
+        <InputLabel id="select-api">{t('multiApiSelectLabel')}</InputLabel>
+        <Select
+          labelId="select-api"
+          label={t('multiApiSelectLabel')}
+          onChange={(e) => {
+            // set the type of API used
+            dispatch(setMultiApiField({
+              sectionIndex: sectionIndex,
+              id: field.id,
+              value: e.target.value,
+            }));
+            // and reset the currently selected value if there is one
+            field.value && dispatch(setField({
+              sectionIndex: sectionIndex,
+              id: field.id,
+              value: '',
+            }))
+          }}
+          value={field.multiApiValue}
+        >
+          {Array.isArray(field.options) && (field.options as TypeaheadAPI[]).map( option => 
+            <MenuItem value={option}>{option}</MenuItem>
+          )}
+        </Select>
+      </FormControl>
+      { field.multiApiValue === 'ror' && <RorField field={field} sectionIndex={sectionIndex} />}
+      { field.multiApiValue === 'orcid' && <OrcidField field={field} sectionIndex={sectionIndex} />}
+    </Stack>
+  )
+}
+
 const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, debouncedInputValue, data, isLoading, isFetching}: AutocompleteAPIFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
 
   return (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" alignItems="center" sx={{flex: 1}}>
       <Autocomplete
         multiple={field.multiselect}
         filterOptions={(x) => x}
@@ -80,7 +123,7 @@ const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, d
           (params) => 
             <TextField 
               {...params}
-              label={`${field.label}${field.required ? ' *' : ''}`}
+              label={`${lookupLanguageString(field.label)}${field.required ? ' *' : ''}`}
               error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '')}
               helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
             />
@@ -109,13 +152,13 @@ const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, d
         }
         renderOption={(props, option) => 
           <li {...props} key={option.value}>
-            {option.label}
+            {lookupLanguageString(option.label)}
           </li>
         }
       />
-      <StatusIcon margin="l" status={status} title={field.description} />
+      {field.description && <StatusIcon margin="l" status={status} title={lookupLanguageString(field.description)} />}
     </Stack>
   )
 }
 
-export { OrcidField, RorField };
+export { OrcidField, RorField, MultiApiField };
