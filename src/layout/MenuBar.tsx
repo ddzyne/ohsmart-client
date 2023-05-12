@@ -12,7 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import logo from '../images/logo-dans.svg';
+import { DansLogoWhite } from '../images/DansLogo';
 import { NavLink as RouterLink } from 'react-router-dom';
 import UserIcon from '@mui/icons-material/Person';
 import { grey } from '@mui/material/colors';
@@ -89,14 +89,14 @@ const MenuBar = ({pages}: MenuBarProps) => {
               </MenuItem>
             ))}
             </Menu>
-            <Link component={RouterLink} to="/" sx={{ ml: 2, width: 120, display: { xs: 'flex', md: 'none' } }}>
-              <img src={logo} alt="" title="" />
+            <Link component={RouterLink} to="/" sx={{ ml: 2, width: 100, display: { xs: 'flex', md: 'none' } }}>
+              <DansLogoWhite/>
             </Link>
           </Box>
 
           {/* desktop menu */}
-          <Link component={RouterLink} to="/" sx={{ mr: 2, width: 120, display: { xs: 'none', md: 'flex' } }}>
-            <img src={logo} alt="" title="" />
+          <Link component={RouterLink} to="/" sx={{ mr: 2, width: 100, display: { xs: 'none', md: 'flex' } }}>
+            <DansLogoWhite/>
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages && pages.map((page, i) => ( page.inMenu && page.menuTitle &&

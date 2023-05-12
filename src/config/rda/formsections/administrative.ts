@@ -1,4 +1,4 @@
-import languageList from '../../../data/languageList.json';
+import languageList from '../../global/data/languageList.json';
 
 const prefix = 'administrative';
 
@@ -10,6 +10,21 @@ const section = {
   },
   fields: [
     {
+      type: 'text',
+      label: {
+        en: "Unique identifier",
+        nl: "Unieke id",
+      },
+      name: `${prefix}_id`,
+      required: false,
+      description: {
+        en: 'Provided by Zenodo',
+        nl: 'Voorzien door Zenodo',
+      },
+      disabled: true,
+      value: 'XXX',
+    },
+    {
       type: 'autocomplete',
       label: {
         en: "Language",
@@ -17,9 +32,11 @@ const section = {
       },
       name: `${prefix}_language`,
       required: false,
-      description: 'Select the language of your metadata',
+      description: {
+        en: 'Select the language for your deposit',
+        nl: 'Selecteer de taal voor je data',
+      },
       options: languageList,
-      value: '',
     },
     {
       type: 'date',
@@ -29,8 +46,10 @@ const section = {
       },
       name: `${prefix}_date_available`,
       required: false,
-      description: 'In case of an embargo, else publication date',
-      value: '',
+      description: {
+        en: 'In case of an embargo, else publication date',
+        nl: 'Embargodatum, of anders publicatiedatum',
+      },
     },
   ],
 };

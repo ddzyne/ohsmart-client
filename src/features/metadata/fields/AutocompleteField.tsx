@@ -23,14 +23,15 @@ const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
         fullWidth 
         id={field.id}
         options={options}
+        groupBy={(option) => option.header && lookupLanguageString(option.header)}
         value={field.value || (field.multiselect ? [] : null)}
         renderInput={
           (params) => 
             <TextField 
               {...params}
               label={`${lookupLanguageString(field.label)}${field.required ? ' *' : ''}`}
-              error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '')}
-              helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
+              error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required}
+              helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required && t('incorrect')}
             />
         }
         onChange={(e, newValue) => dispatch(setField({

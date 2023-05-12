@@ -16,8 +16,8 @@ const section = {
       name: `${prefix}_title`,
       required: true,
       description: {
-        en: 'Project name or title',
-        nl: 'Projectnaam of -titel',
+        en: 'Deposit name or title',
+        nl: 'Data naam of titel',
       },
     },
     {
@@ -30,8 +30,8 @@ const section = {
       required: false,
       repeatable: true,
       description: {
-        en: 'One or more subtitles for this project',
-        nl: 'Een of meer ondertitels voor dit project',
+        en: 'One or more subtitles for this deposit',
+        nl: 'Een of meer ondertitels voor deze data',
       },
     },
     {
@@ -99,8 +99,8 @@ const section = {
       name: `${prefix}_publisher`,
       required: true,
       description: {
-        en: 'Institution - often the rights holder',
-        nl: 'Organisatie - meestal de rechthebbende',
+        en: 'Institution, often the rights holder',
+        nl: 'Organisatie, meestal de rechthebbende',
       },
       options: 'ror',
     },

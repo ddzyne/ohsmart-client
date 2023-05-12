@@ -6,7 +6,7 @@ const pages = [
     template: "generic",
     inMenu: true,
     menuTitle: "Home",
-    content: "<p>DANS collaborates with the OH-SMART project to provide infrastructure for the deposit, preservation, processing and application of audiovisual materials collected by museums and research institutions. OH-SMART concentrates on oral histories - interviews conducted at art museums.</p>",
+    content: "<p>DANS collaborates with the RDA. You can enter any text you want here. Use HTML formatting.</p>",
     action: {
       link: "deposit",
       text: "Deposit data",

@@ -31,7 +31,7 @@ export interface Page {
 export interface Link {
   name: string | LanguageStrings;
   link: string;
-  icon: string;
+  icon?: string;
 }
 
 export interface Footer {

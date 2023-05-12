@@ -39,6 +39,7 @@ export type FieldType = 'text' | 'datetime-local' | 'date' | 'checkbox' | 'radio
 export type OptionsType = {
   label: string | LanguageStrings;
   value: string;
+  header?: string | LanguageStrings;
 };
 
 export type Field = TextFieldType | AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType;
@@ -64,7 +65,7 @@ export interface TextFieldType {
   multiApiValue?: never;
 }
 
-export type TypeaheadAPI = 'orcid' | 'ror';
+export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames';
 
 export interface AutocompleteFieldType {
   type: 'autocomplete';

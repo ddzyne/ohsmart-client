@@ -1,0 +1,174 @@
+[
+  {
+    "value": "9B4102E4",
+    "label": "Agrisemantics WG"
+  },
+  {
+    "value": "DC13BC0D",
+    "label": "Artificial Intelligence and Data Visitation (AIDV) WG"
+  },
+  {
+    "value": "F8C3E8EE",
+    "label": "Blockchain Applications in Health WG"
+  },
+  {
+    "value": "D853DFBD",
+    "label": "Brokering Framework Working Group"
+  },
+  {
+    "value": "CF1D4EFF",
+    "label": "Capacity Development for Agriculture Data WG"
+  },
+  {
+    "value": "DA83B086",
+    "label": "CoreTrustSeal Maintenance WG"
+  },
+  {
+    "value": "8634FB10",
+    "label": "CURE-FAIR WG"
+  },
+  {
+    "value": "46CBC376",
+    "label": "Data Citation WG"
+  },
+  {
+    "value": "3BF26F71",
+    "label": "Data Granularity WG"
+  },
+  {
+    "value": "179A055B",
+    "label": "Data Repository Attributes WG"
+  },
+  {
+    "value": "810DBC31",
+    "label": "Data Usage Metrics WG"
+  },
+  {
+    "value": "901DE404",
+    "label": "Discipline-specific Guidance for Data Management Plans WG"
+  },
+  {
+    "value": "E440A7DC",
+    "label": "DMP Common Standards WG"
+  },
+  {
+    "value": "B9CED473",
+    "label": "Earth, Space, and Environmental Science Complex Citations Working Group"
+  },
+  {
+    "value": "5000B80F",
+    "label": "Exposing Data Management Plans WG"
+  },
+  {
+    "value": "3854E5F3",
+    "label": "FAIR Data Maturity Model WG"
+  },
+  {
+    "value": "9246BCBC",
+    "label": "FAIR for Research Software (FAIR4RS) WG"
+  },
+  {
+    "value": "594BB0DB",
+    "label": "FAIR for Virtual Research Environments WG"
+  },
+  {
+    "value": "F037D072",
+    "label": "FAIRsharing Registry: Connecting data policies, standards and databases RDA WG"
+  },
+  {
+    "value": "8A27AB95",
+    "label": "GORC International Model WG"
+  },
+  {
+    "value": "6E0807DC",
+    "label": "International Materials Resource Registries WG"
+  },
+  {
+    "value": "32733AF7",
+    "label": "InteroperAble Descriptions of Observable Property Terminology WG (I-ADOPT WG)"
+  },
+  {
+    "value": "A43E3CF6",
+    "label": "Metadata Standards Catalog WG"
+  },
+  {
+    "value": "0E1A1722",
+    "label": "National PID Strategies WG"
+  },
+  {
+    "value": "2203AE3A",
+    "label": "Neuroimaging Data WG"
+  },
+  {
+    "value": "0FCED49F",
+    "label": "Persistent Identification of Instruments WG"
+  },
+  {
+    "value": "27FFA55D",
+    "label": "Raising FAIRness in health data and health research performing organisations (HRPOs) WG"
+  },
+  {
+    "value": "FFF89ECB",
+    "label": "RDA / TDWG Metadata Standards for attribution of physical and digital collections stewardship"
+  },
+  {
+    "value": "F68CA949",
+    "label": "RDA COVID-19"
+  },
+  {
+    "value": "22E290BB",
+    "label": "RDA COVID-19 Epidemiology"
+  },
+  {
+    "value": "EDC35E4B",
+    "label": "RDA COVID19-Legal-Ethical"
+  },
+  {
+    "value": "5837696D",
+    "label": "RDA-COVID19-Clinical"
+  },
+  {
+    "value": "1948054D",
+    "label": "RDA-COVID19-Community-participation"
+  },
+  {
+    "value": "53035677",
+    "label": "RDA-COVID19-Omics"
+  },
+  {
+    "value": "FCCF12C6",
+    "label": "RDA-COVID19-Social-Sciences"
+  },
+  {
+    "value": "796BDD5D",
+    "label": "RDA-COVID19-Software"
+  },
+  {
+    "value": "9215FA30",
+    "label": "RDA/CODATA Summer Schools in Data Science and Cloud Computing in the Developing World WG"
+  },
+  {
+    "value": "7736F1D1",
+    "label": "RDA/WDS Publishing Data Workflows WG"
+  },
+  {
+    "value": "A4ABEB6D",
+    "label": "RDA/WDS Scholarly Link Exchange (Scholix) WG"
+  },
+  {
+    "value": "E2087F01",
+    "label": "Reproducible Health Data Services WG"
+  },
+  {
+    "value": "CA105667",
+    "label": "Research Metadata Schemas WG"
+  },
+  {
+    "value": "4E8258F6",
+    "label": "Wheat Data Interoperability WG"
+  },
+  {
+    "value": "36B6468E",
+    "label": "Working Group on Ethical and Legal best practices for Drone Data in a global research context (WELDD)"
+  }
+]

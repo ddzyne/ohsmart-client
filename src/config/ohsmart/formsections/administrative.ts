@@ -1,4 +1,4 @@
-import languageList from '../../../data/languageList.json';
+import languageList from '../../global/data/languageList.json';
 
 const prefix = 'administrative';
 

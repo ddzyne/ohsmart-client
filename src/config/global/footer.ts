@@ -10,151 +10,114 @@ const footer = [
           en: "Contact",
           nl: "Contact",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/contact/",
       },
       {
         name: {
-          en: "Legal Information",
-          nl: "",
+          en: "Legal information",
+          nl: "Juridische informatie",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/legal-information/",
       },
       {
         name: {
-          en: "DANS Products and Services",
+          en: "DANS products and services",
           nl: "DANS producten en services",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/data-stations/",
       },
       {
         name: {
           en: "Rate Information",
-          nl: "",
+          nl: "Tariefinformatie",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/rate-information/",
       },
-      {
-        name: {
-          en: "Using the DANS Data Stations",
-          nl: "Gebruik van DANS Data Stations",
-        },
-        link: "",
-        icon: ""
-      },
-      {
-        name: {
-          en: "Terms and Conditions",
-          nl: "",
-        },
-        link: "",
-        icon: ""
-      }
     ]
   },
   {
     header: { 
       en: "About DANS",
-      nl: "",
-        },
+      nl: "Over DANS",
+    },
     links: [
       {
         name: { 
-          en: "Mission",
-          nl: "",
+          en: "About us",
+          nl: "Over ons",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/about/",
       },
       {
         name: { 
-          en: "Our Team",
-          nl: "",
+          en: "Our team",
+          nl: "Ons team",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/about/team/",
       },
       {
         name: { 
           en: "Working at DANS",
-          nl: "",
+          nl: "Werken bij DANS",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/working-for-dans/",
       },
       {
         name: { 
           en: "Press Releases",
-          nl: "",
+          nl: "Pers",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/press/",
       },
       {
         name: { 
           en: "Disclaimer",
-          nl: "",
+          nl: "Disclaimer",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/disclaimer/",
       },
       {
         name: { 
           en: "Data Licenses",
-          nl: "",
+          nl: "Datalicenties",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/reuse-data-manual/",
       },{
         name: { 
           en: "Privacy",
-          nl: "",
+          nl: "Privacy",
         },
-        link: "",
-        icon: ""
+        link: "https://dans.knaw.nl/privacy-declaration/",
       }
     ]
   },
   {
     header: {
       en: "Follow us",
-      nl: "",
+      nl: "Volg ons",
         },
     links: [
       {
-        name: {
-          en: "Newsletter",
-          nl: "",
-        },
-        link: "",
-        icon: ""
+        name: "Newsletter",
+        link: "https://laposta.nl/f/ssyy3ox9lfh8",
+        icon: "email"
       },
       {
-        name: {
-          en: "YouTube",
-          nl: "",
-        },
-        link: "",
-        icon: ""
+        name: "YouTube",
+        link: "https://www.youtube.com/user/DANSDataArchiving",
+        icon: "youtube"
       },
       {
-        name: {
-          en: "Twitter",
-          nl: "",
-        },
-        link: "",
-        icon: ""
+        name: "Twitter",
+        link: "https://twitter.com/dans_knaw_nwo",
+        icon: "twitter"
       }
     ]
   },
   {
-    header: "",
     freetext: {
-      en: "DANS is an institute of <a href=\"\">KNAW</a> and <a href=\"\">NWO</a>",
-      nl: "",
+      en: "DANS is an institute of <a href=\"https://www.knaw.nl/\">KNAW</a> and <a href=\"https://www.nwo.nl/\">NWO</a>",
+      nl: "DANS is een intituur van <a href=\"https://www.knaw.nl/\">KNAW</a> en <a href=\"https://www.nwo.nl/\">NWO</a>",
     },
   }
 ]

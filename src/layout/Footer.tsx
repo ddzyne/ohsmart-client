@@ -9,6 +9,9 @@ import styles from './Footer.module.css';
 import { useTranslation } from 'react-i18next';
 import type { Footer as FooterType } from '../types/Pages';
 import { lookupLanguageString } from '../app/helpers';
+import TwitterIcon from '@mui/icons-material/Twitter';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+import EmailIcon from '@mui/icons-material/Email';
 
 const Footer = () => {
   const { t } = useTranslation('footer');
@@ -32,7 +35,10 @@ const Footer = () => {
                       <h4>{lookupLanguageString(item.header)}</h4>
                     }
                     {item.links && item.links.map( (link, j) =>
-                      <Link href={link.link} underline="none" key={`link-${i}`}>
+                      <Link href={link.link} underline="none" target="_blank" key={`link-${i}`} sx={{ display: 'flex', alignItems: 'center'}}>
+                        {link.icon && link.icon === 'twitter' && <TwitterIcon sx={{mr: 1}} fontSize="small" />}
+                        {link.icon && link.icon === 'youtube' && <YouTubeIcon sx={{mr: 1}} fontSize="small" />}
+                        {link.icon && link.icon === 'email' && <EmailIcon sx={{mr: 1}} fontSize="small" />}
                         {lookupLanguageString(link.name)}
                       </Link>
                     )}

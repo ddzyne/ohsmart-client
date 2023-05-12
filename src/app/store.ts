@@ -5,6 +5,7 @@ import submitReducer from '../features/submit/submitSlice';
 import notificationReducer from '../features/notification/notificationSlice';
 import { orcidApi } from '../features/metadata/api/orcid';
 import { rorApi } from '../features/metadata/api/ror';
+import { geonamesApi } from '../features/metadata/api/geonames';
 import { submitApi } from '../features/submit/submitApi';
 import { rtkQueryErrorLogger } from './error';
 
@@ -14,6 +15,7 @@ export const store = configureStore({
     files: filesReducer,
     [orcidApi.reducerPath]: orcidApi.reducer,
     [rorApi.reducerPath]: rorApi.reducer,
+    [geonamesApi.reducerPath]: geonamesApi.reducer,
     [submitApi.reducerPath]: submitApi.reducer,
     submit: submitReducer,
     notification: notificationReducer,
@@ -22,6 +24,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(orcidApi.middleware)
       .concat(rorApi.middleware)
+      .concat(geonamesApi.middleware)
       .concat(submitApi.middleware)
       .concat(rtkQueryErrorLogger)
 });

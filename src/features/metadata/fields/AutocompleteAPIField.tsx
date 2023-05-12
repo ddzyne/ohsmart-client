@@ -7,6 +7,7 @@ import { useDebounce } from 'use-debounce';
 import { useTranslation } from 'react-i18next';
 import { useFetchOrcidQuery } from '../api/orcid';
 import { useFetchRorByNameQuery } from '../api/ror';
+import { useFetchGeonamesFreeTextQuery } from '../api/geonames';
 import { useAppDispatch } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
@@ -65,6 +66,26 @@ const RorField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   )
 }
 
+const GeonamesField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+  const [inputValue, setInputValue] = useState<string>('');
+  const debouncedInputValue = useDebounce(inputValue, 500)[0];
+  // Fetch data on input change
+  const {data, isFetching, isLoading} = useFetchGeonamesFreeTextQuery(debouncedInputValue, {skip: debouncedInputValue === ''});
+
+  return (
+    <AutocompleteAPIField 
+      field={field} 
+      sectionIndex={sectionIndex} 
+      inputValue={inputValue} 
+      setInputValue={setInputValue} 
+      debouncedInputValue={debouncedInputValue} 
+      data={data} 
+      isLoading={isLoading} 
+      isFetching={isFetching} 
+    />
+  )
+}
+
 const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation('metadata');
@@ -99,6 +120,7 @@ const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
       </FormControl>
       { field.multiApiValue === 'ror' && <RorField field={field} sectionIndex={sectionIndex} />}
       { field.multiApiValue === 'orcid' && <OrcidField field={field} sectionIndex={sectionIndex} />}
+      { field.multiApiValue === 'geonames' && <GeonamesField field={field} sectionIndex={sectionIndex} />}
     </Stack>
   )
 }
@@ -124,8 +146,8 @@ const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, d
             <TextField 
               {...params}
               label={`${lookupLanguageString(field.label)}${field.required ? ' *' : ''}`}
-              error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '')}
-              helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
+              error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required}
+              helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required && t('incorrect')}
             />
         }
         onChange={(e, newValue) => {
@@ -161,4 +183,4 @@ const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, d
   )
 }
 
-export { OrcidField, RorField, MultiApiField };
+export { OrcidField, RorField, GeonamesField, MultiApiField };

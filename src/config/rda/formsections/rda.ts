@@ -8,7 +8,7 @@ const section = {
   },
   fields: [
     {
-      type: 'text',
+      type: 'autocomplete',
       label: {
         en: "Origin",
         nl: "Oorsprong",
@@ -16,9 +16,11 @@ const section = {
       name: `${prefix}_origin`,
       required: true,
       description: {
-        en: '',
-        nl: '',
+        en: 'Select a working group, interest group, or BoF in RDA',
+        nl: 'Selecteer een working group, interest group, of BoF van de RDA',
       },
+      multiselect: true,
+      options: [],
     },
   ],
 };

@@ -3,11 +3,12 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import logo from '../images/logo-ohsmart.png';
 import { Link } from 'react-router-dom';
 import type { PageProps } from '../types/Pages';
 import type { Language } from '../types/Language';
 import { lookupLanguageString } from '../app/helpers';
+
+const logo = require(`../config/${process.env.REACT_APP_CONFIG_FOLDER}/images/logo.png`);
 
 const Generic = ({page}: PageProps) => {
   return (

@@ -1,4 +1,4 @@
-import dummyList from '../../../data/dummyList.json';
+import dummyList from '../../global/data/dummyList.json';
 
 const prefix = "coverage";
 

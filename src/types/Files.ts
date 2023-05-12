@@ -12,7 +12,7 @@ export type FileActionType = 'process' | 'role' | 'restricted';
 export interface ReduxFileActions {
   id: string;
   type: FileActionType;
-  value: FileActions | FileActions[] | boolean | null;
+  value: any;
 }
 
 export interface SelectedFile {

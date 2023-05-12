@@ -1,4 +1,3 @@
-import { SyntheticEvent } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -17,7 +16,7 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getFiles, removeFile, setFileMeta } from './filesSlice';
 import fileRoles from '../../config/global/files/roles';
 import fileProcessing from '../../config/global/files/processing';
-import type { FileColumn, SelectedFile, FileActions } from '../../types/Files';
+import type { FileColumn, SelectedFile } from '../../types/Files';
 
 const columns: FileColumn[] = [ 'name', 'size', 'type' ];
 
@@ -104,8 +103,13 @@ const FileActionOptions = ({file, type}: OptionProps) => {
       size="small"
       multiple={type === 'process'}
       onChange={
-        (e: SyntheticEvent, newValue: any) => 
-          dispatch(setFileMeta({id: file.id, type: type, value: newValue}))
+        (e, newValue) => 
+          dispatch(setFileMeta({
+            id: file.id, 
+            type: type, 
+            value: newValue,
+          })
+        )
       }
       renderInput={(params) => <TextField {...params} label="Select options" />}
       options={type === 'process' ? fileProcessing : fileRoles}

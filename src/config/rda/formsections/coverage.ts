@@ -8,14 +8,19 @@ const section = {
   },
   fields: [
     {
-      //todo make lookup
-      type: "text",
+      type: "autocomplete",
       label: {
         en: "Geolocation",
         nl: "Geografische locatie",
       },
       name: `${prefix}_geolocation`,
       required: false,
+      multiselect: true,
+      options: 'geonames',
+      description: {
+        en: "Select one or more locations",
+        nl: "Selecteer één of meerdere locaties",
+      },
     },
     {
       type: "datetime-local",
@@ -31,8 +36,7 @@ const section = {
       },
     },
     {
-      // todo make autocomplete
-      type: "text",
+      type: "autocomplete",
       label: {
         en: "Keywords",
         nl: "Trefwoorden",
@@ -43,6 +47,23 @@ const section = {
         en: "Select one or more applicable keywords",
         nl: "Selecteer één of meerdere trefwoorden",
       },
+      multiselect: true,
+      options: [],
+    },
+    {
+      type: "autocomplete",
+      label: {
+        en: "RDA spefific keywords",
+        nl: "Trefwoorden specifiek voor RDA",
+      },
+      name: `${prefix}_rda_keywords`,
+      required: true,
+      description: {
+        en: "Select one or more applicable keywords",
+        nl: "Selecteer één of meerdere trefwoorden",
+      },
+      multiselect: true,
+      options: [],
     },
   ],
 };
