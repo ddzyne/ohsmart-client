@@ -1,6 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import { notificationSlice } from '../../notification/notificationSlice';
-import { store } from '../../../app/store';
+import type { OrcidResponse } from '../../../types/Api';
 
 export const orcidApi = createApi({
   reducerPath: 'orcid',
@@ -15,13 +14,13 @@ export const orcidApi = createApi({
           headers: {Accept: "application/vnd.orcid+json"},
         })
       },
-      transformResponse: (response: any, meta, arg) => {
+      transformResponse: (response: OrcidResponse, meta, arg) => {
         // Return an empty array when no results, which is what the Autocomplete field expects
         return response['num-found'] > 0 ? 
           ({
             arg: arg,
             response: 
-              response['expanded-result'].map( (item: any) => ({
+              response['expanded-result'].map( item => ({
                 label: `${item['family-names']}, ${item['given-names']}`,
                 value: item['orcid-id'], 
               })),

@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import type { RorResponse } from '../../../types/Api';
 
 export const rorApi = createApi({
   reducerPath: 'ror',
@@ -9,13 +10,13 @@ export const rorApi = createApi({
         url: `organizations?query.advanced=name:${content}`,
         headers: {Accept: "application/json"},
       }),
-      transformResponse: (response: any, meta, arg) => {
+      transformResponse: (response: RorResponse, meta, arg) => {
         // Return an empty array when no results, which is what the Autocomplete field expects
         return response.number_of_results > 0 ? 
           ({
             arg: arg,
             response: 
-              response.items.map( (item: any) => ({
+              response.items.map( item => ({
                 label: item.name,
                 value: item.id, 
               })),

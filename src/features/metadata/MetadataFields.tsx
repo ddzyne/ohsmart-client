@@ -4,9 +4,7 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Fade from '@mui/material/Fade';
 import Collapse from '@mui/material/Collapse';
-import Grow from '@mui/material/Grow';
 import { memo } from 'react';
 import type { SingleFieldProps, GroupedFieldProps, TextFieldType, InputField } from '../../types/Metadata';
 import grey from '@mui/material/colors/grey';
@@ -15,7 +13,7 @@ import { OrcidField, RorField, MultiApiField, GeonamesField } from './fields/Aut
 import AutocompleteField from './fields/AutocompleteField';
 import TextField from './fields/TextField';
 import { TransitionGroup } from 'react-transition-group';
-import { lookupLanguageString } from '../../app/helpers';
+import { lookupLanguageString } from '../../app/i18n';
 
 // Memoized Field function, so only the affected field rerenders when form/metadata props change
 const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {

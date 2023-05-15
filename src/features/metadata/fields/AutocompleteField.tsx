@@ -6,15 +6,15 @@ import { useAppDispatch } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { setField } from '../metadataSlice';
-import type { AutocompleteFieldProps } from '../../../types/Metadata';
-import { lookupLanguageString } from '../../../app/helpers';
+import type { AutocompleteFieldProps, OptionsType } from '../../../types/Metadata';
+import { lookupLanguageString } from '../../../app/i18n';
 
 const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
 
-  const options = Array.isArray(field.options) ? field.options : [];
+  const options = Array.isArray(field.options) ? field.options as OptionsType[] : [];
 
   return (
     <Stack direction="row" alignItems="center">
@@ -23,7 +23,7 @@ const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
         fullWidth 
         id={field.id}
         options={options}
-        groupBy={(option) => option.header && lookupLanguageString(option.header)}
+        groupBy={(option) => (option.header && lookupLanguageString(option.header)) || ''}
         value={field.value || (field.multiselect ? [] : null)}
         renderInput={
           (params) => 

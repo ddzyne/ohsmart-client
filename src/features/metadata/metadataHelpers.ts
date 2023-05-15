@@ -42,10 +42,10 @@ export const findById = (id: string, fields: Field[]): Field | undefined => {
 export const getStatus = (toCheck: InputField | SectionStatus[]) => {
   const check1 = 
     Array.isArray(toCheck) ? toCheck.indexOf('error') !== -1 :
-    toCheck.required && (!toCheck.value || toCheck.value.length === 0);
+    toCheck.required && (!toCheck.value || (Array.isArray(toCheck.value) && toCheck.value.length === 0));
   const check2 = 
     Array.isArray(toCheck) ? toCheck.indexOf('warning') !== -1 :
-    !toCheck.required && (!toCheck.value || toCheck.value.length === 0)
+    !toCheck.required && (!toCheck.value || (Array.isArray(toCheck.value) && toCheck.value.length === 0));
   return (
     check1 ?
     'error' : 

@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import type { GeonamesResponse } from '../../../types/Api';
 
 export const geonamesApi = createApi({
   reducerPath: 'geonames',
@@ -9,13 +10,13 @@ export const geonamesApi = createApi({
         url: `${content}&username=dans_deposit_webapp`,
         headers: {Accept: "application/json"},
       }),
-      transformResponse: (response: any, meta, arg) => {
+      transformResponse: (response: GeonamesResponse, meta, arg) => {
         // Return an empty array when no results, which is what the Autocomplete field expects
         return response.totalResultsCount > 0 ? 
           ({
             arg: arg,
             response: 
-              response.geonames.map( (item: any) => ({
+              response.geonames.map( item => ({
                 label: `${item.name} (${item.fcodeName}) ${item.countryName ? item.countryName : ''}`,
                 value: item.geonameId, 
               })),

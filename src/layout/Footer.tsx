@@ -8,7 +8,7 @@ import footer from '../config/global/footer';
 import styles from './Footer.module.css';
 import { useTranslation } from 'react-i18next';
 import type { Footer as FooterType } from '../types/Pages';
-import { lookupLanguageString } from '../app/helpers';
+import { lookupLanguageString } from '../app/i18n';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import EmailIcon from '@mui/icons-material/Email';

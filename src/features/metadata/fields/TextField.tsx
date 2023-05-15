@@ -8,7 +8,7 @@ import { AddButton, DeleteButton } from '../MetadataButtons';
 import { setField } from '../metadataSlice';
 import { getStatus } from '../metadataHelpers';
 import type { SingleTextFieldProps } from '../../../types/Metadata';
-import { lookupLanguageString } from '../../../app/helpers';
+import { lookupLanguageString } from '../../../app/i18n';
 
 const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: SingleTextFieldProps) => {
   const dispatch = useAppDispatch();

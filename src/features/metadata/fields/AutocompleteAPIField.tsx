@@ -13,8 +13,9 @@ import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { setField, setMultiApiField } from '../metadataSlice';
 import type { AutocompleteFieldProps, AutocompleteAPIFieldProps, TypeaheadAPI } from '../../../types/Metadata';
-import { lookupLanguageString } from '../../../app/helpers';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import type { QueryReturnType } from '../../../types/Api';
+import { lookupLanguageString } from '../../../app/i18n';
+import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
@@ -30,7 +31,10 @@ const OrcidField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
   // Fetch data on input change
-  const {data, isFetching, isLoading} = useFetchOrcidQuery(debouncedInputValue, {skip: debouncedInputValue === ''});
+  const {data, isFetching, isLoading} = useFetchOrcidQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
+
+  console.log(field.value)
+
 
   return (
     <AutocompleteAPIField 
@@ -50,7 +54,7 @@ const RorField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
   // Fetch data on input change
-  const {data, isFetching, isLoading} = useFetchRorByNameQuery(debouncedInputValue, {skip: debouncedInputValue === ''});
+  const {data, isFetching, isLoading} = useFetchRorByNameQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
 
   return (
     <AutocompleteAPIField 
@@ -70,7 +74,7 @@ const GeonamesField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
   // Fetch data on input change
-  const {data, isFetching, isLoading} = useFetchGeonamesFreeTextQuery(debouncedInputValue, {skip: debouncedInputValue === ''});
+  const {data, isFetching, isLoading} = useFetchGeonamesFreeTextQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
 
   return (
     <AutocompleteAPIField 
@@ -125,10 +129,21 @@ const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   )
 }
 
-const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, debouncedInputValue, data, isLoading, isFetching}: AutocompleteAPIFieldProps) => {
+const AutocompleteAPIField = ({
+  field, 
+  sectionIndex, 
+  inputValue, 
+  setInputValue, 
+  debouncedInputValue, 
+  data, 
+  isLoading, 
+  isFetching
+}: AutocompleteAPIFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
+
+  console.log(field.value)
 
   return (
     <Stack direction="row" alignItems="center" sx={{flex: 1}}>
@@ -140,7 +155,7 @@ const AutocompleteAPIField = ({field, sectionIndex, inputValue, setInputValue, d
         id={field.id}
         options={inputValue && debouncedInputValue === inputValue && data && data.arg === debouncedInputValue ? data.response : []}
         value={field.value || (field.multiselect ? [] : null)}
-        inputValue={inputValue || (!inputValue && field.value && field.value.label) || ''}
+        inputValue={inputValue || (!inputValue && field.value && !Array.isArray(field.value) && lookupLanguageString(field.value.label)) || ''}
         renderInput={
           (params) => 
             <TextField 

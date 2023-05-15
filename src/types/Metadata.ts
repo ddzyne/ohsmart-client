@@ -73,7 +73,7 @@ export interface AutocompleteFieldType {
   name: string;
   label: string | LanguageStrings;
   multiselect?: boolean;
-  value?: any;
+  value?: OptionsType | OptionsType[] | null;
   description?: string | LanguageStrings;
   required?: boolean;
   private?: boolean;
@@ -138,11 +138,16 @@ export interface AutocompleteFieldProps {
   sectionIndex: number;
 }
 
+export interface AutocompleteAPIFieldData {
+  arg: string;
+  response: OptionsType[];
+}
+
 export interface AutocompleteAPIFieldProps extends AutocompleteFieldProps {
   inputValue: string;
   setInputValue: Dispatch<SetStateAction<string>>;
   debouncedInputValue: string;
-  data: any;
+  data?: AutocompleteAPIFieldData;
   isLoading: boolean;
   isFetching: boolean;
 }
@@ -165,7 +170,7 @@ export interface AddFieldButtonProps extends FieldButtonProps {
 export interface SetFieldPayload {
   sectionIndex: number;
   id: string;
-  value: string | string[] | TypeaheadAPI | null;
+  value: string | OptionsType | OptionsType[] | null;
 };
 
 export interface AddFieldPayload {

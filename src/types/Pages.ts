@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, SyntheticEvent } from 'react';
 import type { Language, LanguageStrings } from './Language';
 
 export interface TabPanelProps {
@@ -7,8 +7,13 @@ export interface TabPanelProps {
   value: number;
 }
 
+export interface TabHeaderProps {
+  handleChange: (event: SyntheticEvent, newValue: number) => void;
+  value: number;
+}
+
 export interface ComponentTypes {
-  [key: string]: (values: any) => JSX.Element;
+  [key: string]: (values: PageProps) => JSX.Element;
 }
 
 interface PageAction {

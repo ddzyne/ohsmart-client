@@ -17,7 +17,7 @@ import { NavLink as RouterLink } from 'react-router-dom';
 import UserIcon from '@mui/icons-material/Person';
 import { grey } from '@mui/material/colors';
 import type { MenuBarProps } from '../types/Pages';
-import { lookupLanguageString } from '../app/helpers';
+import { lookupLanguageString } from '../app/i18n';
 
 const settings = ['Account', 'Logout'];
 

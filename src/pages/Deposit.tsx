@@ -6,30 +6,18 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Unstable_Grid2';
 import Metadata from '../features/metadata/Metadata';
 import Files from '../features/files/Files';
-import Preferences from '../features/preferences/Preferences';
-import Tools from '../features/tools/Tools';
-import type { TabPanelProps, ComponentTypes } from '../types/Pages';
+import type { TabPanelProps, TabHeaderProps } from '../types/Pages';
 import { useAppSelector } from '../app/hooks';
 import { getMetadataStatus } from '../features/metadata/metadataSlice';
 import { getFiles } from '../features/files/filesSlice';
 import { StatusIcon } from '../features/generic/Icons';
 import Submit from '../features/submit/Submit';
-// Maybe just move tabs here, unconfigurable...
-import tabs from '../config/global/tabs';
-import { lookupLanguageString } from '../app/helpers';
-
-const components: ComponentTypes = {
-  metadata: Metadata,
-  files: Files,
-  preferences: Preferences,
-  tools: Tools,
-}
+import { useTranslation } from 'react-i18next';
+import Skeleton from '@mui/material/Skeleton';
 
 const Deposit = () => {
+  // Have index 0 open on loading page
   const [value, setValue] = useState(0);
-  const selectedFiles = useAppSelector(getFiles);
-  const metadataStatus = useAppSelector(getMetadataStatus);
-
   const handleChange = (event: SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -39,38 +27,46 @@ const Deposit = () => {
       <Grid container>
         <Grid xs={12} mt={4}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={value} onChange={handleChange}>
-              {tabs.map( (tab, i) =>
-                <Tab 
-                  key={i} 
-                  label={lookupLanguageString(tab.label)} 
-                  icon={
-                    tab.data === 'metadata' ? 
-                    <Suspense fallback=""><StatusIcon status={metadataStatus} margin="r" /></Suspense> : 
-                    tab.data === 'files' ? 
-                    <Suspense fallback=""><StatusIcon status={selectedFiles.length > 0 ? 'success' : 'warning'} margin="r" /></Suspense> : 
-                    undefined
-                  } 
-                  iconPosition="start"/>
-              )}
-            </Tabs>
+            <Suspense fallback={<Skeleton width={400} height={50} />}>
+              <TabHeader value={value} handleChange={handleChange} />
+            </Suspense>
           </Box>
-          {tabs.map( (tab, i) => {
-            const Comp = components[tab.data];
-            return (
-              <TabPanel key={i} value={value} index={i}>
-                <Comp />
-              </TabPanel>
-            )
-          })}
+          <Suspense fallback={<Skeleton width={800} height={400} />}>
+            <TabPanel value={value} index={0}>
+              <Metadata />
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <Files />
+            </TabPanel>
+          </Suspense>
         </Grid>
         <Grid xs={12} mt={4} display="flex" justifyContent="end" alignItems="center">
-          <Suspense fallback="">
+          <Suspense fallback={<Skeleton width={150} height={55} />}>
             <Submit />
           </Suspense>
         </Grid>
       </Grid>
     </Container>
+  )
+}
+
+// Put Tabheader into a separate component, to handle namespace loading and suspense
+const TabHeader = ({value, handleChange}: TabHeaderProps) => {
+  const { t } = useTranslation(['metadata', 'files']);
+  const selectedFiles = useAppSelector(getFiles);
+  const metadataStatus = useAppSelector(getMetadataStatus);
+
+  return (
+    <Tabs value={value} onChange={handleChange}>
+      <Tab 
+        label={t('heading', {ns: 'metadata'})} 
+        icon={<StatusIcon status={metadataStatus} margin="r" />}
+        iconPosition="start" />
+      <Tab 
+        label={t('heading', {ns: 'files'})} 
+        icon={<StatusIcon status={selectedFiles.length > 0 ? 'success' : 'warning'} margin="r" />} 
+        iconPosition="start" />
+    </Tabs>
   )
 }
 
