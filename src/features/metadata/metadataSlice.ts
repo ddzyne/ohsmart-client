@@ -1,5 +1,4 @@
-import {lazy} from 'react';
-import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 // import formSections from '../../config/default/form';
 import type { 

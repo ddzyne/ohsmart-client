@@ -20,7 +20,7 @@ const Form = () => {
   // initialize section statusses on initial render
   useEffect(() => {
     dispatch(setSectionStatus(null));
-  }, []);
+  }, [dispatch]);
 
   // handles accordion open/close actions, sends to redux store
   const handleChange =

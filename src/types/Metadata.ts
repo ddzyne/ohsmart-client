@@ -1,40 +1,18 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { Language, LanguageStrings } from './Language';
 
-export type SectionStatus = 'error' | 'warning' | 'success' | undefined;
-
-export interface SectionType {
-  id: string;
-  title: string | LanguageStrings;
-  fields: Field[];
-  status?: SectionStatus;
-}
-
 export interface InitialSectionType {
   id: string;
-  title: string;
-  fields: InitialField[];
+  title: string | LanguageStrings;
+  fields: TextFieldType[] | GroupedFieldType[] | AutocompleteFieldType[];
 }
 
-export interface InitialField {
-  type: FieldType;
-  name: string;
-  label: string | LanguageStrings;
-  validation?: 'email' | 'number';
-  maxValue?: number;
-  minValue?: number; 
-  value?: string;
-  repeatable?: boolean;
-  disabled?: boolean;
-  multiline?: boolean;
-  description?: string | LanguageStrings;
-  required?: boolean;
-  private?: boolean;
-  fields?: InitialField[];
-}
+export type SectionStatus = 'error' | 'warning' | 'success' | undefined;
 
-// note we use autocomplete for every selectbox
-export type FieldType = 'text' | 'datetime-local' | 'date' | 'checkbox' | 'radiobutton' | 'autocomplete' | 'group';
+export interface SectionType extends Omit<InitialSectionType, 'fields'> {
+  fields: Field[];
+  status: SectionStatus;
+}
 
 export type OptionsType = {
   label: string | LanguageStrings;
@@ -115,6 +93,12 @@ export interface RepeatTextFieldType {
   multiApiValue?: never;
 }
 
+export interface AutocompleteAPIFieldData {
+  arg: string;
+  response: OptionsType[];
+}
+
+// Props for components
 export interface SingleFieldProps {
   field: Field;
   sectionIndex: number;
@@ -125,7 +109,7 @@ export interface GroupedFieldProps {
   sectionIndex: number;
 }
 
-export interface SingleTextFieldProps {
+export interface TextFieldProps {
   field: TextFieldType;
   sectionIndex: number;
   groupedFieldId?: string;
@@ -136,11 +120,6 @@ export interface SingleTextFieldProps {
 export interface AutocompleteFieldProps {
   field: AutocompleteFieldType;
   sectionIndex: number;
-}
-
-export interface AutocompleteAPIFieldData {
-  arg: string;
-  response: OptionsType[];
 }
 
 export interface AutocompleteAPIFieldProps extends AutocompleteFieldProps {
@@ -167,6 +146,7 @@ export interface AddFieldButtonProps extends FieldButtonProps {
   type: 'single' | 'group';
 }
 
+// Payloads and types for redux slices
 export interface SetFieldPayload {
   sectionIndex: number;
   id: string;
