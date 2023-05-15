@@ -11,7 +11,6 @@ import { StatusIcon } from '../generic/Icons';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getMetadata, getOpenPanel, setOpenPanel, setSectionStatus } from './metadataSlice';
 import { lookupLanguageString } from '../../app/i18n';
-import Skeleton from '@mui/material/Skeleton';
 
 const Form = () => {
   const dispatch = useAppDispatch();
