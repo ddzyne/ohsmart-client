@@ -1,5 +1,3 @@
-import dummyList from '../../global/data/dummyList.json';
-
 const prefix = "relations";
 
 const section = {
@@ -14,7 +12,7 @@ const section = {
       multiselect: true,
       value: '',
       description: 'Discription',
-      options: dummyList,
+      options: [],
     },
     {
       type: "autocomplete",
@@ -24,7 +22,7 @@ const section = {
       multiselect: true,
       value: '',
       description: 'Discription',
-      options: dummyList,
+      options: [],
     },
   ],
 };

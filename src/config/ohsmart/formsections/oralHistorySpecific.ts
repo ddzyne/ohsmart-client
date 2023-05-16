@@ -1,5 +1,3 @@
-import dummyList from '../../global/data/dummyList.json';
-
 const prefix = "ohs";
 
 const section = {
@@ -110,7 +108,7 @@ const section = {
       multiselect: true,
       value: '',
       description: 'Discription',
-      options: dummyList,
+      options: 'geonames',
     },
     {
       type: "datetime-local",

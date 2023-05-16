@@ -1,5 +1,3 @@
-import dummyList from '../../global/data/dummyList.json';
-
 const prefix = "humanities";
 
 const section = {
@@ -14,7 +12,7 @@ const section = {
       multiselect: true,
       value: '',
       description: 'Discription',
-      options: dummyList,
+      options: [],
     },
   ],
 };

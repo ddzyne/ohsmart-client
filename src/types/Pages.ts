@@ -1,21 +1,6 @@
 import type { ReactNode, SyntheticEvent } from 'react';
 import type { Language, LanguageStrings } from './Language';
 
-export interface TabPanelProps {
-  children?: ReactNode;
-  index: number;
-  value: number;
-}
-
-export interface TabHeaderProps {
-  handleChange: (event: SyntheticEvent, newValue: number) => void;
-  value: number;
-}
-
-export interface ComponentTypes {
-  [key: string]: (values: PageProps) => JSX.Element;
-}
-
 interface PageAction {
   link: string;
   text: string | LanguageStrings;
@@ -51,4 +36,19 @@ export interface MenuBarProps {
 
 export interface PageProps {
   page: Page;
+}
+
+export interface TabPanelProps {
+  children?: ReactNode;
+  index: number;
+  value: number;
+}
+
+export interface TabHeaderProps {
+  handleChange: (event: SyntheticEvent, newValue: number) => void;
+  value: number;
+}
+
+export interface ComponentTypes {
+  [key: string]: (values: PageProps) => JSX.Element;
 }

@@ -33,9 +33,6 @@ const OrcidField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   // Fetch data on input change
   const {data, isFetching, isLoading} = useFetchOrcidQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
 
-  console.log(field.value)
-
-
   return (
     <AutocompleteAPIField 
       field={field} 
@@ -142,8 +139,6 @@ const AutocompleteAPIField = ({
   const dispatch = useAppDispatch();
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
-
-  console.log(field.value)
 
   return (
     <Stack direction="row" alignItems="center" sx={{flex: 1}}>

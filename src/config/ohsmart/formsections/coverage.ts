@@ -1,5 +1,3 @@
-import dummyList from '../../global/data/dummyList.json';
-
 const prefix = "coverage";
 
 const section = {
@@ -14,7 +12,7 @@ const section = {
       multiselect: true,
       description: "The location(s) that the interview material deals with",
       value: '',
-      options: dummyList,
+      options: [],
     },
     {
       type: "datetime-local",
@@ -33,7 +31,7 @@ const section = {
       multiselect: true,
       description: "List of relevant keywords",
       value: '',
-      options: dummyList,
+      options: [],
     },
   ],
 };

@@ -1,5 +1,3 @@
-import dummyList from '../../global/data/dummyList.json';
-
 const prefix = 'citation';
 
 const section = {
@@ -70,7 +68,7 @@ const section = {
       multiselect: true,
       description: 'Broad Data Station End Use Community or Domain',
       value: '',
-      options: dummyList,
+      options: [],
     },
     {
       type: 'autocomplete',

@@ -14,6 +14,7 @@ import { StatusIcon } from '../features/generic/Icons';
 import Submit from '../features/submit/Submit';
 import { useTranslation } from 'react-i18next';
 import Skeleton from '@mui/material/Skeleton';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Deposit = () => {
   // Have index 0 open on loading page
@@ -32,12 +33,14 @@ const Deposit = () => {
             </Suspense>
           </Box>
           <Suspense fallback={<Skeleton width={800} height={400} />}>
-            <TabPanel value={value} index={0}>
-              <Metadata />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <Files />
-            </TabPanel>
+            <AnimatePresence initial={false}>
+              <TabPanel value={value} index={0}>
+                <Metadata />
+              </TabPanel>
+              <TabPanel value={value} index={1}>
+                <Files />
+              </TabPanel>
+            </AnimatePresence>
           </Suspense>
         </Grid>
         <Grid xs={12} mt={4} display="flex" justifyContent="end" alignItems="center">
@@ -70,23 +73,20 @@ const TabHeader = ({value, handleChange}: TabHeaderProps) => {
   )
 }
 
-const TabPanel = (props: TabPanelProps) => {
-  const { children, value, index, ...other } = props;
-
+const TabPanel = ({ children, value, index }: TabPanelProps) => {
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
+    value === index ? (
+      <motion.div
+        key={index}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
         <Box mt={2}>
           {children}
         </Box>
-      )}
-    </div>
+      </motion.div>
+    ) : null
   );
 }
 

@@ -1,5 +1,4 @@
 import React, { Suspense } from 'react';
-import './App.css';
 import LanguageBar from './layout/LanguageBar';
 import MenuBar from './layout/MenuBar';
 import Footer from './layout/Footer';
