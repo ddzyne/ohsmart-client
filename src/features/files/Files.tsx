@@ -7,16 +7,16 @@ import FilesOnline from './FilesOnline';
 
 const Files = () => 
   <Grid container spacing={2}>
-    <Grid xs={6}>
+    <Grid xs={12}>
       <Suspense fallback={<Skeleton height={180} />}>
         <FilesUpload />
       </Suspense>
     </Grid>
-    <Grid xs={6} >
+    {/*<Grid xs={6} >
       <Suspense fallback={<Skeleton height={180} />}>
         <FilesOnline />
       </Suspense>
-    </Grid>
+    </Grid>*/}
     <Grid xs={12}>
       <Suspense fallback="">
         <FilesTable />

@@ -1,12 +1,13 @@
 {
   "heading": "Bestanden",
   "fileName": "Naam",
-  "readableSize": "Grootte",
-  "readableType": "Type",
+  "fileSize": "Grootte",
+  "fileType": "Type",
   "local": "Lokaal",
   "online": "Online",
   "addLocal": "Voeg lokale bestand(en) toe",
   "drop": "Click of drag & drop om te uploaden",
+  "dropLoading": "Laadt lijst toegestane bestaden...",
   "addURL": "Voeg bestand toe vanuit URL",
   "enterURL": "Voer URL in",
   "errorURL": "Foutief URL",
@@ -14,5 +15,11 @@
   "private": "Privé",
   "role": "Rol",
   "processing": "Taken",
-  "fileTypeError": "Sorry, deze bestanden kunnen niet worden geupload"
+  "fileTypeError": "Sorry, deze bestanden kunnen niet worden toegevoegd",
+  "noConversion": "Bestand wordt as-is geupload",
+  "conversion": "Bestand wordt geconverteerd naar: {{type}}",
+  "invalid": "Geen valide {{type}} bestand. Wordt niet geupload.",
+  "noConversionHead": "Good to go!",
+  "conversionHead": "{{type}} is een niet-geprefereerd bestandstype",
+  "invalidHead": "Fout in bestand"
 }

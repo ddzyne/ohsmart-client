@@ -19,23 +19,41 @@ import blue from '@mui/material/colors/blue';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getFiles, addFiles } from './filesSlice';
-import type { FileLocation, SelectedFile, RejectedFilesProps } from '../../types/Files';
+import type { FileLocation, SelectedFile, RejectedFilesProps, DansFilesQueryResponse, DansSimpleListQueryResponse } from '../../types/Files';
 import { v4 as uuidv4 } from 'uuid';
+import { useFetchDansFormatsQuery, useFetchSimpleListQuery } from './api/dansFormats';
 
 const FilesUpload = () => {
   const dispatch = useAppDispatch();
   const currentFiles = useAppSelector(getFiles);
-  const { t } = useTranslation('files');
+  const { t } = useTranslation('files');  
+  const {data, isFetching, isLoading} = useFetchSimpleListQuery<DansSimpleListQueryResponse>(null);
 
-  // Prevent duplicate selections
+  // const {data, isFetching, isLoading} = useFetchDansFormatsQuery<DansFilesQueryResponse>(null);
+  // Let's convert to API result to a flat array first.
+  // Then reduce that to something Dropzone can use.
+  /*const mimeTypes = data && data.map( d => 
+    d.format.map( item => 
+      item['mime-type'].map( mime => 
+        ({ mime: mime, ext: `.${item['file-extension']}` })
+      ).flat()
+    ).flat()
+  ).flat()
+  .reduce((result: any, { mime, ext }: any) => {
+    result[mime] = result[mime] ? [...result[mime], ext] : [ext];
+    return result;
+  }, {});*/
+
+  // Validate added files, needs to be synchronous, so no API calls possible here
   const fileValidator = (file: File) => {
+    // No duplicate files
     if (currentFiles.find(f => f.name === file.name && f.size === file.size)) {
       return {
         code: "file-exists",
         message: `File ${file.name} has already been added`
       };
     }
-    return null
+    return null;
   }
 
   const onDrop = async (acceptedFiles: File[]) => {
@@ -45,20 +63,18 @@ const FilesUpload = () => {
         id: uuidv4(),
         name: file.name,
         size: file.size, 
-        type: file.type ? file.type.replace(/^.*\/(.*)$/, "$1") : file.name.substring(file.name.lastIndexOf('.') + 1),
+        type: file.name.substring(file.name.lastIndexOf('.') + 1),
         location: 'local' as FileLocation,
         url: URL.createObjectURL(file),
-      }));
-    
+      }));    
     dispatch(addFiles(serializedFiles));
   };
 
   const {acceptedFiles, getRootProps, getInputProps, isDragActive, fileRejections} = useDropzone({
     onDrop,
     multiple: true,
-    accept: {
-      'image/jpeg': [],
-      'image/png': [],
+    accept: { 
+      'application/octet-stream': data ? data.map( d => `.${d}` ) : []
     },
     validator: fileValidator
   });
@@ -75,8 +91,13 @@ const FilesUpload = () => {
           p={3}
           {...getRootProps({className: 'dropzone'})}
         >
-          <input {...getInputProps()} />
-          <Typography color="grey" sx={{textAlign: 'center', cursor: 'pointer'}}>{t('drop')}</Typography>
+          {data ?
+            <>
+              <input {...getInputProps()} />
+              <Typography color="grey" sx={{textAlign: 'center', cursor: 'pointer'}}>{t('drop')}</Typography>
+            </> :
+            <Typography color="grey" sx={{textAlign: 'center', cursor: 'pointer'}}>{t('dropLoading')}</Typography>
+          }
         </Box>
         {fileRejections.length > 0 && <RejectedFiles fileRejections={fileRejections} />}
       </CardContent>
@@ -87,7 +108,7 @@ const FilesUpload = () => {
 const RejectedFiles = ({fileRejections}: RejectedFilesProps) => {
   const [open, setOpen] = useState(true);
   const { t } = useTranslation('files');
-  console.log(fileRejections)
+
   return (
     <Collapse in={open}>
       <Alert 

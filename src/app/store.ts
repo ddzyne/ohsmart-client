@@ -7,6 +7,9 @@ import { orcidApi } from '../features/metadata/api/orcid';
 import { rorApi } from '../features/metadata/api/ror';
 import { geonamesApi } from '../features/metadata/api/geonames';
 import { submitApi } from '../features/submit/submitApi';
+import { dansFormatsApi } from '../features/files/api/dansFormats';
+import { dansUtilityApi } from '../features/files/api/dansUtility';
+import { dansVerificationApi } from '../features/files/api/dansVerification';
 import { rtkQueryErrorLogger } from './error';
 
 export const store = configureStore({
@@ -17,6 +20,9 @@ export const store = configureStore({
     [rorApi.reducerPath]: rorApi.reducer,
     [geonamesApi.reducerPath]: geonamesApi.reducer,
     [submitApi.reducerPath]: submitApi.reducer,
+    [dansFormatsApi.reducerPath]: dansFormatsApi.reducer,
+    [dansVerificationApi.reducerPath]: dansVerificationApi.reducer,
+    [dansUtilityApi.reducerPath]: dansUtilityApi.reducer,
     submit: submitReducer,
     notification: notificationReducer,
   },
@@ -26,6 +32,9 @@ export const store = configureStore({
       .concat(rorApi.middleware)
       .concat(geonamesApi.middleware)
       .concat(submitApi.middleware)
+      .concat(dansFormatsApi.middleware)
+      .concat(dansVerificationApi.middleware)
+      .concat(dansUtilityApi.middleware)
       .concat(rtkQueryErrorLogger)
 });
 

@@ -1,13 +1,11 @@
 import type { LanguageStrings } from './Language';
 
-export type FileColumn = 'name' | 'size' | 'type';
-
 export interface FileActions {
   label: string | LanguageStrings;
   value: string;
 }
 
-export type FileActionType = 'process' | 'role' | 'restricted';
+export type FileActionType = 'process' | 'role' | 'restricted' | 'valid';
 
 export interface ReduxFileActions {
   id: string;
@@ -25,6 +23,7 @@ export interface SelectedFile {
   restricted?: boolean;
   role?: FileActions;
   process?: FileActions[];
+  valid?: boolean;
 }
 
 interface FileError {
@@ -42,3 +41,31 @@ export interface RejectedFilesProps {
 }
 
 export type FileLocation = 'local' | 'online';
+
+export interface DansSimpleList {
+  list: string[];
+}
+
+export interface DansSimpleListQueryResponse {
+  data: string[];
+  isLoading: boolean;
+  isFetching: boolean;
+}
+
+interface DansFilesFormat {
+  'file-extension': string;
+  'mime-type': string[];
+  preferred: boolean;
+  'required-convert-to': string;
+}
+
+export interface DansFilesResponse {
+  type: string;
+  format: DansFilesFormat[];
+}
+
+export interface DansFilesQueryResponse {
+  data: DansFilesResponse[];
+  isLoading: boolean;
+  isFetching: boolean;
+}

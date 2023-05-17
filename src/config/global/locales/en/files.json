@@ -1,12 +1,13 @@
 {
   "heading": "Files",
   "fileName": "Name",
-  "readableSize": "Size",
-  "readableType": "Type",
+  "fileSize": "Size",
+  "fileType": "Type",
   "local": "Local",
   "online": "Online",
   "addLocal": "Add local file(s)",
-  "drop": "Click me or drag a file to upload!",
+  "drop": "Click me or drag and drop a file to upload!",
+  "dropLoading": "Loading list of allowed files...",
   "addURL": "Add file from URL",
   "enterURL": "Enter file URL",
   "errorURL": "Invalid URL",
@@ -14,5 +15,11 @@
   "private": "Private",
   "role": "Role",
   "processing": "Processing",
-  "fileTypeError": "Sorry, the following files cannot be uploaded"
+  "fileTypeError": "Sorry, the following files cannot be added",
+  "noConversion": "File will be uploaded as-is",
+  "conversion": "File will be converted to: {{type}}",
+  "invalid": "This file does not seem to be a valid {{type}} and won't be uploaded",
+  "noConversionHead": "Good to go!",
+  "conversionHead": "{{type}} is a non-preferred file type",
+  "invalidHead": "Invalid file type!"
 }

@@ -1,21 +1,10 @@
 import InfoIcon from '@mui/icons-material/Info';
-import Tooltip, { TooltipProps, tooltipClasses } from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorIcon from '@mui/icons-material/Error';
 import { useTranslation } from 'react-i18next';
 import type { StatusIconProps } from '../../types/Generic';
-import { styled } from '@mui/material/styles';
-
-const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
-  <Tooltip {...props} classes={{ popper: className }} />
-))(({ theme }) => ({
-  [`& .${tooltipClasses.tooltip}`]: {
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    padding: 0,
-    boxShadow: theme.shadows[1],
-  },
-}));
+import { LightTooltip } from './Tooltip';
 
 export const StatusIcon = ({status, title, margin}: StatusIconProps) => {
   const { t } = useTranslation('generic');
