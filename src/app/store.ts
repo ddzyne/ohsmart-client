@@ -5,6 +5,7 @@ import submitReducer from '../features/submit/submitSlice';
 import notificationReducer from '../features/notification/notificationSlice';
 import { orcidApi } from '../features/metadata/api/orcid';
 import { rorApi } from '../features/metadata/api/ror';
+import { gettyApi } from '../features/metadata/api/getty';
 import { geonamesApi } from '../features/metadata/api/geonames';
 import { submitApi } from '../features/submit/submitApi';
 import { dansFormatsApi } from '../features/files/api/dansFormats';
@@ -18,6 +19,7 @@ export const store = configureStore({
     files: filesReducer,
     [orcidApi.reducerPath]: orcidApi.reducer,
     [rorApi.reducerPath]: rorApi.reducer,
+    [gettyApi.reducerPath]: gettyApi.reducer,
     [geonamesApi.reducerPath]: geonamesApi.reducer,
     [submitApi.reducerPath]: submitApi.reducer,
     [dansFormatsApi.reducerPath]: dansFormatsApi.reducer,
@@ -30,6 +32,7 @@ export const store = configureStore({
     getDefaultMiddleware()
       .concat(orcidApi.middleware)
       .concat(rorApi.middleware)
+      .concat(gettyApi.middleware)
       .concat(geonamesApi.middleware)
       .concat(submitApi.middleware)
       .concat(dansFormatsApi.middleware)

@@ -31,7 +31,7 @@ const section = {
       multiselect: true,
       description: "List of relevant keywords",
       value: '',
-      options: [],
+      options: 'getty',
     },
   ],
 };

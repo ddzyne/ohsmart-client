@@ -33,8 +33,23 @@ export interface GeonamesResponse {
   geonames: GeonamesItem[];
 }
 
+export interface GettyResponse {
+  Vocabulary: GettyVocabulary;
+}
+
+export interface GettyVocabulary {
+  Count: number;
+  Subject: GettyItem[];
+}
+
+export interface GettyItem {
+  Preferred_Term: string;
+  Subject_ID: number;
+}
+
 export interface QueryReturnType {
   data: AutocompleteAPIFieldData;
   isLoading: boolean;
   isFetching: boolean;
 }
+

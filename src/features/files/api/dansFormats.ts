@@ -10,7 +10,6 @@ export const dansFormatsApi = createApi({
         url: `dans-formats`,
         headers: {Accept: 'application/json'},
       }),
-      transformResponse: (response, meta, arg) => response,
     }),
     fetchSimpleList: build.query({
       query: () => ({

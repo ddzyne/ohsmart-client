@@ -43,7 +43,7 @@ export interface TextFieldType {
   multiApiValue?: never;
 }
 
-export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames';
+export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames' | 'getty';
 
 export interface AutocompleteFieldType {
   type: 'autocomplete';

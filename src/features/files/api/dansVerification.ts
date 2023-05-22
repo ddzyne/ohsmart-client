@@ -10,8 +10,8 @@ export const dansVerificationApi = createApi({
         url: `type/${content.type}`,
         method: 'POST',
         data: content.data,
+        headers: {'Authorization': 'Bearer D@NS-ei-2023'}
       }),
-      transformResponse: (response: DansFilesResponse[]) => response,
     }),
   }),
 });

@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useFetchOrcidQuery } from '../api/orcid';
 import { useFetchRorByNameQuery } from '../api/ror';
 import { useFetchGeonamesFreeTextQuery } from '../api/geonames';
+import { useFetchGettyTermsQuery } from '../api/getty';
 import { useAppDispatch } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
@@ -72,6 +73,26 @@ const GeonamesField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
   // Fetch data on input change
   const {data, isFetching, isLoading} = useFetchGeonamesFreeTextQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
+
+  return (
+    <AutocompleteAPIField 
+      field={field} 
+      sectionIndex={sectionIndex} 
+      inputValue={inputValue} 
+      setInputValue={setInputValue} 
+      debouncedInputValue={debouncedInputValue} 
+      data={data} 
+      isLoading={isLoading} 
+      isFetching={isFetching} 
+    />
+  )
+}
+
+const GettyField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+  const [inputValue, setInputValue] = useState<string>('');
+  const debouncedInputValue = useDebounce(inputValue, 500)[0];
+  // Fetch data on input change
+  const {data, isFetching, isLoading} = useFetchGettyTermsQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
 
   return (
     <AutocompleteAPIField 
@@ -193,4 +214,4 @@ const AutocompleteAPIField = ({
   )
 }
 
-export { OrcidField, RorField, GeonamesField, MultiApiField };
+export { OrcidField, RorField, GeonamesField, MultiApiField, GettyField };

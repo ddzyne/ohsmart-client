@@ -25,6 +25,7 @@ import fileRoles from '../../config/global/files/roles';
 import fileProcessing from '../../config/global/files/processing';
 import type { SelectedFile } from '../../types/Files';
 import { useCheckTypeQuery } from './api/dansUtility';
+import { useVerifyFileMutation } from './api/dansVerification';
 import { LightTooltip } from '../generic/Tooltip';
 import { validateFileType } from './filesHelpers';
 import styles from './FilesTable.module.css';
@@ -141,6 +142,9 @@ const FileTableRow = ({file}: any) => {
   const [blob, setBlob] = useState(null);
   const dispatch = useAppDispatch();
 
+  // online verification via API... API not working atm.
+  const [verifyFile, { isUninitialized, isLoading, isSuccess, isError, data, reset }] = useVerifyFileMutation();
+
   // Convert the file URL back to a File/Blob object
   useEffect(() => {
     const fileBlob = fetch(file.url)
@@ -149,7 +153,6 @@ const FileTableRow = ({file}: any) => {
   }, [file.url]);
 
   // Then perform some validation on the file header
-  // Move this to API?
   useEffect(() => {
     if (blob) {
       const reader = new FileReader();
@@ -158,7 +161,10 @@ const FileTableRow = ({file}: any) => {
         const arr = (new Uint8Array(e.target.result)).subarray(0, 8);
         const hexHeader = [...arr].map(x => x.toString(16).padStart(2, "0")).join('');
         const valid = validateFileType(hexHeader);
-        dispatch(setFileMeta({id: file.id, type: 'valid', value: valid === file.type}))
+        // offline check
+        dispatch(setFileMeta({id: file.id, type: 'valid', value: valid === file.type}));
+        // online check. Probably not with the hexHeader, but API broken atm.
+        verifyFile({type: file.type, data: hexHeader});
       }
     }
   }, [blob]);

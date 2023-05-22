@@ -9,7 +9,6 @@ export const dansUtilityApi = createApi({
         url: `type/${content}`,
         headers: {Accept: 'application/json'},
       }),
-      transformResponse: (response, meta, arg) => response,
     }),
   }),
 });
