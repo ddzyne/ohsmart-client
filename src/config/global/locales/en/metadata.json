@@ -6,5 +6,6 @@
   "noResults": "No results",
   "add": "Add another",
   "delete": "Delete",
-  "multiApiSelectLabel": "Select registry"
+  "multiApiSelectLabel": "Select registry",
+  "institutions": "Institutions"
 }

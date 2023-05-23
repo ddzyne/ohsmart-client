@@ -21,7 +21,9 @@ export const orcidApi = createApi({
             arg: arg,
             response: 
               response['expanded-result'].map( item => ({
-                label: `${item['family-names']}, ${item['given-names']}`,
+                label: `${item['given-names']} ${item['family-names']}`,
+                extra: item['institution-name'],
+                extraLabel: 'institutions',
                 value: item['orcid-id'], 
               })),
           }) :

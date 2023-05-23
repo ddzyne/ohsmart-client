@@ -18,6 +18,8 @@ export type OptionsType = {
   label: string | LanguageStrings;
   value: string;
   header?: string | LanguageStrings;
+  extra?: string[];
+  extraLabel?: string;
 };
 
 export type Field = TextFieldType | AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType;

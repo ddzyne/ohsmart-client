@@ -9,8 +9,10 @@ export const dansVerificationApi = createApi({
       query: (content) => ({
         url: `type/${content.type}`,
         method: 'POST',
-        data: content.data,
-        headers: {'Authorization': 'Bearer D@NS-ei-2023'}
+        // body: content.data,
+        headers: {
+          Authorization: 'Bearer D@NS-ei-2023'
+        }
       }),
     }),
   }),

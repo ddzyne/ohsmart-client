@@ -20,6 +20,7 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
+import styles from './AutocompleteField.module.css';
 
 /*
  *  Type ahead fields for different API endpoints
@@ -204,8 +205,13 @@ const AutocompleteAPIField = ({
           t('noResults')
         }
         renderOption={(props, option) => 
-          <li {...props} key={option.value}>
+          <li {...props} key={option.value} style={{flexWrap: 'wrap'}}>
             {lookupLanguageString(option.label)}
+            {option.extra && option.extraLabel && option.extra.length > 0 &&
+            <div className={styles.optionExtra}>
+              {t(option.extraLabel)}: {option.extra.map( (o, i) => `${o}${i < option.extra!.length - 1 ? ', ' : ''}` )}
+            </div>
+          }
           </li>
         }
       />

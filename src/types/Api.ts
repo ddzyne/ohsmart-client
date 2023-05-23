@@ -14,6 +14,7 @@ interface OrcidItem {
   'family-names': string;
   'given-names': string;
   'orcid-id': string;
+  'institution-name': string[];
 }
 
 export interface OrcidResponse {

@@ -6,5 +6,6 @@
   "noResults": "Geen resultaten",
   "add": "Voeg toe",
   "delete": "Verwijder",
-  "multiApiSelectLabel": "Selecteer register"
+  "multiApiSelectLabel": "Selecteer register",
+  "institutions": "Instellingen"
 }
