@@ -187,8 +187,8 @@ const FileTableRow = ({file}: any) => {
       </TableCell>
       <TableCell sx={{p: 0}}>
         <Checkbox 
-          checked={file.restricted}
-          onChange={e => dispatch(setFileMeta({id: file.id, type: 'restricted', value: e.target.checked}))}
+          checked={file.private}
+          onChange={e => dispatch(setFileMeta({id: file.id, type: 'private', value: e.target.checked}))}
           disabled={file.valid === false}
         />
       </TableCell>

@@ -1,22 +1,20 @@
 import interestGroups from '../data/interestGroups.json';
 import workingGroups from '../data/workingGroups.json';
 
-const prefix = "relations";
-
 const section = {
-  id: prefix,
+  id: 'relations',
   title: {
-    en: "Relations",
-    nl: "Relaties",
+    en: 'Relations',
+    nl: 'Relaties',
   },
   fields: [
     {
-      type: "autocomplete",
+      type: 'autocomplete',
       label: {
-        en: "Related to",
-        nl: "Gerelateerd aan",
+        en: 'Related to',
+        nl: 'Gerelateerd aan',
       },
-      name: `${prefix}_relation`,
+      name: 'relation',
       required: false,
       description: {
         en: 'Select other PIDs, publications, projects related to this deposit',

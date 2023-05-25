@@ -12,13 +12,14 @@ export const geonamesApi = createApi({
       }),
       transformResponse: (response: GeonamesResponse, meta, arg) => {
         // Return an empty array when no results, which is what the Autocomplete field expects
+        console.log(response)
         return response.totalResultsCount > 0 ? 
           ({
             arg: arg,
             response: 
               response.geonames.map( item => ({
                 label: `${item.name} (${item.fcodeName}) ${item.countryName ? item.countryName : ''}`,
-                value: item.geonameId, 
+                value: `https://www.geonames.org/${item.geonameId}`, 
               })),
           })
           :

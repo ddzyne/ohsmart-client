@@ -1,5 +1,5 @@
 {
-  "error": "Required. Please enter some more data",
-  "warning": "Not required, but consider making your data more complete",
-  "success": "Good to go"
+  "error": "Required. Please enter some more data.",
+  "warning": "Not required, but recommended you fill this in.",
+  "success": "Good to go!"
 }

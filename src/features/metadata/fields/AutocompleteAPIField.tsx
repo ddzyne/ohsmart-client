@@ -13,7 +13,7 @@ import { useAppDispatch } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { setField, setMultiApiField } from '../metadataSlice';
-import type { AutocompleteFieldProps, AutocompleteAPIFieldProps, TypeaheadAPI } from '../../../types/Metadata';
+import type { AutocompleteFieldProps, AutocompleteAPIFieldProps, TypeaheadAPI, ApiLinkProps } from '../../../types/Metadata';
 import type { QueryReturnType } from '../../../types/Api';
 import { lookupLanguageString } from '../../../app/i18n';
 import Select from '@mui/material/Select';
@@ -21,6 +21,10 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import styles from './AutocompleteField.module.css';
+import Chip from '@mui/material/Chip';
+import Tooltip from '@mui/material/Tooltip';
+import LaunchIcon from '@mui/icons-material/Launch';
+import InputAdornment from '@mui/material/InputAdornment';
 
 /*
  *  Type ahead fields for different API endpoints
@@ -44,7 +48,7 @@ const OrcidField = ({field, sectionIndex}: AutocompleteFieldProps) => {
       debouncedInputValue={debouncedInputValue} 
       data={data} 
       isLoading={isLoading} 
-      isFetching={isFetching} 
+      isFetching={isFetching}
     />
   )
 }
@@ -137,7 +141,7 @@ const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
           value={field.multiApiValue}
         >
           {Array.isArray(field.options) && (field.options as TypeaheadAPI[]).map( option => 
-            <MenuItem value={option}>{option}</MenuItem>
+            <MenuItem value={option}>{t(option)}</MenuItem>
           )}
         </Select>
       </FormControl>
@@ -145,6 +149,19 @@ const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
       { field.multiApiValue === 'orcid' && <OrcidField field={field} sectionIndex={sectionIndex} />}
       { field.multiApiValue === 'geonames' && <GeonamesField field={field} sectionIndex={sectionIndex} />}
     </Stack>
+  )
+}
+
+const ApiLink = ({link, apiValue, chip}: ApiLinkProps) => {
+  const { t } = useTranslation('metadata');
+  return (
+    <InputAdornment position="start" sx={{ml: chip ? 1.5 : 0.5, mr: chip ? -0.75 : 0.25}}>
+      <Tooltip title={t('checkApi', {api: t(apiValue)})}>
+        <a href={link} target="_blank" style={{lineHeight:0}} rel="noreferrer">
+          <LaunchIcon color="primary" sx={{fontSize: 16, '&:hover': {color: 'primary.dark'}}} />
+        </a>
+      </Tooltip>
+    </InputAdornment>
   )
 }
 
@@ -156,23 +173,28 @@ const AutocompleteAPIField = ({
   debouncedInputValue, 
   data, 
   isLoading, 
-  isFetching
+  isFetching,
 }: AutocompleteAPIFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
+  const apiValue = (Array.isArray(field.options) ? field.multiApiValue : field.options) as TypeaheadAPI;
 
   return (
     <Stack direction="row" alignItems="center" sx={{flex: 1}}>
       <Autocomplete
         multiple={field.multiselect}
-        filterOptions={(x) => x}
+        filterOptions={x => x}
         fullWidth 
         includeInputInList
         id={field.id}
         options={inputValue && debouncedInputValue === inputValue && data && data.arg === debouncedInputValue ? data.response : []}
         value={field.value || (field.multiselect ? [] : null)}
-        inputValue={inputValue || (!inputValue && field.value && !Array.isArray(field.value) && lookupLanguageString(field.value.label)) || ''}
+        inputValue={
+          inputValue ||
+          (!inputValue && field.value && !Array.isArray(field.value) && lookupLanguageString(field.value.label)) || 
+          ''
+        }
         renderInput={
           (params) => 
             <TextField 
@@ -180,14 +202,30 @@ const AutocompleteAPIField = ({
               label={`${lookupLanguageString(field.label)}${field.required ? ' *' : ''}`}
               error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required}
               helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required && t('incorrect')}
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: !field.multiselect && field.value && !Array.isArray(field.value) ? 
+                  <ApiLink link={field.value.value} apiValue={apiValue} /> :
+                  params.InputProps.startAdornment,
+              }}
             />
+        }
+        renderTags={(value, getTagProps) => 
+          value.map((option, index) => (
+            <Chip
+              label={lookupLanguageString(option.label)}
+              size="medium"
+              icon={<ApiLink link={option.value} apiValue={apiValue} chip={true} />}
+              {...getTagProps({ index })}
+            />
+          ))
         }
         onChange={(e, newValue) => {
           // Gets set when user selects a value from the list
           dispatch(setField({
             sectionIndex: sectionIndex,
             id: field.id,
-            value: newValue
+            value: newValue,
           }));
         }}
         onInputChange={(e, newValue) => {
@@ -197,25 +235,28 @@ const AutocompleteAPIField = ({
           // or when a user clicks outside of the box without selecting a value 
           e && (e.type === 'click' || e.type === 'blur') && setInputValue('');
         }}
-        noOptionsText={
-          !inputValue ?
-          t('startTyping') :
-          isFetching || isLoading || debouncedInputValue !== inputValue ?
-          <Stack direction="row" justifyContent="space-between" alignItems="end">{t('loading')} <CircularProgress size={18} /></Stack> :
-          t('noResults')
-        }
+        noOptionsText={!inputValue ? t('startTyping') : t('noResults')}
+        loading={isFetching || isLoading || debouncedInputValue !== inputValue}
+        loadingText={<Stack direction="row" justifyContent="space-between" alignItems="end">{t('loading')} <CircularProgress size={18} /></Stack>}
         renderOption={(props, option) => 
           <li {...props} key={option.value} style={{flexWrap: 'wrap'}}>
             {lookupLanguageString(option.label)}
             {option.extra && option.extraLabel && option.extra.length > 0 &&
-            <div className={styles.optionExtra}>
-              {t(option.extraLabel)}: {option.extra.map( (o, i) => `${o}${i < option.extra!.length - 1 ? ', ' : ''}` )}
-            </div>
-          }
+              <div className={styles.optionExtra}>
+                {t(option.extraLabel)}: {option.extra.map( (o, i) => `${o}${i < option.extra!.length - 1 ? ', ' : ''}` )}
+              </div>
+            }
           </li>
         }
       />
-      {field.description && <StatusIcon margin="l" status={status} title={lookupLanguageString(field.description)} />}
+      {field.description &&
+        <StatusIcon 
+          margin="l" 
+          status={status} 
+          title={lookupLanguageString(field.description)} 
+          subtitle={t('apiValue', {api: t(apiValue)}) as string} 
+        />
+      }
     </Stack>
   )
 }

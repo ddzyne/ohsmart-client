@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import type { StatusIconProps } from '../../types/Generic';
 import { LightTooltip } from './Tooltip';
 
-export const StatusIcon = ({status, title, margin}: StatusIconProps) => {
+export const StatusIcon = ({status, title, subtitle, margin}: StatusIconProps) => {
   const { t } = useTranslation('generic');
   const iconSx = {
     cursor: 'help', 
@@ -25,6 +25,19 @@ export const StatusIcon = ({status, title, margin}: StatusIconProps) => {
               }}
             >
               {title}
+            </Typography>
+          }
+          {subtitle &&
+            <Typography 
+              sx={{
+                fontSize: 12, 
+                pt: 0,
+                pl: 2,
+                pr: 2,
+                pb: 2,
+              }}
+            >
+              {subtitle}
             </Typography>
           }
             <Typography

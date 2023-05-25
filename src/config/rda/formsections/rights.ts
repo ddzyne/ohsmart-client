@@ -1,30 +1,28 @@
-const prefix = "rights";
-
 const section = {
-  id: prefix,
+  id: 'rights',
   title: {
-    en: "Rights, licencing and re-use",
-    nl: "Rechten, licenties en hergebruik",
+    en: 'Rights, licencing and re-use',
+    nl: 'Rechten, licenties en hergebruik',
   },
   fields: [
     {
-      type: "autocomplete",
+      type: 'autocomplete',
       label: {
-        en: "Rights holder",
-        nl: "Rechthebbende",
+        en: 'Rights holder',
+        nl: 'Rechthebbende',
       },
-      name: `${prefix}_holder`,
+      name: 'rightsHolder',
       required: true,
-      multiApiValue: "orcid",
-      options: ["orcid", "ror"],
+      multiApiValue: 'orcid',
+      options: ['orcid', 'ror'],
     },
     {
-      type: "autocomplete",
+      type: 'autocomplete',
       label: {
-        en: "Licence",
-        nl: "Licentie",
+        en: 'License',
+        nl: 'Licentie',
       },
-      name: `${prefix}_license`,
+      name: 'license',
       required: true,
       options: [],
     },

@@ -1,19 +1,17 @@
-const prefix = 'rda';
-
 const section = {
-  id: prefix,
+  id: 'rdaSpecific',
   title: {
-    en: "RDA specific",
-    nl: "RDA specifiek",
+    en: 'RDA specific',
+    nl: 'RDA specifiek',
   },
   fields: [
     {
       type: 'autocomplete',
       label: {
-        en: "Origin",
-        nl: "Oorsprong",
+        en: 'Origin',
+        nl: 'Oorsprong',
       },
-      name: `${prefix}_origin`,
+      name: 'origin',
       required: true,
       description: {
         en: 'Select a working group, interest group, or BoF in RDA',

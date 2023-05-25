@@ -5,7 +5,7 @@ export interface FileActions {
   value: string;
 }
 
-export type FileActionType = 'process' | 'role' | 'restricted' | 'valid';
+export type FileActionType = 'process' | 'role' | 'private' | 'valid';
 
 export interface ReduxFileActions {
   id: string;
@@ -20,7 +20,7 @@ export interface SelectedFile {
   type: string;
   location: FileLocation;
   url: string;
-  restricted?: boolean;
+  private?: boolean;
   role?: FileActions;
   process?: FileActions[];
   valid?: boolean;

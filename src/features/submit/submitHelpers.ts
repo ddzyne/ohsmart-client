@@ -1,40 +1,85 @@
-// TODO need spec on submission data!!
+import { SelectedFile } from '../../types/Files';
+import { SectionType, OptionsType } from '../../types/Metadata';
 
-const extractNameValue = (metadata: any): any => {
-  let result: any[] = [];
-  for (let i = 0; i < metadata.length; i++) {
-    let obj = metadata[i];
-    if (obj.name && obj.value) {
-      result.push({ name: obj.name, value: obj.value });
-    }
-    if (obj.fields) {
-      result = result.concat(extractNameValue(obj.fields.flat()));
-    }
-  }
-  return result;
-}
+// Function to convert file blob to Base64 encoded string that can be submitted as JSON
+const toBase64 = (file: Blob) => new Promise((resolve, reject) => {
+  const reader = new FileReader();
+  reader.readAsDataURL(file);
+  reader.onload = () => resolve(reader.result);
+  reader.onerror = error => reject(error);
+});
 
-export const formatFormData = async (metadata: any, files?: any) => {
-  // get key/value pairs first
-  const namesValues = extractNameValue(metadata);
+// Type guards
+const isOption = (value: OptionsType | OptionsType[] | string | undefined | null): value is OptionsType =>
+  (value as OptionsType) !== undefined && (value as OptionsType).hasOwnProperty('value');
 
-  // add these to a formdata object
-  let formData = new FormData();
-  namesValues.forEach( (v: any) => { 
-    // check for autocomplete and multiselect values, we just need their value, not the entire object
-    const value = 
-      Array.isArray(v.value) ? 
-      v.value.map( (v: any) => v.value ).join(', ') :
-      v.value.value ?
-      v.value.value :
-      v.value;
-    formData.append(v.name, value) 
-  });
+const isOptionArray = (value: OptionsType | OptionsType[] | string | undefined | null): value is OptionsType[] =>
+  Array.isArray(value as OptionsType[]);
 
-  // now add the files as well, by converting their blob url's back to a js File object
-  const fileData = await Promise.all(files?.map((f: any) =>
-    fetch(f.url).then((r: any) => r.blob())))
-    .then((d: any) => d.map((f: any) => formData.append(f.name, f) ) );
+// Value helper function
+const getField = (value: OptionsType | OptionsType[] | string | undefined | null) =>
+  isOptionArray(value) ? 
+  value.map(v => v.value) :
+  isOption(value) ?
+  value.value :
+  value;
 
-  return formData;
+// Function to rearrange the metadata and files info for submission
+export const formatFormData = async (metadata: SectionType[], files?: SelectedFile[]) => {
+  // First format the metadata fields
+  const formattedMetadata = metadata.map( section => 
+    section.fields.map( field => {
+      const fieldValue = {
+        name: field.name,
+        id: field.id,
+        value: getField(field.value),
+        private: field.private,
+      }
+      if (field.type === 'repeatSingleField') {
+        return ({
+          ...fieldValue,
+          value: field.fields.map( repeatableField => repeatableField.value ),
+        })
+      }
+      if (field.type === 'group') {
+        return ({
+          ...fieldValue,
+          value: field.fields.map( fieldArray => 
+            Array.isArray(fieldArray) && fieldArray.map( f => 
+              ({ 
+                name: f.name, 
+                id: f.id, 
+                value: getField(f.value), 
+                private: f.private,
+              })
+            ) 
+          ),
+        })
+      }
+      return fieldValue;
+    })
+  ).flat();
+
+  // Add the files, by converting their blob url's back to a js File object and then converting that to a Base64 string
+  const fileData = Array.isArray(files) && await Promise.all(
+    files.map((f) => 
+      fetch(f.url)
+      .then(r => r.blob())
+      .then(b => toBase64(b))
+      .then(d => {
+        return ({
+          file: d,
+          name: f.name,
+          private: f.private,
+          role: f.role,
+          process: f.process,
+        })
+      })
+    )
+  );
+
+  return {
+    metadata: formattedMetadata,
+    files: fileData,
+  };
 }

@@ -43,6 +43,7 @@ export interface TextFieldType {
   private?: boolean;
   fields?: never;
   multiApiValue?: never;
+  options?: never;
 }
 
 export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames' | 'getty';
@@ -71,6 +72,7 @@ export interface GroupedFieldType {
   id: string;
   name: string;
   label: string | LanguageStrings;
+  private?: boolean;
   repeatable?: boolean;
   description?: string | LanguageStrings;
   value?: never;
@@ -78,6 +80,7 @@ export interface GroupedFieldType {
   validation?: never;
   valid?: never;
   multiApiValue?: never;
+  options?: never;
 }
 
 export interface RepeatGroupedFieldType extends Omit<GroupedFieldType, 'fields'> {
@@ -87,12 +90,15 @@ export interface RepeatGroupedFieldType extends Omit<GroupedFieldType, 'fields'>
 export interface RepeatTextFieldType {
   type: 'repeatSingleField';
   id: string;
+  name: string;
   fields: TextFieldType[];
+  private?: boolean;
   value?: never;
   validation?: never;
   valid?: never;
   repeatable?: never;
   multiApiValue?: never;
+  options?: never;
 }
 
 export interface AutocompleteAPIFieldData {
@@ -148,11 +154,18 @@ export interface AddFieldButtonProps extends FieldButtonProps {
   type: 'single' | 'group';
 }
 
+export interface ApiLinkProps {
+  link: string;
+  apiValue: TypeaheadAPI;
+  chip?: boolean;
+}
+
 // Payloads and types for redux slices
 export interface SetFieldPayload {
   sectionIndex: number;
   id: string;
   value: string | OptionsType | OptionsType[] | null;
+  typeaheadApi?: TypeaheadAPI;
 };
 
 export interface AddFieldPayload {

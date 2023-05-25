@@ -9,11 +9,11 @@ export const gettyApi = createApi({
     fetchGettyTerms: build.query({
       query: (content) => ({
         url: `AATGetTermMatch?term=${content}&logop=and&notes=`,
-        // convert XML response to text, so we can parse that later on
+        // convert XML response to text string, so we can parse that later on
         responseHandler: (response) => response.text(),
       }),
       transformResponse: (response: any, meta, arg) => {
-        // convert xml text to JSON
+        // convert xml text string to JSON
         const parser = new XMLParser();
         const json: GettyResponse = parser.parse(response);
         // Return an empty array when no results, which is what the Autocomplete field expects
@@ -23,7 +23,7 @@ export const gettyApi = createApi({
             response: 
               json.Vocabulary.Subject.map( (item: any) => ({
                 label: item.Preferred_Term,
-                value: item.Subject_ID, 
+                value: `http://vocab.getty.edu/page/aat/${item.Subject_ID}`, 
               })),
           })
           :

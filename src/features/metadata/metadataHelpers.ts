@@ -88,7 +88,6 @@ Structure we want:
 ]
 */
 export const formatInitialState = (form: InitialSectionType[]) => {
-  console.log(form)
   const newForm = form.map( section => ({
     ...section, 
     fields: section.fields.map( field => {
@@ -97,7 +96,7 @@ export const formatInitialState = (form: InitialSectionType[]) => {
         return ({...field, id: uuidv4(), fields: [newFieldGroup] });
       }
       if ( field.repeatable && field.type !== 'group' ) {
-        return ({id: uuidv4(), type: 'repeatSingleField', fields: [{...field, id: uuidv4()}]});
+        return ({id: uuidv4(), type: 'repeatSingleField', name: field.name, fields: [{...field, id: uuidv4()}]});
       }
       else {
         return {...field, id: uuidv4()};

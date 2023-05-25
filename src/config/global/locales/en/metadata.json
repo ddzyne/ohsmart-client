@@ -7,5 +7,11 @@
   "add": "Add another",
   "delete": "Delete",
   "multiApiSelectLabel": "Select registry",
-  "institutions": "Institutions"
+  "institutions": "Institutions",
+  "apiValue": "Looks up data from the {{api}} API as you type",
+  "checkApi": "Double-check your selected value in the {{api}} registry (opens in new tab)",
+  "orcid": "ORCID",
+  "ror": "RoR",
+  "getty": "Getty AAT",
+  "geonames": "GeoNames"
 }

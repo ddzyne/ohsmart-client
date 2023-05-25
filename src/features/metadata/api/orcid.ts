@@ -24,7 +24,7 @@ export const orcidApi = createApi({
                 label: `${item['given-names']} ${item['family-names']}`,
                 extra: item['institution-name'],
                 extraLabel: 'institutions',
-                value: item['orcid-id'], 
+                value: `https://orcid.org/${item['orcid-id']}`, 
               })),
           }) :
           [];

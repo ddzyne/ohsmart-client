@@ -38,7 +38,7 @@ export const metadataSlice = createSlice({
       // field is found, lets set it
       if (field) {
         field.value = action.payload.value;
-
+        
         // After every input, we need to update status and section state status as well.
         // Only needed when the new status differs from the old one.
         // Lets set accordion valid/invalid state by calling its reducer with the current input state

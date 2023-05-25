@@ -38,7 +38,11 @@ const Submit = () => {
   }, [isError, isSuccess]);
 
   const handleButtonClick = () => {
-    formatFormData(metadata, selectedFiles).then( (d: any) => submitData(d) );
+    formatFormData(metadata, selectedFiles).then( d => {
+      console.log('submitting');
+      console.log(d);
+      // submitData(d) 
+    });
   };
 
   const resetForm = () => {

@@ -1,7 +1,5 @@
-const prefix = 'citation';
-
 const section = {
-  id: prefix,
+  id: 'citation',
   title: {
     en: 'Citation',
     nl: 'Aanhalingen',
@@ -13,11 +11,11 @@ const section = {
         en: 'Title',
         nl: 'Titel',
       },
-      name: `${prefix}_title`,
+      name: 'title',
       required: true,
       description: {
-        en: 'Deposit name or title',
-        nl: 'Data naam of titel',
+        en: 'The name or title by which the data deposit is known',
+        nl: 'Naam of titel van de data deposit',
       },
     },
     {
@@ -26,7 +24,7 @@ const section = {
         en: 'Subtitle',
         nl: 'Ondertitel',
       },
-      name: `${prefix}_subtitle`,
+      name: 'subtitle',
       required: false,
       repeatable: true,
       description: {
@@ -40,11 +38,11 @@ const section = {
         en: 'Contributors',
         nl: 'Medewerkers',
       },
-      name: `${prefix}_contributors_group`,
+      name: 'contributorGroup',
       repeatable: true,
       description: {
         en: 'Name and function of authors and contributors',
-        nl: 'Naam en functie van auteurs en andere medewerkers',
+        nl: 'Naam en functie van auteurs en anderen die bijgedragen hebben',
       },
       fields: [
         {
@@ -53,7 +51,7 @@ const section = {
             en: 'Name',
             nl: 'Naam',
           },
-          name: `${prefix}_contributors_name`,
+          name: 'contributorName',
           required: true,
           description: {
             en: 'Name from the ORCID registry',
@@ -67,7 +65,7 @@ const section = {
             en: 'Function',
             nl: 'Functie',
           },
-          name: `${prefix}_contributors_function`,
+          name: 'contributorFunction',
           required: true,
           description: {
             en: 'Function of this contributor',
@@ -83,11 +81,11 @@ const section = {
         en: 'Description',
         nl: 'Beschrijving',
       },
-      name: `${prefix}_description`,
+      name: 'description',
       required: true,
       description: {
-        en: 'Some context on the deposit.',
-        nl: 'Context bij deze data',
+        en: 'Describe what the data deposit is about',
+        nl: 'Beschrijf waarover deze data deposit gaat',
       },
     },
     {
@@ -96,7 +94,7 @@ const section = {
         en: 'Publisher',
         nl: 'Uitgever',
       },
-      name: `${prefix}_publisher`,
+      name: 'publisher',
       required: true,
       description: {
         en: 'Institution, often the rights holder',
@@ -107,10 +105,10 @@ const section = {
     {
       type: 'date',
       label: {
-        en: "Publication date",
-        nl: "Datum van publicatie",
+        en: 'Publication date',
+        nl: 'Datum van publicatie',
       },
-      name: `${prefix}_publication_date`,
+      name: 'publicationDate',
       required: true,
       description: {
         en: 'The date of publication of the resource',
@@ -124,7 +122,7 @@ const section = {
         en: 'Depositor',
         nl: 'Ingediend door',
       },
-      name: `${prefix}_depositor`,
+      name: 'depositor',
       required: true,
       disabled: true,
       description: {
