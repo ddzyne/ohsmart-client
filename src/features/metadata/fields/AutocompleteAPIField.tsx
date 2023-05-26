@@ -145,9 +145,9 @@ const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
           )}
         </Select>
       </FormControl>
-      { field.multiApiValue === 'ror' && <RorField field={field} sectionIndex={sectionIndex} />}
-      { field.multiApiValue === 'orcid' && <OrcidField field={field} sectionIndex={sectionIndex} />}
-      { field.multiApiValue === 'geonames' && <GeonamesField field={field} sectionIndex={sectionIndex} />}
+      {field.multiApiValue === 'ror' && <RorField field={field} sectionIndex={sectionIndex} />}
+      {field.multiApiValue === 'orcid' && <OrcidField field={field} sectionIndex={sectionIndex} />}
+      {field.multiApiValue === 'geonames' && <GeonamesField field={field} sectionIndex={sectionIndex} />}
     </Stack>
   )
 }
