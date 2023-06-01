@@ -9,7 +9,7 @@ import { setField } from '../metadataSlice';
 import type { AutocompleteFieldProps, OptionsType } from '../../../types/Metadata';
 import { lookupLanguageString } from '../../../app/i18n';
 
-const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
@@ -39,6 +39,7 @@ const AutocompleteField = ({field, sectionIndex}: AutocompleteFieldProps) => {
           id: field.id,
           value: newValue
         }))}
+        loading={isLoading === true}
       />
       {field.description && <StatusIcon margin="l" status={status} title={lookupLanguageString(field.description)} />}
     </Stack>

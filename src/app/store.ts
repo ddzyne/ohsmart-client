@@ -7,6 +7,7 @@ import { orcidApi } from '../features/metadata/api/orcid';
 import { rorApi } from '../features/metadata/api/ror';
 import { gettyApi } from '../features/metadata/api/getty';
 import { geonamesApi } from '../features/metadata/api/geonames';
+import { sheetsApi } from '../features/metadata/api/sheets';
 import { submitApi } from '../features/submit/submitApi';
 import { dansFormatsApi } from '../features/files/api/dansFormats';
 import { dansUtilityApi } from '../features/files/api/dansUtility';
@@ -21,6 +22,7 @@ export const store = configureStore({
     [rorApi.reducerPath]: rorApi.reducer,
     [gettyApi.reducerPath]: gettyApi.reducer,
     [geonamesApi.reducerPath]: geonamesApi.reducer,
+    [sheetsApi.reducerPath]: sheetsApi.reducer,
     [submitApi.reducerPath]: submitApi.reducer,
     [dansFormatsApi.reducerPath]: dansFormatsApi.reducer,
     [dansVerificationApi.reducerPath]: dansVerificationApi.reducer,
@@ -34,6 +36,7 @@ export const store = configureStore({
       .concat(rorApi.middleware)
       .concat(gettyApi.middleware)
       .concat(geonamesApi.middleware)
+      .concat(sheetsApi.middleware)
       .concat(submitApi.middleware)
       .concat(dansFormatsApi.middleware)
       .concat(dansVerificationApi.middleware)

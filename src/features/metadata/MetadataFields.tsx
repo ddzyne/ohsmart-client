@@ -9,7 +9,7 @@ import { memo } from 'react';
 import type { SingleFieldProps, GroupedFieldProps, TextFieldType, InputField } from '../../types/Metadata';
 import grey from '@mui/material/colors/grey';
 import { DeleteButton, AddButtonText } from './MetadataButtons';
-import { OrcidField, RorField, MultiApiField, GeonamesField, GettyField } from './fields/AutocompleteAPIField';
+import { OrcidField, RorField, MultiApiField, GeonamesField, GettyField, SheetsField } from './fields/AutocompleteAPIField';
 import AutocompleteField from './fields/AutocompleteField';
 import TextField from './fields/TextField';
 import { TransitionGroup } from 'react-transition-group';
@@ -46,6 +46,8 @@ const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
         <GeonamesField field={field} sectionIndex={sectionIndex} /> :
         field.options === 'getty' ?
         <GettyField field={field} sectionIndex={sectionIndex} /> :
+        field.options === 'sheets' ?
+        <SheetsField field={field} sectionIndex={sectionIndex} /> :
         field.multiApiValue ?
         <MultiApiField field={field} sectionIndex={sectionIndex} /> :
         null

@@ -9,6 +9,7 @@ import { useFetchOrcidQuery } from '../api/orcid';
 import { useFetchRorByNameQuery } from '../api/ror';
 import { useFetchGeonamesFreeTextQuery } from '../api/geonames';
 import { useFetchGettyTermsQuery } from '../api/getty';
+import { useFetchSheetsQuery } from '../api/sheets';
 import { useAppDispatch } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
@@ -25,6 +26,7 @@ import Chip from '@mui/material/Chip';
 import Tooltip from '@mui/material/Tooltip';
 import LaunchIcon from '@mui/icons-material/Launch';
 import InputAdornment from '@mui/material/InputAdornment';
+import AutocompleteField from './AutocompleteField';
 
 /*
  *  Type ahead fields for different API endpoints
@@ -33,7 +35,7 @@ import InputAdornment from '@mui/material/InputAdornment';
  *  Queries get cached by RTK Query
 */
 
-const OrcidField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+export const OrcidField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
   // Fetch data on input change
@@ -53,7 +55,7 @@ const OrcidField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   )
 }
 
-const RorField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+export const RorField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
   // Fetch data on input change
@@ -73,7 +75,7 @@ const RorField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   )
 }
 
-const GeonamesField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+export const GeonamesField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
   // Fetch data on input change
@@ -93,7 +95,7 @@ const GeonamesField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   )
 }
 
-const GettyField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+export const GettyField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
   // Fetch data on input change
@@ -113,7 +115,26 @@ const GettyField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   )
 }
 
-const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+
+// Google Sheets field, gets all values at once
+// So just use a simple AutocompleteField with options fetched from the API
+export const SheetsField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+  console.log(field)
+  // Fetch data right away
+  const {data, isFetching, isLoading} = useFetchSheetsQuery<QueryReturnType>(field.sheetOptions);
+
+  const newField = {...field, options: data && data.response ? data.response : []};
+
+  return (
+    <AutocompleteField 
+      field={newField} 
+      sectionIndex={sectionIndex} 
+      isLoading={isLoading || isFetching} 
+    />
+  )
+}
+
+export const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation('metadata');
 
@@ -260,5 +281,3 @@ const AutocompleteAPIField = ({
     </Stack>
   )
 }
-
-export { OrcidField, RorField, GeonamesField, MultiApiField, GettyField };

@@ -29,13 +29,13 @@ const Footer = () => {
           <Grid container columns={4} spacing={2}>
             <Suspense fallback="">
               {footer.map( (item: FooterType, i) => 
-                <Grid xs={4} sm={2} md={1} key={i}>
+                <Grid xs={4} sm={2} md={1} key={`footer-${i}`}>
                   <Stack direction="column" alignItems="start">
                     {item.header && 
                       <h4>{lookupLanguageString(item.header)}</h4>
                     }
                     {item.links && item.links.map( (link, j) =>
-                      <Link href={link.link} underline="none" target="_blank" key={`link-${i}`} sx={{ display: 'flex', alignItems: 'center'}}>
+                      <Link href={link.link} underline="none" target="_blank" key={`link-${j}`} sx={{ display: 'flex', alignItems: 'center'}}>
                         {link.icon && link.icon === 'twitter' && <TwitterIcon sx={{mr: 1}} fontSize="small" />}
                         {link.icon && link.icon === 'youtube' && <YouTubeIcon sx={{mr: 1}} fontSize="small" />}
                         {link.icon && link.icon === 'email' && <EmailIcon sx={{mr: 1}} fontSize="small" />}

@@ -46,7 +46,7 @@ export interface TextFieldType {
   options?: never;
 }
 
-export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames' | 'getty';
+export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames' | 'getty' | 'sheets';
 
 export interface AutocompleteFieldType {
   type: 'autocomplete';
@@ -65,6 +65,16 @@ export interface AutocompleteFieldType {
   fields?: never;
   repeatable?: never;
   multiApiValue?: TypeaheadAPI;
+  sheetOptions?: SheetOptions;
+}
+
+interface SheetOptions {
+  sheetId: string;
+  page: string;
+  startAtRow: number;
+  labelCol: number;
+  valueCol: number;
+  headerCol: number;
 }
 
 export interface GroupedFieldType {
@@ -102,7 +112,7 @@ export interface RepeatTextFieldType {
 }
 
 export interface AutocompleteAPIFieldData {
-  arg: string;
+  arg?: string;
   response: OptionsType[];
 }
 
@@ -128,6 +138,7 @@ export interface TextFieldProps {
 export interface AutocompleteFieldProps {
   field: AutocompleteFieldType;
   sectionIndex: number;
+  isLoading?: boolean;
 }
 
 export interface AutocompleteAPIFieldProps extends AutocompleteFieldProps {

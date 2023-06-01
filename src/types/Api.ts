@@ -54,3 +54,7 @@ export interface QueryReturnType {
   isFetching: boolean;
 }
 
+export interface SheetsResponse {
+  values: string[][];
+}
+

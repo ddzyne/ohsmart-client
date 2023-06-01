@@ -34,10 +34,10 @@ const Deposit = () => {
           </Box>
           <Suspense fallback={<Skeleton width={800} height={400} />}>
             <AnimatePresence initial={false}>
-              <TabPanel value={value} index={0}>
+              <TabPanel value={value} index={0} key="tab1">
                 <Metadata />
               </TabPanel>
-              <TabPanel value={value} index={1}>
+              <TabPanel value={value} index={1} key="tab2">
                 <Files />
               </TabPanel>
             </AnimatePresence>
@@ -77,7 +77,6 @@ const TabPanel = ({ children, value, index }: TabPanelProps) => {
   return (
     value === index ? (
       <motion.div
-        key={index}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}

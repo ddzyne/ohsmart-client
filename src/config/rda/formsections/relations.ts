@@ -21,7 +21,15 @@ const section = {
         nl: 'Selecteer andere PIDs, publicaties, projecten gerelateerd aan deze data',
       },
       multiselect: true,
-      options: [...workingGroups.map( g => ({header: 'Working group', ...g})), ...interestGroups.map( g => ({header: 'Interest group', ...g}))],
+      options: 'sheets',
+      sheetOptions: {
+        sheetId: '1NWXsxfC8Oq99Po1E2NoIIyTGe-4IGOCcW1LiFljnIcM',
+        page: 'Groups API',
+        startAtRow: 1,
+        labelCol: 2,
+        valueCol: 3,
+        headerCol: 0,
+      }
     },
   ],
 };
