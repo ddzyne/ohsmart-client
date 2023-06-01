@@ -96,8 +96,8 @@ The form file should have a default export of an array of section objects. Each 
     
           // Selectable options, for the autocomplete type field only. Can be:
           // * an array of option objects like below
-          // * a typeahead service: 'orcid', 'ror', 'geonames'
-          // * an array of typeahead services ['orcid', 'ror']
+          // * an API service: 'orcid', 'ror', 'geonames', 'getty', 'sheets'
+          // * an array of API services ['orcid', 'ror'] (note: not sheets for now)
           options: [
             // this is an options object
             { 
@@ -107,6 +107,16 @@ The form file should have a default export of an array of section objects. Each 
               value: 'some_string',
             }
           ],
+          
+          // In case Google Sheets is selected as API, you must provide a sheetOptions object
+          sheetOptions: {
+            sheetId: 'ID of the Google Sheet',
+            page: 'Spread name inside the Sheet',
+            startAtRow: number, start displaying data from this row onwards, counting starts at 0,
+            labelCol: number, start counting at 0, for the column that contains the display label,
+            valueCol: number, for the column that contains the value,
+            headerCol: optional number, needed in case you have a list that contain values that need to be indicated with a header in the dropdown,
+          },
     
           // In case an array of typeahead services is provided, pick the default service (required)
           multiApiValue: "orcid",

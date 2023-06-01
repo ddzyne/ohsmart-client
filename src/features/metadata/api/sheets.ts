@@ -17,7 +17,7 @@ export const sheetsApi = createApi({
             response: response.values.slice(arg.startAtRow).map((value: any) => ({
               label: value[arg.labelCol],
               value: value[arg.valueCol],
-              header: value[arg.headerCol],
+              header: arg.headerCol !== undefined && value[arg.headerCol],
             }))
           })
           :
