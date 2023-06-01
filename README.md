@@ -110,12 +110,19 @@ The form file should have a default export of an array of section objects. Each 
           
           // In case Google Sheets is selected as API, you must provide a sheetOptions object
           sheetOptions: {
-            sheetId: 'ID of the Google Sheet',
-            page: 'Spread name inside the Sheet',
-            startAtRow: number, start displaying data from this row onwards, counting starts at 0,
-            labelCol: number, start counting at 0, for the column that contains the display label,
-            valueCol: number, for the column that contains the value,
-            headerCol: optional number, needed in case you have a list that contain values that need to be indicated with a header in the dropdown,
+            // ID of the Google sheet, a long string
+            sheetId: 'IDXXX',
+            // Name of the page/spread inside the Google sheet you wish to retrieve
+            page: 'Page 1',
+            // Start displaying data from this row onwards, counting starts at 0
+            startAtRow: 1,
+            // The column number that contains the display label, starting at 0
+            labelCol: 0, 
+            // The column that contains the value, starting at 0
+            valueCol: 1,
+            // Optionally, in case you have a list that contain values that need to be grouped with a header in the dropdown,
+            // the column that contains the header name
+            headerCol: 2,
           },
     
           // In case an array of typeahead services is provided, pick the default service (required)
@@ -124,7 +131,7 @@ The form file should have a default export of an array of section objects. Each 
           // Multiple selections possible, only for autocomplete field type
           multiselect: true,
     
-          // An array of inputfields (text, autocomplete, etc), only for group field type
+          // An array of inputfields (text, autocomplete, etc, as above), only for group field type
           fields: [{...}],
         },
       ]
