@@ -71,6 +71,8 @@ The form file should have a default export of an array of section objects. Each 
           // * datetime-local - date and time selector
           // * number - numbers only
           // * group - a field group, this group contains another fields array
+          // * radio - a radio button selection field (one option is always selected)
+          // * check - a checkbox selection field (select zero or more options)
           type: 'text',
     
           // label can be a string or language object
@@ -79,8 +81,11 @@ The form file should have a default export of an array of section objects. Each 
           // name for this field, gets sent to the API
           name: 'some_string',
     
-          // field is required or not
+          // field is required or not. Not applicable to radio buttons or group fields
           required: true,
+    
+          // validation options for textfields. Can be 'email'...
+          validation: 'email',
     
           // optional field description, can be a string or a language object
           description: 'Some description',
@@ -94,10 +99,10 @@ The form file should have a default export of an array of section objects. Each 
           // Repeatable field, for text and group fields only
           repeatable: true,
     
-          // Selectable options, for the autocomplete type field only. Can be:
+          // Selectable options, for the autocomplete, radio and check fieldtypes. Can be:
           // * an array of option objects like below
-          // * an API service: 'orcid', 'ror', 'geonames', 'getty', 'sheets'
-          // * an array of API services ['orcid', 'ror'] (note: not sheets for now)
+          // * an API service: 'orcid', 'ror', 'geonames', 'getty', 'sheets' (autocomplete only)
+          // * an array of API services ['orcid', 'ror'] (note: not sheets for now) (autocomplete only)
           options: [
             // this is an options object
             { 

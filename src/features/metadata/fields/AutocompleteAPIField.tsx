@@ -270,14 +270,12 @@ const AutocompleteAPIField = ({
           </li>
         }
       />
-      {field.description &&
-        <StatusIcon 
-          margin="l" 
-          status={status} 
-          title={lookupLanguageString(field.description)} 
-          subtitle={t('apiValue', {api: t(apiValue)}) as string} 
-        />
-      }
+      <StatusIcon 
+        margin="l" 
+        status={status} 
+        title={lookupLanguageString(field.description)} 
+        subtitle={t('apiValue', {api: t(apiValue)}) as string} 
+      />
     </Stack>
   )
 }

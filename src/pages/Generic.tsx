@@ -12,7 +12,6 @@ const Generic = ({page}: PageProps) => {
   return (
     <Container>
       <Grid container>
-        
         <Grid 
           mdOffset={page.logo ? 4 : 2.5} 
           md={page.logo ? 4 : 7} 

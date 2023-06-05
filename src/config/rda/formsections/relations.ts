@@ -1,6 +1,3 @@
-import interestGroups from '../data/interestGroups.json';
-import workingGroups from '../data/workingGroups.json';
-
 const section = {
   id: 'relations',
   title: {

@@ -29,7 +29,11 @@ i18n
 
 export default i18n;
 
-export function lookupLanguageString(obj: LanguageStrings | string): string | undefined {
-  return typeof obj === 'string' ? obj : obj[i18n.language as Language];
+export function lookupLanguageString(obj: LanguageStrings | string | undefined): string | undefined {
+  return obj === undefined ?
+  '' :
+  typeof obj === 'string' ? 
+  obj : 
+  obj[i18n.language as Language];
 }
 

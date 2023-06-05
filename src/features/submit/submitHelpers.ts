@@ -10,14 +10,14 @@ const toBase64 = (file: Blob) => new Promise((resolve, reject) => {
 });
 
 // Type guards
-const isOption = (value: OptionsType | OptionsType[] | string | undefined | null): value is OptionsType =>
+const isOption = (value: OptionsType | OptionsType[] | string | string[] | undefined | null): value is OptionsType =>
   (value as OptionsType) !== undefined && (value as OptionsType).hasOwnProperty('value');
 
-const isOptionArray = (value: OptionsType | OptionsType[] | string | undefined | null): value is OptionsType[] =>
+const isOptionArray = (value: OptionsType | OptionsType[] | string | string[] | undefined | null): value is OptionsType[] =>
   Array.isArray(value as OptionsType[]);
 
 // Value helper function
-const getField = (value: OptionsType | OptionsType[] | string | undefined | null) =>
+const getField = (value: OptionsType | OptionsType[] | string | string[] | undefined | null) =>
   isOptionArray(value) ? 
   value.map(v => v.value) :
   isOption(value) ?

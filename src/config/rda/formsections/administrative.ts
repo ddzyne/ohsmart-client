@@ -49,6 +49,37 @@ const section = {
         nl: 'De datum waarop de data publiek beschikbaar is of is gemaakt. In het geval van een embargoperiode, gebruik de datum waarop deze eindigt.',
       },
     },
+    {
+      type: 'radio',
+      label: 'Test radio',
+      name: 'radiotest',
+      description: {
+        en: 'Select the language for your data',
+        nl: 'Selecteer de taal voor je data',
+      },
+      options: [
+        {label: 'Test1', value: 'test1'},
+        {label: 'Test2', value: 'test2'},
+        {label: 'test3', value: 'test3'},
+        {label: 'test4', value: 'test4'},
+      ],
+    },
+    {
+      type: 'check',
+      label: 'Test check',
+      name: 'checktest',
+      required: true,
+      description: {
+        en: 'Select the language for your data',
+        nl: 'Selecteer de taal voor je data',
+      },
+      options: [
+        {label: 'Test1 met een jantjelang label je weet toch blaat die blaat man je weet', value: 'test1'},
+        {label: 'Test2', value: 'test2'},
+        {label: 'test3', value: 'test3'},
+        {label: 'test4', value: 'test4'},
+      ],
+    },
   ],
 };
 

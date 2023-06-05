@@ -22,8 +22,8 @@ export type OptionsType = {
   extraLabel?: string;
 };
 
-export type Field = TextFieldType | AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType;
-export type InputField = TextFieldType | AutocompleteFieldType;
+export type Field = TextFieldType | AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType | RadioFieldType | CheckFieldType;
+export type InputField = TextFieldType | AutocompleteFieldType | RadioFieldType | CheckFieldType;
 
 export interface TextFieldType {
   type: 'text' | 'datetime-local' | 'date' | 'number';
@@ -111,6 +111,40 @@ export interface RepeatTextFieldType {
   options?: never;
 }
 
+export interface RadioFieldType {
+  type: 'radio';
+  id: string;
+  name: string;
+  label: string | LanguageStrings;
+  value?: string;
+  valid?: never;
+  validation?: never;
+  disabled?: boolean;
+  description?: string | LanguageStrings;
+  required?: never;
+  private?: boolean;
+  options: OptionsType[];
+  multiApiValue?: never;
+  fields?: never;
+}
+
+export interface CheckFieldType {
+  type: 'check';
+  id: string;
+  name: string;
+  label: string | LanguageStrings;
+  value: string[];
+  valid?: boolean | '';
+  validation?: never;
+  disabled?: boolean;
+  description?: string | LanguageStrings;
+  required?: boolean;
+  private?: boolean;
+  options: OptionsType[];
+  multiApiValue?: never;
+  fields?: never;
+}
+
 export interface AutocompleteAPIFieldData {
   arg?: string;
   response: OptionsType[];
@@ -122,22 +156,27 @@ export interface SingleFieldProps {
   sectionIndex: number;
 }
 
-export interface GroupedFieldProps {
+export interface GroupedFieldProps extends Omit<SingleFieldProps, 'field'> {
   field: GroupedFieldType;
-  sectionIndex: number;
 }
 
-export interface TextFieldProps {
+export interface TextFieldProps extends Omit<SingleFieldProps, 'field'> {
   field: TextFieldType;
-  sectionIndex: number;
   groupedFieldId?: string;
   currentField?: number;
   totalFields?: number;
 }
 
-export interface AutocompleteFieldProps {
+export interface RadioFieldProps extends Omit<SingleFieldProps, 'field'> {
+  field: RadioFieldType;
+}
+
+export interface CheckFieldProps extends Omit<SingleFieldProps, 'field'> {
+  field: CheckFieldType;
+}
+
+export interface AutocompleteFieldProps extends Omit<SingleFieldProps, 'field'> {
   field: AutocompleteFieldType;
-  sectionIndex: number;
   isLoading?: boolean;
 }
 
@@ -175,7 +214,7 @@ export interface ApiLinkProps {
 export interface SetFieldPayload {
   sectionIndex: number;
   id: string;
-  value: string | OptionsType | OptionsType[] | null;
+  value: string | string[] | OptionsType | OptionsType[] | null;
   typeaheadApi?: TypeaheadAPI;
 };
 

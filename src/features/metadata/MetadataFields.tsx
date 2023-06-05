@@ -12,10 +12,12 @@ import { DeleteButton, AddButtonText } from './MetadataButtons';
 import { OrcidField, RorField, MultiApiField, GeonamesField, GettyField, SheetsField } from './fields/AutocompleteAPIField';
 import AutocompleteField from './fields/AutocompleteField';
 import TextField from './fields/TextField';
+import { RadioField, CheckField } from './fields/RadioCheckField';
 import { TransitionGroup } from 'react-transition-group';
 import { lookupLanguageString } from '../../app/i18n';
 
-// Memoized Field function, so only the affected field rerenders when form/metadata props change
+// Memoized Field function, so only the affected field rerenders when form/metadata props change.
+// Loads the field specified in the type key
 const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
   return (
     <Grid xs={12} md={6}>
@@ -52,6 +54,8 @@ const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
         <MultiApiField field={field} sectionIndex={sectionIndex} /> :
         null
       ) }
+      {field.type === 'radio' && <RadioField field={field} sectionIndex={sectionIndex} />}
+      {field.type === 'check' && <CheckField field={field} sectionIndex={sectionIndex} />}
     </Grid>
   )
 });
