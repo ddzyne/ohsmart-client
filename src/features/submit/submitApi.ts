@@ -30,9 +30,13 @@ const axiosBaseQuery =
         data, 
         params,
         onUploadProgress: (progressEvent: AxiosProgressEvent) => {
-          // Calculate progress percentage and set state in submitSlice
-          const percentCompleted = progressEvent.total ? Math.round( (progressEvent.loaded * 100) / progressEvent.total ) : 0;
-          store.dispatch(setProgress(percentCompleted));
+          if (data instanceof FormData) {
+            // it's a file!
+            // Calculate progress percentage and set state in fileSlice
+            // TODO Finish this!
+            const percentCompleted = progressEvent.total ? Math.round( (progressEvent.loaded * 100) / progressEvent.total ) : 0;
+            store.dispatch(setProgress(percentCompleted));
+          }
         }
       })
       return { data: result.data }
@@ -53,6 +57,7 @@ export const submitApi = createApi({
   endpoints: (build) => ({
     submitData: build.mutation({
       query: (data) => {
+        console.log(data)
         return ({
           url: 'post',
           method: 'POST',

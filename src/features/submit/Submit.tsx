@@ -9,8 +9,8 @@ import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { getMetadataStatus, getMetadata, resetMetadata, setSectionStatus } from '../metadata/metadataSlice';
-import { getFiles, resetFiles } from '../files/filesSlice';
+import { getMetadataStatus, getMetadata, resetMetadata, setSectionStatus, getSessionId } from '../metadata/metadataSlice';
+import { getFiles, resetFiles, setFileMeta } from '../files/filesSlice';
 import { useSubmitDataMutation } from './submitApi';
 import { getProgress, setProgress } from './submitSlice';
 import { formatFormData } from './submitHelpers';
@@ -23,6 +23,7 @@ import { setNotification } from '../notification/notificationSlice';
 
 const Submit = () => {
   const [submitting, setSubmitting] = useState(false);
+  const sessionId = useAppSelector(getSessionId);
   const selectedFiles = useAppSelector(getFiles);
   const metadataStatus = useAppSelector(getMetadataStatus);
   const metadata = useAppSelector(getMetadata);
@@ -37,13 +38,23 @@ const Submit = () => {
     dispatch(setProgress(undefined));
   }, [isError, isSuccess]);
 
+  // We submit the metadata first. Response and success is saved to the data/isSuccess const. 
+  // If succesful, we can submit the files. So we set a general flag, shouldSubmit, for each file.
+  // The file component then handles file submissions.
   const handleButtonClick = () => {
-    formatFormData(metadata, selectedFiles).then( d => {
-      console.log('submitting');
-      console.log(d);
-      submitData(d) 
-    });
+    const formattedData = formatFormData(sessionId, metadata, selectedFiles);
+    submitData(formattedData);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      selectedFiles.map( file => dispatch(setFileMeta({
+        id: file.id, 
+        type: 'shouldSubmit',
+        value: true,
+      })));
+    }
+  }, [isSuccess])
 
   const resetForm = () => {
     console.log('reset')

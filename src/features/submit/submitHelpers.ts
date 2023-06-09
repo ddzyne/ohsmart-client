@@ -25,11 +25,8 @@ const getField = (value: OptionsType | OptionsType[] | string | string[] | undef
   value.value :
   value;
 
-// Function to rearrange the metadata and files info for submission
-export const formatFormData = async (metadata: SectionType[], files?: SelectedFile[]) => {
-  // First create a FormData object that we will fill
-  let formData = new FormData();
-
+// Function to rearrange the metadata for submission
+export const formatFormData = (sessionId: string, metadata: SectionType[], files?: SelectedFile[]) => {
   // Format the metadata fields
   const formattedMetadata = metadata.map( section => 
     section.fields.map( field => {
@@ -64,11 +61,8 @@ export const formatFormData = async (metadata: SectionType[], files?: SelectedFi
     })
   ).flat();
 
-  // Append metadata fields to FormData object as JSON string
-  formData.append('metadata', JSON.stringify(formattedMetadata));
-
   // Create the file metadata array
-  let fileMetadata = Array.isArray(files) && files.map( f => ({
+  const fileMetadata = Array.isArray(files) && files.map( f => ({
     id: f.id,
     name: f.name,
     lastModified: f.lastModified,
@@ -77,20 +71,26 @@ export const formatFormData = async (metadata: SectionType[], files?: SelectedFi
     process: f.process,
   }));
 
-  // And add it to the FormData
-  formData.append('fileMetadata', JSON.stringify(fileMetadata));
+  return {
+    id: sessionId,
+    metadata: formattedMetadata,
+    fileMetadata: fileMetadata,
+  };
+}
+
+// Function to create a file for submission
+export const formatFormFiles = async (sessionId: string, file: SelectedFile) => {
+  // We submit using multipart form data
+  let formData = new FormData();
 
   // Add the files, by converting their blob url's back to a js File object and adding them to the FormData
-  const fileData = Array.isArray(files) && await Promise.all(
-    files.map(f => 
-      fetch(f.url)
-      .then(r => r.blob())
-      // .then(b => toBase64(b))
-      .then(d => {
-        formData.append(f.id, d);
-      })
-    )
-  );
+  const fileData = await fetch(file.url)
+    .then(result => result.blob())
+    .then(blob => {
+      formData.append('file', blob);
+      formData.append('fileId', file.id);
+      formData.append('formId', sessionId);
+    });
 
   return formData;
 }

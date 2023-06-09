@@ -29,6 +29,9 @@ import { useVerifyFileMutation } from './api/dansVerification';
 import { LightTooltip } from '../generic/Tooltip';
 import { validateFileType } from './filesHelpers';
 import styles from './FilesTable.module.css';
+import { formatFormFiles } from '../submit/submitHelpers';
+import { getSessionId } from '../metadata/metadataSlice';
+import { useSubmitDataMutation } from '../submit/submitApi';
 
 const FilesTable = () => {
   const { t } = useTranslation('files');
@@ -139,6 +142,8 @@ const FileConversion = ({file, valid}: any) => {
 
 const FileTableRow = ({file}: any) => {
   const dispatch = useAppDispatch();
+  const sessionId = useAppSelector(getSessionId);
+  const [submitData, { isUninitialized, isLoading, isSuccess, isError, data, reset }] = useSubmitDataMutation();
 
   // online verification via API... API not working atm.
   // let's not do this for now, takes too long for large files (around 1 min for 10 GB)
@@ -170,6 +175,11 @@ const FileTableRow = ({file}: any) => {
   //     }
   //   }
   // }, [blob]);
+
+  // Start and keep track of upload progress
+  useEffect(() => {
+    file.shouldSubmit && formatFormFiles(sessionId, file).then( d => submitData(d) );
+  }, [file.shouldSubmit])
 
   return (
     <TableRow className={file.valid === false ? styles.invalid : ''}>

@@ -22,6 +22,7 @@ const formSections = require(`../../config/${process.env.REACT_APP_CONFIG_FOLDER
 
 // load the imported form and close all accordion panels by default
 const initialState: InitialStateType = {
+  id: uuidv4(),
   form: formatInitialState(formSections as InitialSectionType[]) as SectionType[],
   panel: '',
 }
@@ -123,6 +124,7 @@ export const metadataSlice = createSlice({
 export const { setField, setMultiApiField, setOpenPanel, setSectionStatus, addField, deleteField, resetMetadata } = metadataSlice.actions;
 
 // Select values from state
+export const getSessionId = (state: RootState) => state.metadata.id;
 export const getMetadata = (state: RootState) => state.metadata.form;
 export const getOpenPanel = (state: RootState) => state.metadata.panel;
 export const getMetadataStatus = (state: RootState) => {

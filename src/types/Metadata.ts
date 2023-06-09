@@ -231,6 +231,7 @@ export interface DeleteFieldPayload {
 };
 
 export type InitialStateType = {
+  id: string;
   form: SectionType[];
   panel: string;
 }
