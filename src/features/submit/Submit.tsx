@@ -41,7 +41,7 @@ const Submit = () => {
     formatFormData(metadata, selectedFiles).then( d => {
       console.log('submitting');
       console.log(d);
-      // submitData(d) 
+      submitData(d) 
     });
   };
 

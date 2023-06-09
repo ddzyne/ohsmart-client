@@ -85,7 +85,6 @@ const FileActionOptions = ({file, type}: OptionProps) => {
       renderInput={(params) => <TextField {...params} label="Select options" />}
       options={type === 'process' ? fileProcessing : fileRoles}
       value={file[type]}
-      disabled={!file.valid}
     />
   )
 }
@@ -139,35 +138,38 @@ const FileConversion = ({file, valid}: any) => {
 }
 
 const FileTableRow = ({file}: any) => {
-  const [blob, setBlob] = useState(null);
   const dispatch = useAppDispatch();
 
   // online verification via API... API not working atm.
-  const [verifyFile, { isUninitialized, isLoading, isSuccess, isError, data, reset }] = useVerifyFileMutation();
+  // let's not do this for now, takes too long for large files (around 1 min for 10 GB)
+  // and slows down the browser by having these files in memory
+
+  // const [blob, setBlob] = useState(null);
+  // const [verifyFile, { isUninitialized, isLoading, isSuccess, isError, data, reset }] = useVerifyFileMutation();
 
   // Convert the file URL back to a File/Blob object
-  useEffect(() => {
-    const fileBlob = fetch(file.url)
-      .then((r: any) => r.blob())
-      .then(b => setBlob(b));
-  }, [file.url]);
+  // useEffect(() => {
+  //   const fileBlob = fetch(file.url)
+  //     .then((r: any) => r.blob())
+  //     .then(b => setBlob(b));
+  // }, [file.url]);
 
-  // Then perform some validation on the file header
-  useEffect(() => {
-    if (blob) {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(blob);
-      reader.onloadend = (e: any) => {
-        const arr = (new Uint8Array(e.target.result)).subarray(0, 8);
-        const hexHeader = [...arr].map(x => x.toString(16).padStart(2, "0")).join('');
-        const valid = validateFileType(hexHeader);
-        // offline check
-        dispatch(setFileMeta({id: file.id, type: 'valid', value: valid === file.type}));
-        // online check. Probably not with the hexHeader, but API broken atm.
-        verifyFile({type: file.type, data: hexHeader});
-      }
-    }
-  }, [blob]);
+  // // Then perform some validation on the file header
+  // useEffect(() => {
+  //   if (blob) {
+  //     const reader = new FileReader();
+  //     reader.readAsArrayBuffer(blob);
+  //     reader.onloadend = (e: any) => {
+  //       const arr = (new Uint8Array(e.target.result)).subarray(0, 8);
+  //       const hexHeader = [...arr].map(x => x.toString(16).padStart(2, "0")).join('');
+  //       const valid = validateFileType(hexHeader);
+  //       // offline check
+  //       dispatch(setFileMeta({id: file.id, type: 'valid', value: valid === file.type}));
+  //       // online check. Probably not with the hexHeader, but API broken atm.
+  //       verifyFile({type: file.type, data: hexHeader});
+  //     }
+  //   }
+  // }, [blob]);
 
   return (
     <TableRow className={file.valid === false ? styles.invalid : ''}>

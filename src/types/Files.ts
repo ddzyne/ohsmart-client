@@ -20,6 +20,7 @@ export interface SelectedFile {
   type: string;
   location: FileLocation;
   url: string;
+  lastModified: number;
   private?: boolean;
   role?: FileActions;
   process?: FileActions[];

@@ -2,6 +2,7 @@ import { SelectedFile } from '../../types/Files';
 import { SectionType, OptionsType } from '../../types/Metadata';
 
 // Function to convert file blob to Base64 encoded string that can be submitted as JSON
+// Not used atm, we submit using Formdata, but leaving it here just in case we need it later on
 const toBase64 = (file: Blob) => new Promise((resolve, reject) => {
   const reader = new FileReader();
   reader.readAsDataURL(file);
@@ -26,7 +27,10 @@ const getField = (value: OptionsType | OptionsType[] | string | string[] | undef
 
 // Function to rearrange the metadata and files info for submission
 export const formatFormData = async (metadata: SectionType[], files?: SelectedFile[]) => {
-  // First format the metadata fields
+  // First create a FormData object that we will fill
+  let formData = new FormData();
+
+  // Format the metadata fields
   const formattedMetadata = metadata.map( section => 
     section.fields.map( field => {
       const fieldValue = {
@@ -60,26 +64,33 @@ export const formatFormData = async (metadata: SectionType[], files?: SelectedFi
     })
   ).flat();
 
-  // Add the files, by converting their blob url's back to a js File object and then converting that to a Base64 string
+  // Append metadata fields to FormData object as JSON string
+  formData.append('metadata', JSON.stringify(formattedMetadata));
+
+  // Create the file metadata array
+  let fileMetadata = Array.isArray(files) && files.map( f => ({
+    id: f.id,
+    name: f.name,
+    lastModified: f.lastModified,
+    private: f.private,
+    role: f.role,
+    process: f.process,
+  }));
+
+  // And add it to the FormData
+  formData.append('fileMetadata', JSON.stringify(fileMetadata));
+
+  // Add the files, by converting their blob url's back to a js File object and adding them to the FormData
   const fileData = Array.isArray(files) && await Promise.all(
-    files.map((f) => 
+    files.map(f => 
       fetch(f.url)
       .then(r => r.blob())
-      .then(b => toBase64(b))
+      // .then(b => toBase64(b))
       .then(d => {
-        return ({
-          file: d,
-          name: f.name,
-          private: f.private,
-          role: f.role,
-          process: f.process,
-        })
+        formData.append(f.id, d);
       })
     )
   );
 
-  return {
-    metadata: formattedMetadata,
-    files: fileData,
-  };
+  return formData;
 }

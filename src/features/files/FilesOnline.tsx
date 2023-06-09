@@ -39,6 +39,7 @@ const FilesOnline = () => {
       type: 'tbd',
       location: 'online' as FileLocation,
       url: encodeURIComponent(onlineFile),
+      lastModified: 0,
     }
     dispatch(addFiles([fileToSubmit]));
     setOnlineFile('');

@@ -62,7 +62,8 @@ const FilesUpload = () => {
       ({
         id: uuidv4(),
         name: file.name,
-        size: file.size, 
+        size: file.size,
+        lastModified: file.lastModified,
         type: file.name.substring(file.name.lastIndexOf('.') + 1),
         location: 'local' as FileLocation,
         url: URL.createObjectURL(file),
