@@ -27,22 +27,7 @@ const FilesUpload = () => {
   const dispatch = useAppDispatch();
   const currentFiles = useAppSelector(getFiles);
   const { t } = useTranslation('files');  
-  const {data, isFetching, isLoading} = useFetchSimpleListQuery<DansSimpleListQueryResponse>(null);
-
-  // const {data, isFetching, isLoading} = useFetchDansFormatsQuery<DansFilesQueryResponse>(null);
-  // Let's convert to API result to a flat array first.
-  // Then reduce that to something Dropzone can use.
-  /*const mimeTypes = data && data.map( d => 
-    d.format.map( item => 
-      item['mime-type'].map( mime => 
-        ({ mime: mime, ext: `.${item['file-extension']}` })
-      ).flat()
-    ).flat()
-  ).flat()
-  .reduce((result: any, { mime, ext }: any) => {
-    result[mime] = result[mime] ? [...result[mime], ext] : [ext];
-    return result;
-  }, {});*/
+  const { data, isFetching, isLoading } = useFetchSimpleListQuery<DansSimpleListQueryResponse>(null);
 
   // Validate added files, needs to be synchronous, so no API calls possible here
   const fileValidator = (file: File) => {

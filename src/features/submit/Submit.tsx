@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getMetadataStatus, getMetadata, resetMetadata, setSectionStatus, getSessionId } from '../metadata/metadataSlice';
-import { getFiles, resetFiles, setFileMeta } from '../files/filesSlice';
+import { getFiles, resetFiles } from '../files/filesSlice';
 import { useSubmitDataMutation } from './submitApi';
 import { getProgress, setProgress } from './submitSlice';
 import { formatFormData } from './submitHelpers';
@@ -23,12 +23,12 @@ import { setNotification } from '../notification/notificationSlice';
 
 const Submit = () => {
   const [submitting, setSubmitting] = useState(false);
-  const sessionId = useAppSelector(getSessionId);
   const selectedFiles = useAppSelector(getFiles);
   const metadataStatus = useAppSelector(getMetadataStatus);
   const metadata = useAppSelector(getMetadata);
-  const progress = useAppSelector(getProgress);
   const dispatch = useAppDispatch();
+  const sessionId = useAppSelector(getSessionId);
+  const progress = selectedFiles.reduce( (n, {submitProgress}) => n + (submitProgress || 0), 0) / selectedFiles.length || undefined;
   const { t } = useTranslation('submit');
 
   const [submitData, { isUninitialized, isLoading, isSuccess, isError, data, reset }] = useSubmitDataMutation();
@@ -38,23 +38,11 @@ const Submit = () => {
     dispatch(setProgress(undefined));
   }, [isError, isSuccess]);
 
-  // We submit the metadata first. Response and success is saved to the data/isSuccess const. 
-  // If succesful, we can submit the files. So we set a general flag, shouldSubmit, for each file.
-  // The file component then handles file submissions.
   const handleButtonClick = () => {
-    const formattedData = formatFormData(sessionId, metadata, selectedFiles);
-    submitData(formattedData);
+    formatFormData(sessionId, metadata, selectedFiles).then( d => {
+      submitData(d);
+    });
   };
-
-  useEffect(() => {
-    if (isSuccess) {
-      selectedFiles.map( file => dispatch(setFileMeta({
-        id: file.id, 
-        type: 'shouldSubmit',
-        value: true,
-      })));
-    }
-  }, [isSuccess])
 
   const resetForm = () => {
     console.log('reset')

@@ -29,9 +29,9 @@ import { useVerifyFileMutation } from './api/dansVerification';
 import { LightTooltip } from '../generic/Tooltip';
 import { validateFileType } from './filesHelpers';
 import styles from './FilesTable.module.css';
-import { formatFormFiles } from '../submit/submitHelpers';
 import { getSessionId } from '../metadata/metadataSlice';
-import { useSubmitDataMutation } from '../submit/submitApi';
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
 
 const FilesTable = () => {
   const { t } = useTranslation('files');
@@ -142,72 +142,53 @@ const FileConversion = ({file, valid}: any) => {
 
 const FileTableRow = ({file}: any) => {
   const dispatch = useAppDispatch();
-  const sessionId = useAppSelector(getSessionId);
-  const [submitData, { isUninitialized, isLoading, isSuccess, isError, data, reset }] = useSubmitDataMutation();
-
-  // online verification via API... API not working atm.
-  // let's not do this for now, takes too long for large files (around 1 min for 10 GB)
-  // and slows down the browser by having these files in memory
-
-  // const [blob, setBlob] = useState(null);
-  // const [verifyFile, { isUninitialized, isLoading, isSuccess, isError, data, reset }] = useVerifyFileMutation();
-
-  // Convert the file URL back to a File/Blob object
-  // useEffect(() => {
-  //   const fileBlob = fetch(file.url)
-  //     .then((r: any) => r.blob())
-  //     .then(b => setBlob(b));
-  // }, [file.url]);
-
-  // // Then perform some validation on the file header
-  // useEffect(() => {
-  //   if (blob) {
-  //     const reader = new FileReader();
-  //     reader.readAsArrayBuffer(blob);
-  //     reader.onloadend = (e: any) => {
-  //       const arr = (new Uint8Array(e.target.result)).subarray(0, 8);
-  //       const hexHeader = [...arr].map(x => x.toString(16).padStart(2, "0")).join('');
-  //       const valid = validateFileType(hexHeader);
-  //       // offline check
-  //       dispatch(setFileMeta({id: file.id, type: 'valid', value: valid === file.type}));
-  //       // online check. Probably not with the hexHeader, but API broken atm.
-  //       verifyFile({type: file.type, data: hexHeader});
-  //     }
-  //   }
-  // }, [blob]);
-
-  // Start and keep track of upload progress
-  useEffect(() => {
-    file.shouldSubmit && formatFormFiles(sessionId, file).then( d => submitData(d) );
-  }, [file.shouldSubmit])
 
   return (
-    <TableRow className={file.valid === false ? styles.invalid : ''}>
-      <TableCell sx={{p: 0, pl: 1}}>
-        <IconButton color="primary" size="small" onClick={() => dispatch(removeFile(file))}>
-          <DeleteIcon fontSize="small" />
-        </IconButton>
-      </TableCell>
-      <TableCell sx={{ p: 1, textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200, overflow: 'hidden'}}>
-        {file.name}
-      </TableCell>
-      <TableCell sx={{p: 1}}>
-        {(file.size/1048576).toFixed(2)} MB
-      </TableCell>
-      <TableCell sx={{p: 1}}>
-        <FileConversion file={file} />
-      </TableCell>
-      <TableCell sx={{p: 0}}>
-        <Checkbox 
-          checked={file.private}
-          onChange={e => dispatch(setFileMeta({id: file.id, type: 'private', value: e.target.checked}))}
-          disabled={file.valid === false}
-        />
-      </TableCell>
-      <TableCell sx={{p: 1}}><FileActionOptions type="role" file={file} /></TableCell>
-      <TableCell sx={{p: 1}}><FileActionOptions type="process" file={file}  /></TableCell>
-    </TableRow>
+    <>
+      <TableRow className={file.valid === false ? styles.invalid : ''}>
+        <TableCell sx={{p: 0, pl: 1, borderBottom: 0}}>
+          <IconButton color="primary" size="small" onClick={() => dispatch(removeFile(file))}>
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </TableCell>
+        <TableCell sx={{ p: 1, textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200, overflow: 'hidden', borderBottom: 0}}>
+          {file.name}
+        </TableCell>
+        <TableCell sx={{p: 1, borderBottom: 0}}>
+          {(file.size/1048576).toFixed(2)} MB
+        </TableCell>
+        <TableCell sx={{p: 1, borderBottom: 0}}>
+          <FileConversion file={file} />
+        </TableCell>
+        <TableCell sx={{p: 0, borderBottom: 0}}>
+          <Checkbox 
+            checked={file.private}
+            onChange={e => dispatch(setFileMeta({id: file.id, type: 'private', value: e.target.checked}))}
+            disabled={file.valid === false}
+          />
+        </TableCell>
+        <TableCell sx={{p: 1, borderBottom: 0}}><FileActionOptions type="role" file={file} /></TableCell>
+        <TableCell sx={{p: 1, borderBottom: 0}}><FileActionOptions type="process" file={file}  /></TableCell>
+      </TableRow>
+      <UploadProgress progress={file.submitProgress} />
+    </>
   )
 }
+
+const UploadProgress = ({progress}: any) => 
+  <TableRow>
+    <TableCell colSpan={7} sx={{pt: 0, pb: progress ? 1 : 0}}>
+      {progress && 
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <Box sx={{ width: '100%', mr: 1 }}>
+            <LinearProgress variant="determinate" value={progress || 0} />
+          </Box>
+          <Box sx={{ minWidth: 35 }}>
+            <Typography variant="body2" color="text.secondary">{`${progress}%`}</Typography>
+          </Box>
+        </Box>
+      }
+    </TableCell>
+  </TableRow>
 
 export default FilesTable;

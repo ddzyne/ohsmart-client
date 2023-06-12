@@ -5,7 +5,7 @@ export interface FileActions {
   value: string;
 }
 
-export type FileActionType = 'process' | 'role' | 'private' | 'valid' | 'shouldSubmit';
+export type FileActionType = 'process' | 'role' | 'private' | 'valid' | 'submitProgress' | 'submitSuccess';
 
 export interface ReduxFileActions {
   id: string;
@@ -25,7 +25,6 @@ export interface SelectedFile {
   role?: FileActions;
   process?: FileActions[];
   valid?: boolean;
-  shouldSubmit?: boolean;
   submitProgress?: number;
   submitSuccess?: boolean;
 }
