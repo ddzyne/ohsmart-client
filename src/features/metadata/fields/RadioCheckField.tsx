@@ -5,16 +5,18 @@ import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { setField } from '../metadataSlice';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { lookupLanguageString } from '../../../app/i18n';
 import type { RadioFieldProps, CheckFieldProps } from '../../../types/Metadata';
+import { getIsSubmitting } from '../../submit/submitSlice';
 
 // List of radio button options. First value of the options is selected by default, so no need for status checking.
 export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
-  const dispatch = useAppDispatch();;
+  const dispatch = useAppDispatch();
+  const isSubmitting = useAppSelector(getIsSubmitting);
 
   return (
     <FormControl>
@@ -37,7 +39,9 @@ export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
             key={option.value} 
             value={option.value} 
             control={<Radio sx={{mr: 0.15}}/>} 
-            label={lookupLanguageString(option.label)} />
+            label={lookupLanguageString(option.label)} 
+            disabled={isSubmitting}
+          />
         )}
       </RadioGroup>
     </FormControl>
@@ -48,6 +52,7 @@ export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
 export const CheckField = ({field, sectionIndex}: CheckFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
+  const isSubmitting = useAppSelector(getIsSubmitting);
 
   return (
     <FormControl
@@ -72,7 +77,9 @@ export const CheckField = ({field, sectionIndex}: CheckFieldProps) => {
                   id: field.id,
                   value: e.target.checked ? [...field.value || '', e.target.name] : field.value.filter( item => item !== e.target.name),
                 }))} 
-                name={option.value} />
+                name={option.value}
+                disabled={isSubmitting}
+              />
             }
             label={lookupLanguageString(option.label)}
           />

@@ -31,7 +31,7 @@ export const StatusIcon = ({status, title, subtitle, margin}: StatusIconProps) =
             <Typography 
               sx={{
                 fontSize: 12, 
-                pt: 0,
+                pt: title ? 0 : 2,
                 pl: 2,
                 pr: 2,
                 pb: 2,

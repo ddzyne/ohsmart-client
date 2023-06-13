@@ -73,7 +73,7 @@ const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
           subheader={field.description && lookupLanguageString(field.description)} 
           titleTypographyProps={{fontSize: 16}}
           subheaderTypographyProps={{fontSize: 12}}
-          sx={{pb: 0, pl: 3, pr: 3}} 
+          sx={{pb: 0, pl: 2.25, pr: 2.25}} 
         />
         {fieldArray &&
           <CardContent>
@@ -91,7 +91,7 @@ const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
                       mt: i > 0 ? 1 : 0
                     }}
                   >
-                    <Grid container sx={{flex: 1}}>
+                    <Grid container sx={{flex: 1}} spacing={2}>
                       {groupedField.map( f => 
                         <SingleField 
                           key={f.id} 

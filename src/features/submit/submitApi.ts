@@ -2,7 +2,6 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn, FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import axios from 'axios'
 import type { AxiosRequestConfig, AxiosError, AxiosProgressEvent } from 'axios'
-import { setProgress } from './submitSlice';
 import { setFileMeta } from '../files/filesSlice';
 import { store } from '../../app/store';
 
@@ -79,9 +78,11 @@ export const submitApi = createApi({
         console.log(metadataResult)
         console.log(filesResults)
 
-        return metadataResult.data
-          ? { data: metadataResult.data }
-          : { error: metadataResult.error as FetchBaseQueryError }
+        const fileErrors = filesResults.filter( (res: any) => res.error )
+
+        return metadataResult.data && fileErrors.length === 0 ?
+          { data: { metadataResult: metadataResult.data, filesResults: filesResults && filesResults.map( (result: any) => result.data ) } } :
+          { error: fileErrors.map( (error: any) => error as FetchBaseQueryError ) }
       },
     }),
   }),

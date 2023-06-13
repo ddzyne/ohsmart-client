@@ -2,18 +2,20 @@ import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useTranslation } from 'react-i18next';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { StatusIcon } from '../../generic/Icons';
 import { AddButton, DeleteButton } from '../MetadataButtons';
 import { setField } from '../metadataSlice';
 import { getStatus } from '../metadataHelpers';
 import type { TextFieldProps } from '../../../types/Metadata';
 import { lookupLanguageString } from '../../../app/i18n';
+import { getIsSubmitting } from '../../submit/submitSlice';
 
 const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: TextFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
+  const isSubmitting = useAppSelector(getIsSubmitting);
 
   return (
     <Stack direction="row" alignItems="start">
@@ -28,7 +30,7 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
         multiline={field.multiline}
         rows={field.multiline ? 4 : ''}
         value={field.value}
-        disabled={field.disabled}
+        disabled={field.disabled || isSubmitting}
         onChange={(e) => dispatch(setField({
           sectionIndex: sectionIndex,
           id: field.id,

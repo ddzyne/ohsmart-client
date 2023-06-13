@@ -10,7 +10,7 @@ import { useFetchRorByNameQuery } from '../api/ror';
 import { useFetchGeonamesFreeTextQuery } from '../api/geonames';
 import { useFetchGettyTermsQuery } from '../api/getty';
 import { useFetchSheetsQuery } from '../api/sheets';
-import { useAppDispatch } from '../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { setField, setMultiApiField } from '../metadataSlice';
@@ -27,6 +27,7 @@ import Tooltip from '@mui/material/Tooltip';
 import LaunchIcon from '@mui/icons-material/Launch';
 import InputAdornment from '@mui/material/InputAdornment';
 import AutocompleteField from './AutocompleteField';
+import { getIsSubmitting } from '../../submit/submitSlice';
 
 /*
  *  Type ahead fields for different API endpoints
@@ -119,7 +120,6 @@ export const GettyField = ({field, sectionIndex}: AutocompleteFieldProps) => {
 // Google Sheets field, gets all values at once
 // So just use a simple AutocompleteField with options fetched from the API
 export const SheetsField = ({field, sectionIndex}: AutocompleteFieldProps) => {
-  console.log(field)
   // Fetch data right away
   const {data, isFetching, isLoading} = useFetchSheetsQuery<QueryReturnType>(field.sheetOptions);
 
@@ -137,6 +137,7 @@ export const SheetsField = ({field, sectionIndex}: AutocompleteFieldProps) => {
 export const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation('metadata');
+  const isSubmitting = useAppSelector(getIsSubmitting);
 
   return (
     <Stack direction="row" alignItems="start">
@@ -160,9 +161,10 @@ export const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => 
             }))
           }}
           value={field.multiApiValue}
+          disabled={isSubmitting}
         >
           {Array.isArray(field.options) && (field.options as TypeaheadAPI[]).map( option => 
-            <MenuItem value={option}>{t(option)}</MenuItem>
+            <MenuItem key={option} value={option}>{t(option)}</MenuItem>
           )}
         </Select>
       </FormControl>
@@ -200,6 +202,7 @@ const AutocompleteAPIField = ({
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
   const apiValue = (Array.isArray(field.options) ? field.multiApiValue : field.options) as TypeaheadAPI;
+  const isSubmitting = useAppSelector(getIsSubmitting);
 
   return (
     <Stack direction="row" alignItems="center" sx={{flex: 1}}>
@@ -269,6 +272,7 @@ const AutocompleteAPIField = ({
             }
           </li>
         }
+        disabled={isSubmitting}
       />
       <StatusIcon 
         margin="l" 

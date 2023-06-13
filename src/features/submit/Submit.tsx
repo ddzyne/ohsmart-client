@@ -12,7 +12,7 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getMetadataStatus, getMetadata, resetMetadata, setSectionStatus, getSessionId } from '../metadata/metadataSlice';
 import { getFiles, resetFiles } from '../files/filesSlice';
 import { useSubmitDataMutation } from './submitApi';
-import { getProgress, setProgress } from './submitSlice';
+import { setIsSubmitting } from './submitSlice';
 import { formatFormData } from './submitHelpers';
 import { useTranslation } from 'react-i18next';
 import type { SubmitErrorProps } from '../../types/Submit';
@@ -33,19 +33,16 @@ const Submit = () => {
 
   const [submitData, { isUninitialized, isLoading, isSuccess, isError, data, reset }] = useSubmitDataMutation();
 
-  useEffect(() => {
-    // reset progress bar on error and success
-    dispatch(setProgress(undefined));
-  }, [isError, isSuccess]);
-
   const handleButtonClick = () => {
     formatFormData(sessionId, metadata, selectedFiles).then( d => {
+      dispatch(setIsSubmitting(true));
       submitData(d);
     });
   };
 
   const resetForm = () => {
     console.log('reset')
+    dispatch(setIsSubmitting(false));
     dispatch(resetMetadata());
     dispatch(resetFiles());
     dispatch(setSectionStatus(null));

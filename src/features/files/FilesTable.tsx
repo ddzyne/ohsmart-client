@@ -32,6 +32,7 @@ import styles from './FilesTable.module.css';
 import { getSessionId } from '../metadata/metadataSlice';
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
+import { getIsSubmitting } from '../submit/submitSlice';
 
 const FilesTable = () => {
   const { t } = useTranslation('files');
@@ -70,6 +71,7 @@ interface OptionProps {
 
 const FileActionOptions = ({file, type}: OptionProps) => {
   const dispatch = useAppDispatch();
+  const isSubmitting = useAppSelector(getIsSubmitting);
 
   return (
     <Autocomplete
@@ -88,6 +90,7 @@ const FileActionOptions = ({file, type}: OptionProps) => {
       renderInput={(params) => <TextField {...params} label="Select options" />}
       options={type === 'process' ? fileProcessing : fileRoles}
       value={file[type]}
+      disabled={isSubmitting}
     />
   )
 }
@@ -142,12 +145,13 @@ const FileConversion = ({file, valid}: any) => {
 
 const FileTableRow = ({file}: any) => {
   const dispatch = useAppDispatch();
+  const isSubmitting = useAppSelector(getIsSubmitting);
 
   return (
     <>
       <TableRow className={file.valid === false ? styles.invalid : ''}>
         <TableCell sx={{p: 0, pl: 1, borderBottom: 0}}>
-          <IconButton color="primary" size="small" onClick={() => dispatch(removeFile(file))}>
+          <IconButton color="primary" size="small" onClick={() => !isSubmitting && dispatch(removeFile(file))} disabled={isSubmitting}>
             <DeleteIcon fontSize="small" />
           </IconButton>
         </TableCell>
@@ -164,7 +168,7 @@ const FileTableRow = ({file}: any) => {
           <Checkbox 
             checked={file.private}
             onChange={e => dispatch(setFileMeta({id: file.id, type: 'private', value: e.target.checked}))}
-            disabled={file.valid === false}
+            disabled={file.valid === false || isSubmitting}
           />
         </TableCell>
         <TableCell sx={{p: 1, borderBottom: 0}}><FileActionOptions type="role" file={file} /></TableCell>

@@ -1,24 +1,33 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 
-// load the imported form and close all accordion panels by default
 const initialState = {
-  progress: undefined
+  isSubmitting: false,
+  metadataError: false,
+  fileError: false,
 }
 
 export const submitSlice = createSlice({
   name: 'submit',
   initialState,
   reducers: {
-    setProgress: (state, action: PayloadAction<any>) => {
-      state.progress = action.payload;
+    setIsSubmitting: (state, action: PayloadAction<boolean>) => {
+      state.isSubmitting = action.payload;
+    },
+    setMetadataError: (state, action: PayloadAction<any>) => {
+      state.metadataError = action.payload;
+    },
+    setFileError: (state, action: PayloadAction<any>) => {
+      state.fileError = action.payload;
     },
   }
 });
 
-export const { setProgress } = submitSlice.actions;
+export const { setIsSubmitting, setMetadataError, setFileError } = submitSlice.actions;
 
 // Select values from state
-export const getProgress = (state: RootState) => state.submit.progress;
+export const getIsSubmitting = (state: RootState) => state.submit.isSubmitting;
+export const getMetadataError = (state: RootState) => state.submit.metadataError;
+export const getFileError = (state: RootState) => state.submit.fileError;
 
 export default submitSlice.reducer;
