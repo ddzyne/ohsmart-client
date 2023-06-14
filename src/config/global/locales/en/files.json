@@ -15,11 +15,15 @@
   "private": "Private",
   "role": "Role",
   "processing": "Processing",
+  "selectOption": "Pick role",
+  "selectOptions": "Select options",
   "fileTypeError": "Sorry, the following files cannot be added",
   "noConversion": "File will be uploaded as-is",
   "conversion": "File will be converted to: {{type}}",
   "invalid": "This file does not seem to be a valid {{type}} and won't be uploaded",
   "noConversionHead": "Good to go!",
   "conversionHead": "{{type}} is a non-preferred file type",
-  "invalidHead": "Invalid file type!"
+  "invalidHead": "Invalid file type!",
+  "fileRenamed": "A file with the same name has already been added. We've renamed your file to {{file}}",
+  "fileAlreadyAdded": "File {{file}} has already been added"
 }

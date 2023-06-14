@@ -23,6 +23,7 @@ import type { FileLocation, SelectedFile, RejectedFilesProps, DansFilesQueryResp
 import { v4 as uuidv4 } from 'uuid';
 import { useFetchDansFormatsQuery, useFetchSimpleListQuery } from './api/dansFormats';
 import { getIsSubmitting } from '../submit/submitSlice';
+import { setNotification } from '../notification/notificationSlice';
 
 const FilesUpload = () => {
   const dispatch = useAppDispatch();
@@ -34,27 +35,58 @@ const FilesUpload = () => {
   // Validate added files, needs to be synchronous, so no API calls possible here
   const fileValidator = (file: File) => {
     // No duplicate files
-    if (currentFiles.find(f => f.name === file.name && f.size === file.size)) {
+    const extensionIndex = file.name.lastIndexOf('.');
+    const baseName = file.name.slice(0, extensionIndex);
+    const extension = file.name.slice(extensionIndex);
+    if (currentFiles.find(f => {
+      const extensionIndexCurrent = f.name.lastIndexOf('.');
+      const baseNameCurrent = f.name.slice(0, extensionIndexCurrent);
+      const extensionCurrent = f.name.slice(extensionIndexCurrent);
+      return baseNameCurrent.indexOf(baseName) !== -1 && extension === extensionCurrent && f.size === file.size;
+    })) {
       return {
         code: "file-exists",
-        message: `File ${file.name} has already been added`
+        message: t('fileAlreadyAdded', {file: file.name}),
       };
     }
     return null;
   }
 
+
   const onDrop = async (acceptedFiles: File[]) => {
+    // Check if a file with the same name has been added; if so, rename to (1), (2), etc
     // Transform the file to a file blob URL so we can save it to the Redux store
-    const serializedFiles = acceptedFiles.map( (file, i) => 
-      ({
+    const serializedFiles = acceptedFiles.map( (file, i) => {
+      const fileExists = currentFiles.find(f => f.name === file.name);
+      // Logic to rename files to the next sequential number
+      let updatedFile = file.name;
+      if (fileExists) {
+        let sequentialNumber = 0;
+        while (currentFiles.find(f => f.name === updatedFile)) {
+          sequentialNumber++;
+          const extensionIndex = file.name.lastIndexOf('.');
+          const baseName = file.name.slice(0, extensionIndex);
+          const extension = file.name.slice(extensionIndex);
+          updatedFile = `${baseName}(${sequentialNumber})${extension}`;
+        }
+
+        // Set a notification that file has been renamed
+        dispatch(setNotification({ message: t('fileRenamed', {file: updatedFile}), type: 'info' }));
+      }
+
+      const fileName = fileExists ? updatedFile : file.name;
+
+      return ({
         id: uuidv4(),
-        name: file.name,
+        name: fileName,
         size: file.size,
         lastModified: file.lastModified,
         type: file.name.substring(file.name.lastIndexOf('.') + 1),
         location: 'local' as FileLocation,
         url: URL.createObjectURL(file),
-      }));    
+      });    
+    });
+      
     dispatch(addFiles(serializedFiles));
   };
 

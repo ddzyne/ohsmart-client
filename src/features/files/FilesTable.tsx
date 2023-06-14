@@ -72,6 +72,7 @@ interface OptionProps {
 const FileActionOptions = ({file, type}: OptionProps) => {
   const dispatch = useAppDispatch();
   const isSubmitting = useAppSelector(getIsSubmitting);
+  const { t } = useTranslation('files');
 
   return (
     <Autocomplete
@@ -87,7 +88,7 @@ const FileActionOptions = ({file, type}: OptionProps) => {
           })
         )
       }
-      renderInput={(params) => <TextField {...params} label="Select options" />}
+      renderInput={(params) => <TextField {...params} label={t(type === 'process' ? 'selectOptions' : 'selectOption')} />}
       options={type === 'process' ? fileProcessing : fileRoles}
       value={file[type]}
       disabled={isSubmitting}
@@ -155,7 +156,7 @@ const FileTableRow = ({file}: any) => {
             <DeleteIcon fontSize="small" />
           </IconButton>
         </TableCell>
-        <TableCell sx={{ p: 1, textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: 200, overflow: 'hidden', borderBottom: 0}}>
+        <TableCell sx={{ p: 1, minWidth: 150, maxWidth: 200, wordBreak: 'break-all', borderBottom: 0}}>
           {file.name}
         </TableCell>
         <TableCell sx={{p: 1, borderBottom: 0}}>
@@ -171,8 +172,8 @@ const FileTableRow = ({file}: any) => {
             disabled={file.valid === false || isSubmitting}
           />
         </TableCell>
-        <TableCell sx={{p: 1, borderBottom: 0}}><FileActionOptions type="role" file={file} /></TableCell>
-        <TableCell sx={{p: 1, borderBottom: 0}}><FileActionOptions type="process" file={file}  /></TableCell>
+        <TableCell sx={{p: 1, borderBottom: 0, minWidth: 150}}><FileActionOptions type="role" file={file} /></TableCell>
+        <TableCell sx={{p: 1, borderBottom: 0, minWidth: 150}}><FileActionOptions type="process" file={file}  /></TableCell>
       </TableRow>
       <UploadProgress progress={file.submitProgress} />
     </>
