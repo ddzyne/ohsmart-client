@@ -14,17 +14,19 @@ const axiosBaseQuery =
       method: AxiosRequestConfig['method']
       data?: AxiosRequestConfig['data']
       params?: AxiosRequestConfig['params']
+      headers?: AxiosRequestConfig['headers']
     },
     unknown,
     unknown
   > =>
-  async ({ url, method, data, params }) => {
+  async ({ url, method, data, params, headers }) => {
     try {
       const result = await axios({ 
         url: baseUrl + url, 
         method, 
         data, 
         params,
+        headers,
         onUploadProgress: (progressEvent: AxiosProgressEvent) => {
           if (data instanceof FormData) {
             // it's a file!
@@ -52,7 +54,7 @@ const axiosBaseQuery =
 
 export const submitApi = createApi({
   reducerPath: 'submitApi',
-  baseQuery: axiosBaseQuery({ baseUrl: 'https://httpbin.org/' }),
+  baseQuery: axiosBaseQuery({ baseUrl: 'https://utility.packaging.dataverse.tk/inbox/' }),
   endpoints: (build) => ({
     submitData: build.mutation({
       // Custom query for chaining Post functions
@@ -60,9 +62,12 @@ export const submitApi = createApi({
       async queryFn(arg, queryApi, extraOptions, fetchWithBQ) {
         // First post the metadata
         const metadataResult = await fetchWithBQ({
-          url: 'post',
+          url: 'metadata',
           method: 'POST',
           data: arg.metadata,
+          headers: {
+            Authorization: 'Bearer D@NS-ei-2023'
+          },
         })
 
         if (metadataResult.error)
@@ -70,9 +75,12 @@ export const submitApi = createApi({
 
         // No errors, so let's post the files if there are any
         const filesResults = arg.files && await Promise.all(arg.files.map((file: any) => fetchWithBQ({
-          url: 'post',
+          url: 'file',
           method: 'POST',
           data: file,
+          headers: {
+            Authorization: 'Bearer D@NS-ei-2023'
+          },
         })));
 
         console.log(metadataResult)

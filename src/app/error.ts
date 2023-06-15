@@ -12,7 +12,7 @@ export const rtkQueryErrorLogger: Middleware =
       console.warn('We got a rejected action!')
       console.log(action)
       // Convert the error to a string, probably is one already, but just in case
-      const error = JSON.stringify(action.payload.error || action.payload.data);
+      const error = JSON.stringify(action.payload.error || action.payload.data || action.payload);
       api.dispatch(setNotification({ message: error, type: 'error' }));
     }
 

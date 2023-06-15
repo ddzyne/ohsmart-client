@@ -73,7 +73,7 @@ export const formatFormData = async (sessionId: string, metadata: SectionType[],
         let formData = new FormData();
         formData.append('file', blob);
         formData.append('fileId', file.id);
-        formData.append('formId', sessionId);
+        formData.append('metadataId', sessionId);
         return formData;
       })
     )
@@ -83,7 +83,7 @@ export const formatFormData = async (sessionId: string, metadata: SectionType[],
     metadata: {
       id: sessionId,
       metadata: formattedMetadata,
-      fileMetadata: fileMetadata,
+      "file-metadata": fileMetadata,
     },
     files: fileData,
   };
