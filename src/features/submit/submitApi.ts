@@ -62,11 +62,13 @@ export const submitApi = createApi({
       async queryFn(arg, queryApi, extraOptions, fetchWithBQ) {
         // First post the metadata
         const metadataResult = await fetchWithBQ({
-          url: 'metadata',
+          url: 'metadata?repo_target=dar.dans.knaw.nl',
           method: 'POST',
           data: arg.metadata,
           headers: {
-            Authorization: 'Bearer D@NS-ei-2023'
+            Authorization: 'Bearer D@NS-ei-2023',
+            'target-username': 'user001',
+            'target-password': 'user001',
           },
         })
 
@@ -75,11 +77,13 @@ export const submitApi = createApi({
 
         // No errors, so let's post the files if there are any
         const filesResults = arg.files && await Promise.all(arg.files.map((file: any) => fetchWithBQ({
-          url: 'file',
+          url: 'file?repo_target=dar.dans.knaw.nl',
           method: 'POST',
           data: file,
           headers: {
-            Authorization: 'Bearer D@NS-ei-2023'
+            Authorization: 'Bearer D@NS-ei-2023',
+            'target-username': 'user001',
+            'target-password': 'user001',
           },
         })));
 
