@@ -77,7 +77,7 @@ export const submitApi = createApi({
 
         // No errors, so let's post the files if there are any
         const filesResults = arg.files && await Promise.all(arg.files.map((file: any) => fetchWithBQ({
-          url: 'file?repo_target=dar.dans.knaw.nl',
+          url: 'file',
           method: 'POST',
           data: file,
           headers: {

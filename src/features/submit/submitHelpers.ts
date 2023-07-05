@@ -72,6 +72,7 @@ export const formatFormData = async (sessionId: string, metadata: SectionType[],
       .then(blob => {
         let formData = new FormData();
         formData.append('file', blob);
+        formData.append('fileName', file.name);
         formData.append('fileId', file.id);
         formData.append('metadataId', sessionId);
         return formData;
