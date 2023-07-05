@@ -25,5 +25,6 @@
   "conversionHead": "{{type}} is a non-preferred file type",
   "invalidHead": "Invalid file type!",
   "fileRenamed": "A file with the same name has already been added. We've renamed your file to {{file}}",
-  "fileAlreadyAdded": "File {{file}} has already been added"
+  "fileAlreadyAdded": "File {{file}} has already been added",
+  "fileNotAllowed": "This file name is not allowed. Please rename your file."
 }

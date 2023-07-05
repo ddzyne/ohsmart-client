@@ -116,7 +116,11 @@ export const metadataSlice = createSlice({
       }
     },
     resetMetadata: (state) => {
-      return state = initialState;
+      // reset form with new uuid
+      return state = {
+        ...initialState,
+        id: uuidv4(),
+      };
     }
   }
 });

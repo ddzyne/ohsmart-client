@@ -25,5 +25,6 @@
   "conversionHead": "{{type}} is een niet-geprefereerd bestandstype",
   "invalidHead": "Fout in bestand",
   "fileRenamed": "Een bestand met dezelfde naam is al toegevoegd. We hebben je bestand hernoemd naar {{file}}",
-  "fileAlreadyAdded": "Bestand {{file}} is al toegevoegd"
+  "fileAlreadyAdded": "Bestand {{file}} is al toegevoegd",
+  "fileNotAllowed": "Deze bestandsnaam is niet toegestaan. Hernoem je bestand."
 }

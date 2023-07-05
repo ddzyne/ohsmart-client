@@ -49,6 +49,13 @@ const FilesUpload = () => {
         message: t('fileAlreadyAdded', {file: file.name}),
       };
     }
+    // No files with these file names
+    if (file.name === 'form-metadata.json' || file.name === 'original-metadata.zip') {
+      return {
+        code: "file-not-allowed",
+        message: t('fileNotAllowed'),
+      };
+    }
     return null;
   }
 
