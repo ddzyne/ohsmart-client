@@ -1,9 +1,11 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn, FetchBaseQueryError } from '@reduxjs/toolkit/query'
 import axios from 'axios'
 import type { AxiosRequestConfig, AxiosError, AxiosProgressEvent } from 'axios'
 import { setFileMeta } from '../files/filesSlice';
 import { store } from '../../app/store';
+
+const targetRepo = require(`../../config/${process.env.REACT_APP_CONFIG_FOLDER}/form`).targetRepo;
 
 const axiosBaseQuery =
   (
@@ -62,11 +64,12 @@ export const submitApi = createApi({
       async queryFn(arg, queryApi, extraOptions, fetchWithBQ) {
         // First post the metadata
         const metadataResult = await fetchWithBQ({
-          url: 'metadata?repo_target=dar.dans.knaw.nl',
+          url: `metadata?repo_target=${targetRepo}`,
           method: 'POST',
           data: arg.metadata,
           headers: {
             Authorization: 'Bearer D@NS-ei-2023',
+            // TODO: replace with real user credentials. To be built.
             'target-username': 'user001',
             'target-password': 'user001',
           },
@@ -82,6 +85,7 @@ export const submitApi = createApi({
           data: file,
           headers: {
             Authorization: 'Bearer D@NS-ei-2023',
+            // TODO: replace with real user credentials. To be built.
             'target-username': 'user001',
             'target-password': 'user001',
           },

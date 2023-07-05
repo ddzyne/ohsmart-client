@@ -20,4 +20,6 @@ const sections = [
   rights,
 ];
 
+export const targetRepo = 'dar.dans.knaw.nl';
+
 export default sections;
