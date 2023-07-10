@@ -5,7 +5,7 @@ export interface FileActions {
   value: string;
 }
 
-export type FileActionType = 'process' | 'role' | 'private' | 'valid' | 'submitProgress' | 'submitSuccess';
+export type FileActionType = 'process' | 'role' | 'private' | 'valid' | 'submitProgress' | 'submitSuccess' | 'submitError';
 
 export interface ReduxFileActions {
   id: string;
@@ -27,6 +27,7 @@ export interface SelectedFile {
   valid?: boolean;
   submitProgress?: number;
   submitSuccess?: boolean;
+  submitError?: boolean;
 }
 
 interface FileError {
@@ -72,3 +73,12 @@ export interface DansFilesQueryResponse {
   isLoading: boolean;
   isFetching: boolean;
 }
+
+export interface FileItemProps {
+  file: SelectedFile;
+} 
+
+export interface FileActionOptionsProps {
+  file: SelectedFile;
+  type: 'process' | 'role';
+} 

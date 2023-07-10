@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -6,13 +5,13 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import Chip from '@mui/material/Chip';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
+import ReplayCircleFilledIcon from '@mui/icons-material/ReplayCircleFilled';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
 import ErrorRoundedIcon from '@mui/icons-material/ErrorRounded';
@@ -23,16 +22,17 @@ import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getFiles, removeFile, setFileMeta } from './filesSlice';
 import fileRoles from '../../config/global/files/roles';
 import fileProcessing from '../../config/global/files/processing';
-import type { SelectedFile } from '../../types/Files';
+import type { SelectedFile, FileActionOptionsProps, FileItemProps } from '../../types/Files';
 import { useCheckTypeQuery } from './api/dansUtility';
-import { useVerifyFileMutation } from './api/dansVerification';
 import { LightTooltip } from '../generic/Tooltip';
-import { validateFileType } from './filesHelpers';
 import styles from './FilesTable.module.css';
 import { getSessionId } from '../metadata/metadataSlice';
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
-import { getIsSubmitting } from '../submit/submitSlice';
+import Stack from '@mui/material/Stack';
+import { getMetadataSubmitStatus, getSingleFileSubmitStatus } from '../submit/submitSlice';
+import { useSubmitFilesMutation } from '../submit/submitApi';
+import { formatFileData } from '../submit/submitHelpers';
 
 const FilesTable = () => {
   const { t } = useTranslation('files');
@@ -63,15 +63,9 @@ const FilesTable = () => {
   )
 }
 
-
-interface OptionProps {
-  file: SelectedFile;
-  type: 'process' | 'role';
-}
-
-const FileActionOptions = ({file, type}: OptionProps) => {
+const FileActionOptions = ({file, type}: FileActionOptionsProps) => {
   const dispatch = useAppDispatch();
-  const isSubmitting = useAppSelector(getIsSubmitting);
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
   const { t } = useTranslation('files');
 
   return (
@@ -91,13 +85,13 @@ const FileActionOptions = ({file, type}: OptionProps) => {
       renderInput={(params) => <TextField {...params} label={t(type === 'process' ? 'selectOptions' : 'selectOption')} />}
       options={type === 'process' ? fileProcessing : fileRoles}
       value={file[type]}
-      disabled={isSubmitting}
+      disabled={metadataSubmitStatus !== ''}
     />
   )
 }
 
-const FileConversion = ({file, valid}: any) => {
-  const { data, isLoading, isFetching } = useCheckTypeQuery<any>(file.type);
+const FileConversion = ({file}: FileItemProps) => {
+  const { data } = useCheckTypeQuery<any>(file.type);
   const { t } = useTranslation('files');
 
   return (
@@ -144,15 +138,15 @@ const FileConversion = ({file, valid}: any) => {
   )
 }
 
-const FileTableRow = ({file}: any) => {
+const FileTableRow = ({file}: FileItemProps) => {
   const dispatch = useAppDispatch();
-  const isSubmitting = useAppSelector(getIsSubmitting);
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   return (
     <>
       <TableRow className={file.valid === false ? styles.invalid : ''}>
         <TableCell sx={{p: 0, pl: 1, borderBottom: 0}}>
-          <IconButton color="primary" size="small" onClick={() => !isSubmitting && dispatch(removeFile(file))} disabled={isSubmitting}>
+          <IconButton color="primary" size="small" onClick={() => !metadataSubmitStatus && dispatch(removeFile(file))} disabled={metadataSubmitStatus !== ''}>
             <DeleteIcon fontSize="small" />
           </IconButton>
         </TableCell>
@@ -169,31 +163,71 @@ const FileTableRow = ({file}: any) => {
           <Checkbox 
             checked={file.private}
             onChange={e => dispatch(setFileMeta({id: file.id, type: 'private', value: e.target.checked}))}
-            disabled={file.valid === false || isSubmitting}
+            disabled={file.valid === false || metadataSubmitStatus !== ''}
           />
         </TableCell>
         <TableCell sx={{p: 1, borderBottom: 0, minWidth: 150}}><FileActionOptions type="role" file={file} /></TableCell>
         <TableCell sx={{p: 1, borderBottom: 0, minWidth: 150}}><FileActionOptions type="process" file={file}  /></TableCell>
       </TableRow>
-      <UploadProgress progress={file.submitProgress} />
+      <UploadProgress file={file} />
     </>
   )
 }
 
-const UploadProgress = ({progress}: any) => 
-  <TableRow>
-    <TableCell colSpan={7} sx={{pt: 0, pb: progress ? 1 : 0}}>
-      {progress && 
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Box sx={{ width: '100%', mr: 1 }}>
-            <LinearProgress variant="determinate" value={progress || 0} />
+const UploadProgress = ({file}: FileItemProps) => {
+  // We handle progress and retrying/restarting of file uploads here
+  // If metadata submission is successful, and file fails right away, there needs to be an option to manually start file upload.
+  // So we check if the submit button has been touched.
+  const sessionId = useAppSelector(getSessionId);
+  const fileStatus = useAppSelector(getSingleFileSubmitStatus(file.id))
+  const { t } = useTranslation('files');
+  const [submitFiles/*, { isUninitialized, isLoading, isSuccess, isError, data, reset }*/] = useSubmitFilesMutation();
+
+  const handleSingleFileUpload = () => {
+    formatFileData(sessionId, [file])
+      .then( d => {
+        submitFiles(d);
+      });
+  }
+
+  return (
+    <TableRow>
+      <TableCell colSpan={7} sx={{pt: 0, pb: fileStatus && fileStatus.progress ? 1 : 0}}>
+        {fileStatus &&
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mr: 1 }}>
+              <LinearProgress 
+                variant="determinate" 
+                value={fileStatus.progress || 0} 
+                color={fileStatus.status === 'success' ? 'success' : fileStatus.status === 'error'  ? 'error' : 'primary'}
+                sx={{borderRadius: 2}}
+              />
+            </Box>
+            <Box sx={{ minWidth: 35, textAlign: 'right' }}>
+              {fileStatus.status === 'submitting' &&
+                <Typography variant="body2" color="text.secondary">{`${fileStatus.progress || 0}%`}</Typography>
+              }
+              {fileStatus.status === 'success' && 
+                <Tooltip title={t('fileSubmitSuccess')}>
+                  <CheckCircleIcon color="success" />
+                </Tooltip>
+              }
+              {fileStatus.status === 'error' && 
+                <Stack direction="row" alignItems="center">
+                  <Typography variant="body2" color="text.secondary">{t('uploadFailed')}</Typography>
+                  <IconButton onClick={() => handleSingleFileUpload()}>
+                    <Tooltip title={t('fileSubmitError')}>
+                      <ReplayCircleFilledIcon color="error" />
+                    </Tooltip>
+                  </IconButton>
+                </Stack>
+              }
+            </Box>
           </Box>
-          <Box sx={{ minWidth: 35 }}>
-            <Typography variant="body2" color="text.secondary">{`${progress}%`}</Typography>
-          </Box>
-        </Box>
-      }
-    </TableCell>
-  </TableRow>
+        }
+      </TableCell>
+    </TableRow>
+  )
+}
 
 export default FilesTable;

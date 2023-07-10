@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { green } from '@mui/material/colors';
 import CheckIcon from '@mui/icons-material/Check';
@@ -11,42 +11,75 @@ import Typography from '@mui/material/Typography';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getMetadataStatus, getMetadata, resetMetadata, setSectionStatus, getSessionId } from '../metadata/metadataSlice';
 import { getFiles, resetFiles } from '../files/filesSlice';
-import { useSubmitDataMutation } from './submitApi';
-import { setIsSubmitting } from './submitSlice';
-import { formatFormData } from './submitHelpers';
+import { useSubmitDataMutation, useSubmitFilesMutation } from './submitApi';
+import { setMetadataSubmitStatus, getMetadataSubmitStatus, getFilesSubmitStatus, resetFilesSubmitStatus } from './submitSlice';
+import { formatFormData, formatFileData } from './submitHelpers';
 import { useTranslation } from 'react-i18next';
-import type { SubmitErrorProps } from '../../types/Submit';
-import { setNotification } from '../notification/notificationSlice';
-
-// TODO better error handling
-// Spec for submission data
 
 const Submit = () => {
-  const [submitting, setSubmitting] = useState(false);
-  const selectedFiles = useAppSelector(getFiles);
-  const metadataStatus = useAppSelector(getMetadataStatus);
-  const metadata = useAppSelector(getMetadata);
   const dispatch = useAppDispatch();
-  const sessionId = useAppSelector(getSessionId);
-  const progress = selectedFiles.reduce( (n, {submitProgress}) => n + (submitProgress || 0), 0) / selectedFiles.length || undefined;
   const { t } = useTranslation('submit');
+  const metadataStatus = useAppSelector(getMetadataStatus);
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
+  const metadata = useAppSelector(getMetadata);
+  const selectedFiles = useAppSelector(getFiles);
+  const sessionId = useAppSelector(getSessionId);
+  // File status exists in an array, so we need to do some processing and filtering. 
+  const filesSubmitStatus = useAppSelector(getFilesSubmitStatus);
+  const totalFileProgress = filesSubmitStatus.reduce( (n, {progress}) => n + (progress || 0), 0) / filesSubmitStatus.length || undefined;
+  // If any file has an error, the form should indicate that.
+  const fileStatusArray = [...new Set(filesSubmitStatus.map(f => f.status))];
+  const fileStatus = 
+    fileStatusArray.indexOf('error') !== -1 ? 
+    'error' :
+    fileStatusArray.indexOf('submitting') !== -1 ?
+    'submitting' :
+    fileStatusArray.indexOf('success')  !== -1 ?
+    'success' :
+    '';
 
-  const [submitData, { isUninitialized, isLoading, isSuccess, isError, data, reset }] = useSubmitDataMutation();
+  const [submitData, { 
+    isUninitialized: isUninitializedMeta, 
+    isLoading: isLoadingMeta, 
+    isSuccess: isSuccessMeta, 
+    isError: isErrorMeta, 
+    reset: resetMeta,
+  }] = useSubmitDataMutation();
+  const [submitFiles, { 
+    isLoading: isLoadingFiles, 
+    reset: resetSubmittedFiles, 
+  }] = useSubmitFilesMutation();
 
   const handleButtonClick = () => {
-    formatFormData(sessionId, metadata, selectedFiles).then( d => {
-      dispatch(setIsSubmitting(true));
-      submitData(d);
-    });
+    // First submit the metadata
+    const formattedMetadata = formatFormData(sessionId, metadata, selectedFiles);
+    dispatch(setMetadataSubmitStatus('submitting'));
+    submitData(formattedMetadata);
   };
 
+  useEffect(() => {
+    // Then submit the files if metadata submit is successful
+    if (isSuccessMeta && selectedFiles) {
+      formatFileData(sessionId, selectedFiles)
+        .then( d => {
+          submitFiles(d);
+        });
+    }
+  }, [isSuccessMeta]);
+
   const resetForm = () => {
-    console.log('reset')
-    dispatch(setIsSubmitting(false));
-    dispatch(resetMetadata());
+    // reset RTK mutations
+    resetSubmittedFiles();
+    resetMeta();
+    // reset files in file slice
     dispatch(resetFiles());
+    // reset metadata in metadata slice
+    dispatch(resetMetadata());
+    // reset status in submit slice
+    dispatch(setMetadataSubmitStatus(''));
+    dispatch(resetFilesSubmitStatus());
+    // finally reset all section statusses
     dispatch(setSectionStatus(null));
-    reset();
   }
 
   const iconSx = {
@@ -57,27 +90,26 @@ const Submit = () => {
     <Stack direction="column" alignItems="flex-end">
       <Stack direction="row" alignItems="center">
         <Typography mr={2}>
-          { isUninitialized && (
+          { isUninitializedMeta && (
+            // metadata has not yet been submitted, so let's just indicate metadata completeness
             metadataStatus === 'error' ?
             t('metadataError') :
             metadataStatus === 'warning' || selectedFiles.length === 0  ?
             t('metadataWarning') :
             t('metadataSuccess')
           ) }
-          { isLoading && !progress &&
-            t('isLoading')
+          { // submit process has started, let's check for responses
+            (metadataSubmitStatus === 'submitting' || fileStatus === 'submitting' || isLoadingFiles) &&
+            t('submitting')
           }
-          { isLoading && progress && progress < 100 &&
-            t('hasProgress')
+          { (isSuccessMeta && (fileStatus === 'success' || selectedFiles.length === 0)) &&
+            t('submitSuccess')
           }
-          { isLoading && progress && progress === 100 && !isSuccess &&
-            t('isWaiting')
+          { isErrorMeta &&
+            t('submitErrorMetadata')
           }
-          { isSuccess && 
-            t('isSuccess')
-          }
-          { isError && 
-            t('isError')
+          { fileStatus === 'error' &&
+            t('submitErrorFiles')
           }
         </Typography>
         <Box sx={{ mr: 2, position: 'relative' }} display="flex" justifyContent="center" alignItems="center">
@@ -85,8 +117,8 @@ const Submit = () => {
             p: 1.2,
             borderRadius: '50%',
             backgroundColor: `${
-              isSuccess ? 'success' :
-              metadataStatus === 'error' ?
+              isSuccessMeta && (fileStatus === 'success' || selectedFiles.length === 0) ? 'success' :
+              metadataStatus || fileStatus === 'error' || isErrorMeta ?
               'error' :
               metadataStatus === 'warning' || selectedFiles.length === 0 ?
               'warning' :
@@ -94,14 +126,14 @@ const Submit = () => {
             }.main`,
           }}>
             {
-              isSuccess ?
+              isSuccessMeta && (fileStatus === 'success' || selectedFiles.length === 0) ?
               <CheckIcon sx={iconSx} /> :
-              metadataStatus === 'error' ?
+              metadataStatus === 'error' || fileStatus === 'error' || isErrorMeta ?
               <ErrorOutlineOutlinedIcon sx={iconSx} /> :
               <SendIcon sx={iconSx} />
             }
           </Box>
-          {isLoading && (
+          {(fileStatus === 'submitting' || isLoadingFiles) && (
             <CircularProgress
               size={54}
               sx={{
@@ -109,22 +141,24 @@ const Submit = () => {
                 position: 'absolute',
                 zIndex: 1,
               }}
-              variant={progress ? "determinate" : "indeterminate"}
-              value={progress}
+              variant={totalFileProgress ? "determinate" : "indeterminate"}
+              value={totalFileProgress}
             />
           )}
         </Box>
-        {isSuccess && <Button
-          variant="contained"
-          onClick={resetForm}
-          size="large"
-          sx={{mr:1}}
-        >
-          {t('reset')}
-        </Button> }
+        {isSuccessMeta && (fileStatus === 'success' || selectedFiles.length === 0) && 
+          <Button
+            variant="contained"
+            onClick={resetForm}
+            size="large"
+            sx={{mr:1}}
+          >
+            {t('reset')}
+          </Button> 
+        }
         <Button
           variant="contained"
-          disabled={isLoading || isSuccess /*|| metadataStatus === 'error' || success*/}
+          disabled={isSuccessMeta || isLoadingMeta /*|| metadataStatus === 'error'*/}
           onClick={handleButtonClick}
           size="large"
         >

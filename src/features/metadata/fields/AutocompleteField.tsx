@@ -8,13 +8,13 @@ import { StatusIcon } from '../../generic/Icons';
 import { setField } from '../metadataSlice';
 import type { AutocompleteFieldProps, OptionsType } from '../../../types/Metadata';
 import { lookupLanguageString } from '../../../app/i18n';
-import { getIsSubmitting } from '../../submit/submitSlice';
+import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 
 const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
-  const isSubmitting = useAppSelector(getIsSubmitting);
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   const options = Array.isArray(field.options) ? field.options as OptionsType[] : [];
 
@@ -42,7 +42,7 @@ const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldPr
           value: newValue
         }))}
         loading={isLoading === true}
-        disabled={isSubmitting}
+        disabled={metadataSubmitStatus !== ''}
       />
       {field.description && <StatusIcon margin="l" status={status} title={lookupLanguageString(field.description)} />}
     </Stack>

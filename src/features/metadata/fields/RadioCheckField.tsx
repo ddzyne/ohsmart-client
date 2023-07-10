@@ -11,12 +11,12 @@ import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { lookupLanguageString } from '../../../app/i18n';
 import type { RadioFieldProps, CheckFieldProps } from '../../../types/Metadata';
-import { getIsSubmitting } from '../../submit/submitSlice';
+import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 
 // List of radio button options. First value of the options is selected by default, so no need for status checking.
 export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
   const dispatch = useAppDispatch();
-  const isSubmitting = useAppSelector(getIsSubmitting);
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   return (
     <FormControl>
@@ -40,7 +40,7 @@ export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
             value={option.value} 
             control={<Radio sx={{mr: 0.15}}/>} 
             label={lookupLanguageString(option.label)} 
-            disabled={isSubmitting}
+            disabled={metadataSubmitStatus !== ''}
           />
         )}
       </RadioGroup>
@@ -52,7 +52,7 @@ export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
 export const CheckField = ({field, sectionIndex}: CheckFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
-  const isSubmitting = useAppSelector(getIsSubmitting);
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   return (
     <FormControl
@@ -78,7 +78,7 @@ export const CheckField = ({field, sectionIndex}: CheckFieldProps) => {
                   value: e.target.checked ? [...field.value || '', e.target.name] : field.value.filter( item => item !== e.target.name),
                 }))} 
                 name={option.value}
-                disabled={isSubmitting}
+                disabled={metadataSubmitStatus !== ''}
               />
             }
             label={lookupLanguageString(option.label)}

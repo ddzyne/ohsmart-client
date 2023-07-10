@@ -27,7 +27,7 @@ import Tooltip from '@mui/material/Tooltip';
 import LaunchIcon from '@mui/icons-material/Launch';
 import InputAdornment from '@mui/material/InputAdornment';
 import AutocompleteField from './AutocompleteField';
-import { getIsSubmitting } from '../../submit/submitSlice';
+import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 
 /*
  *  Type ahead fields for different API endpoints
@@ -137,7 +137,7 @@ export const SheetsField = ({field, sectionIndex}: AutocompleteFieldProps) => {
 export const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation('metadata');
-  const isSubmitting = useAppSelector(getIsSubmitting);
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   return (
     <Stack direction="row" alignItems="start">
@@ -161,7 +161,7 @@ export const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => 
             }))
           }}
           value={field.multiApiValue}
-          disabled={isSubmitting}
+          disabled={metadataSubmitStatus !== ''}
         >
           {Array.isArray(field.options) && (field.options as TypeaheadAPI[]).map( option => 
             <MenuItem key={option} value={option}>{t(option)}</MenuItem>
@@ -202,7 +202,7 @@ const AutocompleteAPIField = ({
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
   const apiValue = (Array.isArray(field.options) ? field.multiApiValue : field.options) as TypeaheadAPI;
-  const isSubmitting = useAppSelector(getIsSubmitting);
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   return (
     <Stack direction="row" alignItems="center" sx={{flex: 1}}>
@@ -272,7 +272,7 @@ const AutocompleteAPIField = ({
             }
           </li>
         }
-        disabled={isSubmitting}
+        disabled={metadataSubmitStatus !== ''}
       />
       <StatusIcon 
         margin="l" 

@@ -15,6 +15,8 @@ import TextField from './fields/TextField';
 import { RadioField, CheckField } from './fields/RadioCheckField';
 import { TransitionGroup } from 'react-transition-group';
 import { lookupLanguageString } from '../../app/i18n';
+import { getMetadataSubmitStatus } from '../submit/submitSlice';
+import { useAppSelector } from '../../app/hooks';
 
 // Memoized Field function, so only the affected field rerenders when form/metadata props change.
 // Loads the field specified in the type key
@@ -64,6 +66,7 @@ const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
   // Check if group is repeatable. If not, lets wrap that single fieldgroup in an array, so we can use the same map function over it.
   // We use the id of the first field of the group as key for transitions
   const fieldArray = field.repeatable ? field.fields as InputField[][] : [field.fields as InputField[]];
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   return (
     <Grid xs={12}>
@@ -100,7 +103,7 @@ const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
                         />
                       )}
                     </Grid>
-                    {field.repeatable && fieldArray.length > 1 &&
+                    {field.repeatable && fieldArray.length > 1 && !metadataSubmitStatus &&
                       <DeleteButton sectionIndex={sectionIndex} groupedFieldId={field.id} deleteFieldIndex={i} size="medium" />
                     }
                   </Stack>
@@ -109,7 +112,7 @@ const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
             </TransitionGroup>
           </CardContent>
         }
-        {field.repeatable &&
+        {field.repeatable && !metadataSubmitStatus &&
           <CardActions sx={{pl: 3, pr: 3, justifyContent: 'right'}}>
             <Stack direction="row" alignItems="center" justifyContent="end">
               <AddButtonText sectionIndex={sectionIndex} groupedFieldId={field.id} type="group" />

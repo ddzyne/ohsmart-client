@@ -17,7 +17,7 @@ const getField = (value: OptionsType | OptionsType[] | string | string[] | undef
   value;
 
 // Function to rearrange the metadata for submission
-export const formatFormData = async (sessionId: string, metadata: SectionType[], files?: SelectedFile[]) => {
+export const formatFormData = (sessionId: string, metadata: SectionType[], files?: SelectedFile[]) => {
   // Format the metadata fields
   const formattedMetadata = metadata.map( section => 
     section.fields.map( field => {
@@ -62,6 +62,14 @@ export const formatFormData = async (sessionId: string, metadata: SectionType[],
     process: f.process,
   }));
 
+  return {
+    id: sessionId,
+    metadata: formattedMetadata,
+    "file-metadata": fileMetadata,
+  };
+}
+
+export const formatFileData = async (sessionId: string, files: SelectedFile[]) => {
   // Submit files individually using multipart form data
   // Convert file blob url's back to a js File object and add them to a FormData object
   // Add FormData to the file array
@@ -80,12 +88,5 @@ export const formatFormData = async (sessionId: string, metadata: SectionType[],
     )
   );
 
-  return {
-    metadata: {
-      id: sessionId,
-      metadata: formattedMetadata,
-      "file-metadata": fileMetadata,
-    },
-    files: fileData,
-  };
+  return fileData;
 }

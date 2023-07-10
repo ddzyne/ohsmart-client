@@ -9,13 +9,13 @@ import { setField } from '../metadataSlice';
 import { getStatus } from '../metadataHelpers';
 import type { TextFieldProps } from '../../../types/Metadata';
 import { lookupLanguageString } from '../../../app/i18n';
-import { getIsSubmitting } from '../../submit/submitSlice';
+import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 
 const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: TextFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
   const { t } = useTranslation('metadata');
-  const isSubmitting = useAppSelector(getIsSubmitting);
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   return (
     <Stack direction="row" alignItems="start">
@@ -30,7 +30,7 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
         multiline={field.multiline}
         rows={field.multiline ? 4 : ''}
         value={field.value}
-        disabled={field.disabled || isSubmitting}
+        disabled={field.disabled || metadataSubmitStatus !== ''}
         onChange={(e) => dispatch(setField({
           sectionIndex: sectionIndex,
           id: field.id,
@@ -50,7 +50,7 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
           ),
         }}
       />
-      {groupedFieldId && [
+      {groupedFieldId && !metadataSubmitStatus && [
         totalFields > 1 && 
         <DeleteButton key="delete" sectionIndex={sectionIndex} groupedFieldId={groupedFieldId} deleteFieldIndex={currentField} mt={currentField === 0 ? 1.75 : 2.75} />,
         currentField + 1 === totalFields && 

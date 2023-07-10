@@ -22,13 +22,13 @@ import { getFiles, addFiles } from './filesSlice';
 import type { FileLocation, SelectedFile, RejectedFilesProps, DansFilesQueryResponse, DansSimpleListQueryResponse } from '../../types/Files';
 import { v4 as uuidv4 } from 'uuid';
 import { useFetchDansFormatsQuery, useFetchSimpleListQuery } from './api/dansFormats';
-import { getIsSubmitting } from '../submit/submitSlice';
+import { getMetadataSubmitStatus } from '../submit/submitSlice';
 import { setNotification } from '../notification/notificationSlice';
 
 const FilesUpload = () => {
   const dispatch = useAppDispatch();
   const currentFiles = useAppSelector(getFiles);
-  const isSubmitting = useAppSelector(getIsSubmitting);
+  const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
   const { t } = useTranslation('files');  
   const { data, isFetching, isLoading } = useFetchSimpleListQuery<DansSimpleListQueryResponse>(null);
 
@@ -120,7 +120,7 @@ const FilesUpload = () => {
         >
           {data ?
             <>
-              {!isSubmitting && <input {...getInputProps()} />}
+              {!metadataSubmitStatus && <input {...getInputProps()} />}
               <Typography color="grey" sx={{textAlign: 'center', cursor: 'pointer'}}>{t('drop')}</Typography>
             </> :
             <Typography color="grey" sx={{textAlign: 'center', cursor: 'pointer'}}>{t('dropLoading')}</Typography>
