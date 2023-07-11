@@ -119,7 +119,7 @@ const Submit = () => {
             backgroundColor: `${
               isSuccessMeta && (fileStatus === 'success' || selectedFiles.length === 0) ?
               'success' :
-              metadataStatus || fileStatus === 'error' || isErrorMeta ?
+              metadataStatus === 'error' || fileStatus === 'error' || isErrorMeta ?
               'error' :
               metadataStatus === 'warning' || selectedFiles.length === 0 ?
               'warning' :
@@ -160,7 +160,7 @@ const Submit = () => {
         }
         <Button
           variant="contained"
-          disabled={isSuccessMeta || isLoadingMeta /*|| metadataStatus === 'error'*/}
+          disabled={isSuccessMeta || isLoadingMeta || metadataStatus === 'error'}
           onClick={handleButtonClick}
           size="large"
         >

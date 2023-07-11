@@ -1,145 +1,530 @@
-const prefix = "ohs";
-
 const section = {
-  id: prefix,
-  title: "Oral-history specific",
+  id: 'ohs',
+  title: {
+    en: 'Oral-history specific',
+    nl: 'Specifiek voor mondelinge geschiedenis',
+  },
   fields: [
     {
       type: 'group',
-      label: 'Interviewee',
-      name: `${prefix}_interviewee_group`,
-      repeatable: true,
-      description: 'Information about the person being interviewed. This data will not be public.',
+      label: {
+        en: 'Interviewee',
+        nl: 'Geinterviewde',
+      },
+      name: 'interviewee',
+      repeatable: false,
+      description: {
+        en: 'Information about the person being interviewed. This data will not be public.',
+        nl: 'Informatie over de persoon die wordt geinterviewd. Deze data wordt niet gepubliceerd.',
+      },
       fields: [
         {
-          type: "text",
-          label: "Initials",
-          name: `${prefix}_interviewee_initials`,
+          type: 'text',
+          label: {
+            en: 'First name',
+            nl: 'Voornaam',
+          },
+          name: 'interviewee_first_name',
           required: true,
           private: true,
-          value: '',
-          description: 'Discription',
         },
         {
-          type: "text",
-          label: "Last name",
-          name: `${prefix}_interviewee_last_name`,
+          type: 'text',
+          label: {
+            en: 'Last name',
+            nl: 'Achternaam',
+          },
+          name: 'interviewee_last_name',
           required: true,
           private: true,
-          value: '',
-          description: 'Discription',
         },
         {
-          type: "date",
-          label: "Date of birth",
-          name: `${prefix}_interviewee_dob`,
+          type: 'text',
+          label: {
+            en: 'Preferred name',
+            nl: 'Voorkeursnaam',
+          },
+          name: 'interviewee_preferred_name',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'date',
+          label: {
+            en: 'Date of birth',
+            nl: 'Geboortedatum',
+          },
+          name: 'interviewee_dob',
           required: true,
           private: true,
-          value: '',
-          description: 'Discription',
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Function',
+            nl: 'Functie',
+          },
+          name: 'interviewee_function',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Affiliation',
+            nl: 'Affiliatie',
+          },
+          name: 'interviewee_affiliation',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'check',
+          label: {
+            en: 'Consent form',
+            nl: 'Toestemmingsformulier',
+          },
+          name: 'interviewee_consent',
+          required: true,
+          private: true,
+          options: [
+            {
+              value: 'interviewee_consent_signed',
+              label: {
+                en: 'Signed',
+                nl: 'Getekend',
+              },
+            },
+          ],
         },
       ]
     },
     {
       type: 'group',
-      label: 'Interviewer',
-      name: `${prefix}_interviewer_group`,
+      label: {
+        en: 'Interviewer',
+        nl: 'Interviewer',
+      },
+      name: 'interviewer',
       repeatable: true,
-      description: 'Information about the person doing the interview. This data will not be public.',
+      description: {
+        en: 'Information about the person(s) taking the interview. This data will not be public.',
+        nl: 'Informatie over de persoon het interview afneemt. Deze data wordt niet gepubliceerd.',
+      },
       fields: [
         {
-          type: "text",
-          label: "First name",
-          name: `${prefix}_interviewer_first_name`,
+          type: 'text',
+          label: {
+            en: 'First name',
+            nl: 'Voornaam',
+          },
+          name: 'interviewer_first_name',
           required: true,
           private: true,
-          value: '',
-          description: 'Discription',
         },
         {
-          type: "text",
-          label: "Last name",
-          name: `${prefix}_interviewer_last_name`,
+          type: 'text',
+          label: {
+            en: 'Last name',
+            nl: 'Achternaam',
+          },
+          name: 'interviewer_last_name',
           required: true,
           private: true,
-          value: '',
-          description: 'Discription',
         },
-      ],
+        {
+          type: 'text',
+          label: {
+            en: 'Preferred name',
+            nl: 'Voorkeursnaam',
+          },
+          name: 'interviewer_preferred_name',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'date',
+          label: {
+            en: 'Date of birth',
+            nl: 'Geboortedatum',
+          },
+          name: 'interviewer_dob',
+          required: true,
+          private: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Function',
+            nl: 'Functie',
+          },
+          name: 'interviewer_function',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Affiliation',
+            nl: 'Affiliatie',
+          },
+          name: 'interviewer_affiliation',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'check',
+          label: {
+            en: 'Consent form',
+            nl: 'Toestemmingsformulier',
+          },
+          name: 'interviewer_consent',
+          required: true,
+          private: true,
+          options: [
+            {
+              value: 'interviewer_consent_signed',
+              label: {
+                en: 'Signed',
+                nl: 'Getekend',
+              },
+            },
+          ],
+        },
+      ]
     },
     {
       type: 'group',
-      label: 'Others present',
-      name: `${prefix}_others_group`,
+      label: {
+        en: 'Interpreter',
+        nl: 'Vertaler',
+      },
+      name: 'interpreter',
       repeatable: true,
-      description: 'Information about other people present during the interview. This data will not be public.',
+      description: {
+        en: 'Information about the person(s) interpreting the interview. This data will not be public.',
+        nl: 'Informatie over de persoon het interview heeft vertaald. Deze data wordt niet gepubliceerd.',
+      },
       fields: [
         {
-          type: "text",
-          label: "First name",
-          name: `${prefix}_others_first_name`,
+          type: 'text',
+          label: {
+            en: 'First name',
+            nl: 'Voornaam',
+          },
+          name: 'interpreter_first_name',
+          required: true,
           private: true,
-          value: '',
-          description: 'Discription',
         },
         {
-          type: "text",
-          label: "Last name",
-          name: `${prefix}_others_last_name`,
+          type: 'text',
+          label: {
+            en: 'Last name',
+            nl: 'Achternaam',
+          },
+          name: 'interpreter_last_name',
+          required: true,
           private: true,
-          value: '',
-          description: 'Discription',
         },
         {
-          type: "text",
-          label: "Function",
-          name: `${prefix}_others_function`,
+          type: 'text',
+          label: {
+            en: 'Function',
+            nl: 'Functie',
+          },
+          name: 'interpreter_function',
+          required: false,
           private: true,
-          value: '',
-          description: 'Discription',
+          repeatable: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Affiliation',
+            nl: 'Affiliatie',
+          },
+          name: 'interpreter_affiliation',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'check',
+          label: {
+            en: 'Consent form',
+            nl: 'Toestemmingsformulier',
+          },
+          name: 'interpreter_consent',
+          required: true,
+          private: true,
+          options: [
+            {
+              value: 'interpreter_consent_signed',
+              label: {
+                en: 'Signed',
+                nl: 'Getekend',
+              },
+            },
+          ],
+        },
+      ]
+    },
+    {
+      type: 'group',
+      label: {
+        en: 'Others preset',
+        nl: 'Andere aanwezigen',
+      },
+      name: 'others',
+      repeatable: true,
+      description: {
+        en: 'Information about other person(s) being present during the interview. This data will not be public.',
+        nl: 'Informatie over andere aanwezigen bij het interview. Deze data wordt niet gepubliceerd.',
+      },
+      fields: [
+        {
+          type: 'text',
+          label: {
+            en: 'First name',
+            nl: 'Voornaam',
+          },
+          name: 'others_first_name',
+          required: false,
+          private: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Last name',
+            nl: 'Achternaam',
+          },
+          name: 'others_last_name',
+          required: false,
+          private: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Function',
+            nl: 'Functie',
+          },
+          name: 'others_function',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Affiliation',
+            nl: 'Affiliatie',
+          },
+          name: 'others_affiliation',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'check',
+          label: {
+            en: 'Consent form',
+            nl: 'Toestemmingsformulier',
+          },
+          name: 'others_consent',
+          required: false,
+          private: true,
+          options: [
+            {
+              value: 'others_consent_signed',
+              label: {
+                en: 'Signed',
+                nl: 'Getekend',
+              },
+            },
+          ],
+        },
+      ]
+    },
+    {
+      type: 'autocomplete',
+      label: {
+        en: 'Location of interview',
+        nl: 'Locatie van interview',
+      },
+      name: 'interview_location',
+      required: true,
+      multiselect: true,
+      description: {
+        en: 'Location where interview was conducted',
+        nl: 'Plek waar het interview is afgenomen',
+      },
+      options: 'geonames',
+    },
+    {
+      type: 'group',
+      label: {
+        en: 'Date and time',
+        nl: 'Datum en tijd',
+      },
+      name: 'interview_date_time',
+      repeatable: true,
+      description: {
+        en: 'Date and time of interview',
+        nl: 'Data en tijd waarop het interview is afgenomen',
+      },
+      fields: [
+        {
+          type: 'datetime-local',
+          label: {
+            en: 'Start time and date',
+            nl: 'Starttijd en -datum',
+          },
+          name: 'interview_date_time_start',
+          required: true,
+        },
+        {
+          type: 'datetime-local',
+          label: {
+            en: 'End time and date',
+            nl: 'Eindtijd en -datum',
+          },
+          name: 'interview_date_time_end',
+          required: false,
         },
       ],
     },
     {
-      type: "autocomplete",
-      label: "Location of interview",
-      name: `${prefix}_location`,
-      required: true,
-      multiselect: true,
-      value: '',
-      description: 'Discription',
-      options: 'geonames',
-    },
-    {
-      type: "datetime-local",
-      label: "Date and time of interview",
-      name: `${prefix}_date_time_interview`,
+      type: 'text',
+      label: {
+        en: 'Recorded by',
+        nl: 'Opgenomen door',
+      },
+      name: 'recorded_by',
       required: true,
       repeatable: true,
-      value: '',
-      description: 'Discription',
+      description: {
+        en: 'Name of person assisting with recording and affiliation',
+        nl: 'Naam en affiliatie van persoon die interview heeft opgenomen',
+      },
     },
     {
-      type: "text",
-      label: "Recorded by",
-      name: `${prefix}_recorded_by`,
-      required: true,
-      repeatable: true,
-      value: '',
-      description: 'Discription',
-    },
-    // recording format follows from file upload I'd say
-    {
-      type: "text",
-      label: "Recording equipment",
-      name: `${prefix}_recording_equipment`,
+      type: 'autocomplete',
+      label: {
+        en: 'Recording format',
+        nl: 'Opnameformaat',
+      },
+      name: 'recording_format',
       required: false,
       repeatable: true,
-      value: '',
-      description: 'Discription',
+      description: {
+        en: 'MIME type and other type information',
+        nl: 'MIME type en andere type-informatie',
+      },
+      options: ['test1', 'test2'],
     },
-    // transcript by human: should this be here, or in the files section?
-    // transcription by machine, should be checkbox?
+    {
+      type: 'autocomplete',
+      label: {
+        en: 'Recording equipment',
+        nl: 'Opnameapparatuur',
+      },
+      name: 'recording_equipment',
+      required: false,
+      repeatable: true,
+      options: ['test1', 'test2'],
+    },
+    {
+      type: 'group',
+      label: {
+        en: 'Transcript by human',
+        nl: 'Transcriptie door persoon',
+      },
+      name: 'transcript_human',
+      repeatable: true,
+      description: {
+        en: 'Information about the transcriber. This data will not be public.',
+        nl: 'Informatie over de persoon die de transcriptie heeft gedaan. Deze data wordt niet gepubliceerd.',
+      },
+      fields: [
+        {
+          type: 'text',
+          label: {
+            en: 'First name',
+            nl: 'Voornaam',
+          },
+          name: 'transcript_human_first_name',
+          required: true,
+          private: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Last name',
+            nl: 'Achternaam',
+          },
+          name: 'transcript_human_last_name',
+          required: true,
+          private: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Function',
+            nl: 'Functie',
+          },
+          name: 'transcript_human_function',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Affiliation',
+            nl: 'Affiliatie',
+          },
+          name: 'transcript_human_affiliation',
+          required: false,
+          private: true,
+          repeatable: true,
+        },
+        {
+          type: 'check',
+          label: {
+            en: 'Consent form',
+            nl: 'Toestemmingsformulier',
+          },
+          name: 'transcript_human_consent',
+          required: false,
+          private: true,
+          options: [
+            {
+              value: 'transcript_human_consent_signed',
+              label: {
+                en: 'Signed',
+                nl: 'Getekend',
+              },
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'text',
+      label: {
+        en: 'Transcript by machine',
+        nl: 'Machinetranscriptie',
+      },
+      name: 'transcript_machine',
+      required: true,
+      repeatable: false,
+    },
   ],
 };
 

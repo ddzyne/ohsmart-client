@@ -36,15 +36,22 @@ export const formatFormData = (sessionId: string, metadata: SectionType[], files
       if (field.type === 'group') {
         return ({
           ...fieldValue,
-          value: field.fields.map( fieldArray => 
-            Array.isArray(fieldArray) && fieldArray.map( f => 
+          value: field.fields.map( fields => 
+            Array.isArray(fields) ? 
+            fields.map( f => 
               ({ 
                 name: f.name, 
                 id: f.id, 
                 value: getField(f.value), 
                 private: f.private,
               })
-            ) 
+            ) :
+            ({ 
+              name: fields.name, 
+              id: fields.id, 
+              value: getField(fields.value), 
+              private: fields.private,
+            })
           ),
         })
       }

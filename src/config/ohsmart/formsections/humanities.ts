@@ -1,18 +1,25 @@
-const prefix = "humanities";
-
 const section = {
-  id: prefix,
-  title: "Humanities",
+  id: 'humanities',
+  title: {
+    en: 'Humanities',
+    nl: 'Geesteswetenschappen',
+  },
   fields: [
     {
-      type: "autocomplete",
-      label: "Domain-specific keywords",
-      name: `${prefix}_keywords`,
+      type: 'autocomplete',
+      label: {
+        en: 'Domain-specific keywords',
+        nl: 'Domeinspecifieke trefwoorden',
+      },
+      name: 'domain_specific_keywords',
       required: true,
       multiselect: true,
       value: '',
-      description: 'Discription',
-      options: [],
+      description: {
+        en: '',
+        nl: '',
+      },
+      options: ['test1', 'test2'],
     },
   ],
 };

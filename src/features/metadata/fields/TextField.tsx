@@ -43,11 +43,11 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
           mt: groupedFieldId && currentField !== 0 ? 1 : 0,
         }}
         InputProps={{
-          endAdornment: field.description && (
+          endAdornment:
             <InputAdornment position="end">
-              <StatusIcon status={status} title={lookupLanguageString(field.description)} />
+              <StatusIcon status={status} title={field.description && lookupLanguageString(field.description)} />
             </InputAdornment>
-          ),
+          ,
         }}
       />
       {groupedFieldId && !metadataSubmitStatus && [

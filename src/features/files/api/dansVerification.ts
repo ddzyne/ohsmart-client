@@ -1,9 +1,8 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import type { DansFilesResponse } from '../../../types/Files';
 
 /*
  * We're not using this at the moment, as we need to open a JS Filereader and read the files,
- * which is slow for very large files
+ * which is slow for very large files. Leaving this here for perhaps another day.
  */
 
 export const dansVerificationApi = createApi({

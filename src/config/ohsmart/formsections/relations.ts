@@ -1,28 +1,39 @@
-const prefix = "relations";
-
 const section = {
-  id: prefix,
-  title: "Relations",
+  id: 'relations',
+  title: {
+    en: 'Relations',
+    nl: 'Relaties',
+  },
   fields: [
     {
-      type: "autocomplete",
-      label: "Audience",
-      name: `${prefix}_audience`,
+      type: 'autocomplete',
+      label: {
+        en: 'Audience',
+        nl: 'Publiek',
+      },
+      name: 'audience',
       required: false,
       multiselect: true,
-      value: '',
-      description: 'Discription',
-      options: [],
+      description: {
+        en: 'Humanities; Arts and Culture; History of Arts and Architecture (for example)',
+        nl: 'Bijvoorbeeld geesteswetenschappen, kunst en cultuur, etc.',
+      },
+      options: ['test1', 'test2'],
     },
     {
-      type: "autocomplete",
-      label: "Related to",
-      name: `${prefix}_relation`,
+      type: 'autocomplete',
+      label: {
+        en: 'Related to',
+        nl: 'Gerelateerd aan',
+      },
+      name: 'relation',
       required: false,
       multiselect: true,
-      value: '',
-      description: 'Discription',
-      options: [],
+      description: {
+        en: 'Other interviews, publications, projects',
+        nl: 'Andere interviews, publicaties, projecten',
+      },
+      options: ['test1', 'test2'],
     },
   ],
 };

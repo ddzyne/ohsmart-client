@@ -1,35 +1,80 @@
 import languageList from '../../global/data/languageList.json';
 
-const prefix = 'administrative';
-
 const section = {
-  id: prefix,
-  title: 'Administrative',
+  id: 'administrative',
+  title: {
+    en: 'Administrative',
+    nl: 'Administratief',
+  },
   fields: [
     {
-      type: 'text',
-      label: 'Identifier',
-      name: `${prefix}_identifier`,
-      required: true,
-      description: 'Assigned by interviewer, has to be unique by depositor',
-      value: '',
-    },
-    {
       type: 'autocomplete',
-      label: 'Language',
-      name: `${prefix}_language`,
-      required: true,
-      description: 'Language of interview',
-      value: '',
+      label: {
+        en: 'Language',
+        nl: 'Taal',
+      },
+      name: 'language',
+      required: false,
+      description: {
+        en: 'Language of interview',
+        nl: 'Taal van het interview',
+      },
       options: languageList,
     },
     {
       type: 'date',
-      label: 'Date available',
-      name: `${prefix}_date_available`,
+      label:  {
+        en: 'Date available',
+        nl: 'Datum beschikbaarheid',
+      },
+      name: 'date_available',
       required: true,
-      description: 'In case of an embargo, else publication date',
-      value: '',
+      description:  {
+        en: 'In case of an embargo, else publication date',
+        nl: 'In het geval van een embargo, anders publicatiedatum',
+      },
+    },
+    {
+      type: 'group',
+      label: {
+        en: 'Contact information',
+        nl: 'Contactinformatie',
+      },
+      name: 'contact',
+      fields: [
+        {
+          type: 'text',
+          label: {
+            en: 'Name',
+            nl: 'Name',
+          },
+          name: 'contact_name',
+          description: {
+            en: 'Name of the person to contact in respect of metadata (curator)',
+            nl: 'Naam van contactpersoon voor de metadata (curator)',
+          }
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Affiliatie',
+            nl: 'Affiliation',
+          },
+          name: 'contact_affiliation',
+          value: 'DANS',
+          disabled: true,
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Email',
+            nl: 'Email',
+          },
+          name: 'contact_email',
+          value: 'datateam@dans.knaw.nl',
+          disabled: true,
+        },
+      ]
     },
   ],
 };
