@@ -12,7 +12,8 @@ import type {
   InputField,
   TextFieldType,
   InitialSectionType,
-  TypeaheadAPI
+  TypeaheadAPI,
+  ValidationType,
 } from '../../types/Metadata';
 import { getValid, getStatus, formatInitialState, findById } from './metadataHelpers';
 import { v4 as uuidv4 } from 'uuid';
@@ -43,9 +44,9 @@ export const metadataSlice = createSlice({
         // After every input, we need to update status and section state status as well.
         // Only needed when the new status differs from the old one.
         // Lets set accordion valid/invalid state by calling its reducer with the current input state
-        if (getValid(action.payload.value as string, field.validation) !== field.valid) {
+        if (getValid(action.payload.value as string, field.validation as ValidationType) !== field.valid) {
           metadataSlice.caseReducers.setSectionStatus(state, action);
-          field.valid = getValid(action.payload.value as string, field.validation);
+          field.valid = getValid(action.payload.value as string, field.validation as ValidationType);
         }
       }
     },

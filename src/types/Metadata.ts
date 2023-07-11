@@ -214,7 +214,7 @@ export interface ApiLinkProps {
 export interface SetFieldPayload {
   sectionIndex: number;
   id: string;
-  value: string | string[] | OptionsType | OptionsType[] | null;
+  value: string | string[] | OptionsType | OptionsType[] | null | ValidationType;
   typeaheadApi?: TypeaheadAPI;
 };
 
@@ -230,8 +230,11 @@ export interface DeleteFieldPayload {
   deleteField: number;
 };
 
-export type InitialStateType = {
+export interface InitialStateType {
   id: string;
   form: SectionType[];
   panel: string;
 }
+
+// To do
+export type ValidationType = 'email';

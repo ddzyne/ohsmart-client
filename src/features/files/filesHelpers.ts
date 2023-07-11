@@ -1,4 +1,5 @@
 // Add more from http://en.wikipedia.org/wiki/List_of_file_signatures
+// Not using this at the moment
 export function validateFileType(headerString: string) {
   const hs = headerString.toLowerCase();
   if (hs.startsWith('89504e47')) return 'png';

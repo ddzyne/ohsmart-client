@@ -65,7 +65,7 @@ const Submit = () => {
           submitFiles(d);
         });
     }
-  }, [isSuccessMeta]);
+  }, [isSuccessMeta, selectedFiles, sessionId, submitFiles]);
 
   const resetForm = () => {
     // reset RTK mutations
@@ -117,18 +117,20 @@ const Submit = () => {
             p: 1.2,
             borderRadius: '50%',
             backgroundColor: `${
-              isSuccessMeta && (fileStatus === 'success' || selectedFiles.length === 0) ? 'success' :
+              isSuccessMeta && (fileStatus === 'success' || selectedFiles.length === 0) ?
+              'success' :
               metadataStatus || fileStatus === 'error' || isErrorMeta ?
               'error' :
               metadataStatus === 'warning' || selectedFiles.length === 0 ?
               'warning' :
               'primary'
             }.main`,
+            opacity: (metadataSubmitStatus === 'submitting' || fileStatus === 'submitting' || isLoadingFiles) ? 0.5 : 1,
           }}>
             {
               isSuccessMeta && (fileStatus === 'success' || selectedFiles.length === 0) ?
               <CheckIcon sx={iconSx} /> :
-              metadataStatus === 'error' || fileStatus === 'error' || isErrorMeta ?
+              (metadataStatus === 'error' || fileStatus === 'error' || isErrorMeta) && !(metadataSubmitStatus === 'submitting' || fileStatus === 'submitting' || isLoadingFiles) ?
               <ErrorOutlineOutlinedIcon sx={iconSx} /> :
               <SendIcon sx={iconSx} />
             }

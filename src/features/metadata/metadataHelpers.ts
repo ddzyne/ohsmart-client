@@ -4,15 +4,16 @@ import type {
   InputField,
   Field,
   InitialSectionType,
+  ValidationType,
 } from '../../types/Metadata';
 
 // Helper functions for the Metadata form
 
 // some simple validation, not fully implemented
-export const validateData = (type: string, value: string) => {
+export const validateData = (type: ValidationType, value: string) => {
   switch (type) {
     case 'email':
-      const res = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+      const res = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
       return res.test(value.toLowerCase());
     default:
       return;
@@ -56,7 +57,7 @@ export const getStatus = (toCheck: InputField | SectionStatus[]) => {
 }
 
 // As getStatus, but then check in a field is valid or not
-export const getValid = (value: string, validation?: string) => {
+export const getValid = (value: string, validation?: ValidationType) => {
   return (
     validation ? 
     validateData(validation, value) : 

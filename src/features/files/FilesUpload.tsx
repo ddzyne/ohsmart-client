@@ -19,9 +19,9 @@ import blue from '@mui/material/colors/blue';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { getFiles, addFiles } from './filesSlice';
-import type { FileLocation, SelectedFile, RejectedFilesProps, DansFilesQueryResponse, DansSimpleListQueryResponse } from '../../types/Files';
+import type { SelectedFile, FileLocation, RejectedFilesProps, DansSimpleListQueryResponse } from '../../types/Files';
 import { v4 as uuidv4 } from 'uuid';
-import { useFetchDansFormatsQuery, useFetchSimpleListQuery } from './api/dansFormats';
+import { useFetchSimpleListQuery } from './api/dansFormats';
 import { getMetadataSubmitStatus } from '../submit/submitSlice';
 import { setNotification } from '../notification/notificationSlice';
 
@@ -30,7 +30,7 @@ const FilesUpload = () => {
   const currentFiles = useAppSelector(getFiles);
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
   const { t } = useTranslation('files');  
-  const { data, isFetching, isLoading } = useFetchSimpleListQuery<DansSimpleListQueryResponse>(null);
+  const { data } = useFetchSimpleListQuery<DansSimpleListQueryResponse>(null);
 
   // Validate added files, needs to be synchronous, so no API calls possible here
   const fileValidator = (file: File) => {
@@ -69,7 +69,8 @@ const FilesUpload = () => {
       let updatedFile = file.name;
       if (fileExists) {
         let sequentialNumber = 0;
-        while (currentFiles.find(f => f.name === updatedFile)) {
+        const fileExistsWithUpdatedName = (f: SelectedFile) => f.name === updatedFile;
+        while (currentFiles.find(fileExistsWithUpdatedName)) {
           sequentialNumber++;
           const extensionIndex = file.name.lastIndexOf('.');
           const baseName = file.name.slice(0, extensionIndex);
@@ -97,7 +98,7 @@ const FilesUpload = () => {
     dispatch(addFiles(serializedFiles));
   };
 
-  const {acceptedFiles, getRootProps, getInputProps, isDragActive, fileRejections} = useDropzone({
+  const {getRootProps, getInputProps, isDragActive, fileRejections} = useDropzone({
     onDrop,
     multiple: true,
     accept: { 
