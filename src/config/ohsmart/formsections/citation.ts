@@ -126,14 +126,14 @@ const section = {
       repeatable: true,
       description: {
         en: 'Optional information if a grant was involved in financing the project',
-        nl: 'Optionele informatie als het project met behulp van een beurs tot stand is gekomen',
+        nl: 'Optionele informatie als het project met behulp van subsidie tot stand is gekomen',
       },
       fields: [
         {
           type: 'text',
           label: {
             en: 'Grant agency',
-            nl: 'Beursverstrekker',
+            nl: 'Subsidieverstrekker',
           },
           name: 'grant_agency',
         },
@@ -141,7 +141,7 @@ const section = {
           type: 'text',
           label: {
             en: 'Grant number/identifier',
-            nl: 'Nummer/identificatie beurs',
+            nl: 'Dossiernummer van de verstrekte subsidie',
           },
           name: 'grant_number',
         },
