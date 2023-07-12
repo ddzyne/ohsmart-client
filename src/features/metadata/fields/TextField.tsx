@@ -29,7 +29,7 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
         required={field.required}
         multiline={field.multiline}
         rows={field.multiline ? 4 : ''}
-        value={field.value}
+        value={field.value || ''}
         disabled={field.disabled || metadataSubmitStatus !== ''}
         onChange={(e) => dispatch(setField({
           sectionIndex: sectionIndex,

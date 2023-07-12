@@ -95,17 +95,12 @@ const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
                     }}
                   >
                     <Grid container sx={{flex: 1}} spacing={2}>
-                      {groupedField.map( f => {
-                        console.log(!f.id && f)
-                        return (
-                          <SingleField 
+                      {groupedField.map( f => 
+                        <SingleField
                           key={f.id} 
                           field={f} 
                           sectionIndex={sectionIndex} 
-                        />
-                          )
-                      }
-                        
+                        />                        
                       )}
                     </Grid>
                     {field.repeatable && fieldArray.length > 1 && !metadataSubmitStatus &&

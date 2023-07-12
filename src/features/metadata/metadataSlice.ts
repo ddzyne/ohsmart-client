@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 // import formSections from '../../config/default/form';
 import type { 
@@ -60,24 +60,28 @@ export const metadataSlice = createSlice({
     // functionality for adding new single (repeatable) fields/field groups
     addField: (state, action: PayloadAction<AddFieldPayload>) => {
       const section = state.form[action.payload.sectionIndex];
-      const fieldIndex = section.fields.findIndex( f => f.id === action.payload.groupedFieldId);
-
-      if (fieldIndex !== undefined) {
+      const field = findById(action.payload.groupedFieldId, section.fields);
+      if (field) { 
         const newField = action.payload.type === 'single' ?
-          {...(section.fields[fieldIndex] as RepeatTextFieldType).fields[0], id: uuidv4(), value: '', valid: ''} :
-          (section.fields[fieldIndex] as RepeatGroupedFieldType).fields[0].map( f => ({...f, id: uuidv4(), value: '', valid: ''}));
-        // add field to section
-        section.fields[fieldIndex].fields = [
-          ...(section.fields[fieldIndex] as RepeatGroupedFieldType | RepeatTextFieldType).fields, newField
+          // single repeatable field is just a copy with a new id, value and valid state
+          {...(field as RepeatTextFieldType).fields[0], id: uuidv4(), value: '', valid: ''} :
+          // grouped fields a bit more complicated, since grouped fields can also contain single repeatable fields
+          (field as RepeatGroupedFieldType).fields[0].map( f => (
+            f.type === 'repeatSingleField' ?
+            {...f, id: uuidv4(), fields: [{...f.fields[0], id: uuidv4(), value: '', valid: ''}]} :
+            {...f, id: uuidv4(), value: '', valid: ''}
+          ));
+
+        field.fields = [
+          ...(field as RepeatGroupedFieldType | RepeatTextFieldType).fields, newField
         ] as InputField[][] | TextFieldType[];
       }
     },
     deleteField: (state, action: PayloadAction<DeleteFieldPayload>) => {
       const section = state.form[action.payload.sectionIndex];
-      const fieldIndex = section.fields.findIndex( f => f.id === action.payload.groupedFieldId);
-
-      if (fieldIndex !== undefined) {
-        (section.fields[fieldIndex] as RepeatTextFieldType | RepeatGroupedFieldType).fields.splice(action.payload.deleteField, 1);
+      const field = findById(action.payload.groupedFieldId, section.fields);
+      if (field) { 
+        (field as RepeatTextFieldType | RepeatGroupedFieldType).fields.splice(action.payload.deleteField, 1);
       }
     },
     // keep track of the accordion state

@@ -1,5 +1,5 @@
 import { SelectedFile } from '../../types/Files';
-import { SectionType, OptionsType } from '../../types/Metadata';
+import { SectionType, OptionsType, RepeatTextFieldType, Field } from '../../types/Metadata';
 
 // Type guards
 const isOption = (value: OptionsType | OptionsType[] | string | string[] | undefined | null): value is OptionsType =>
@@ -16,17 +16,19 @@ const getField = (value: OptionsType | OptionsType[] | string | string[] | undef
   value.value :
   value;
 
+const getFieldValueObject = (field: Field) => ({
+  name: field.name,
+  id: field.id,
+  value: field.type === 'repeatSingleField' ? (field as RepeatTextFieldType).fields.map( repeatableField => getField(repeatableField.value) ) : getField(field.value),
+  private: field.private,
+});
+
 // Function to rearrange the metadata for submission
 export const formatFormData = (sessionId: string, metadata: SectionType[], files?: SelectedFile[]) => {
   // Format the metadata fields
   const formattedMetadata = metadata.map( section => 
     section.fields.map( field => {
-      const fieldValue = {
-        name: field.name,
-        id: field.id,
-        value: getField(field.value),
-        private: field.private,
-      }
+      const fieldValue = getFieldValueObject(field);
       if (field.type === 'repeatSingleField') {
         return ({
           ...fieldValue,
@@ -36,22 +38,10 @@ export const formatFormData = (sessionId: string, metadata: SectionType[], files
       if (field.type === 'group') {
         return ({
           ...fieldValue,
-          value: field.fields.map( fields => 
-            Array.isArray(fields) ? 
-            fields.map( f => 
-              ({ 
-                name: f.name, 
-                id: f.id, 
-                value: getField(f.value), 
-                private: f.private,
-              })
-            ) :
-            ({ 
-              name: fields.name, 
-              id: fields.id, 
-              value: getField(fields.value), 
-              private: fields.private,
-            })
+          value: field.fields.map( fld => 
+            Array.isArray(fld) ? 
+            fld.map( f => getFieldValueObject(f)) :
+            getFieldValueObject(fld)
           ),
         })
       }

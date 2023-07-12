@@ -23,7 +23,7 @@ export type OptionsType = {
 };
 
 export type Field = TextFieldType | AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType | RadioFieldType | CheckFieldType;
-export type InputField = TextFieldType | AutocompleteFieldType | RadioFieldType | CheckFieldType;
+export type InputField = TextFieldType | AutocompleteFieldType | RadioFieldType | CheckFieldType | RepeatTextFieldType;
 
 export interface TextFieldType {
   type: 'text' | 'datetime-local' | 'date' | 'number';
@@ -109,6 +109,7 @@ export interface RepeatTextFieldType {
   repeatable?: never;
   multiApiValue?: never;
   options?: never;
+  required?: never;
 }
 
 export interface RadioFieldType {

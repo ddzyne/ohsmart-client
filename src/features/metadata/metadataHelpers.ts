@@ -93,11 +93,15 @@ export const formatInitialState = (form: InitialSectionType[]) => {
     ...section, 
     fields: section.fields.map( field => {
       if( field.type === 'group' && field.fields ) {
-        const newFieldGroup = field.fields.map( f => ({...f, id: uuidv4()}));
+        const newFieldGroup = field.fields.map( f => (
+          !Array.isArray(f) && f.type === 'text' && f.repeatable ? 
+          {id: uuidv4(), type: 'repeatSingleField', name: f.name, private: f.private, fields: [{...f, id: uuidv4()}]} :
+          {...f, id: uuidv4()}
+        ));
         return ({...field, id: uuidv4(), fields: !field.repeatable ? newFieldGroup : [newFieldGroup] });
       }
       if ( field.repeatable ) {
-        return ({id: uuidv4(), type: 'repeatSingleField', name: field.name, fields: [{...field, id: uuidv4()}]});
+        return ({id: uuidv4(), type: 'repeatSingleField', name: field.name, private: field.private, fields: [{...field, id: uuidv4()}]});
       }
       else {
         return {...field, id: uuidv4()};
