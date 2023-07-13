@@ -25,7 +25,7 @@ const section = {
         // Note that language names at the moment are not translated into Dutch (they should be)
         label: l.name,
         value: `${l.code}|${l.name}`,
-      })),,
+      })),
     },
     {
       type: 'date',
