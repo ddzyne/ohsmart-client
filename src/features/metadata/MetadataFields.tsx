@@ -17,6 +17,7 @@ import { TransitionGroup } from 'react-transition-group';
 import { lookupLanguageString } from '../../app/i18n';
 import { getMetadataSubmitStatus } from '../submit/submitSlice';
 import { useAppSelector } from '../../app/hooks';
+import { useTranslation } from 'react-i18next';
 
 // Memoized Field function, so only the affected field rerenders when form/metadata props change.
 // Loads the field specified in the type key
@@ -63,6 +64,7 @@ const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
 });
 
 const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
+  const { t } = useTranslation('metadata');
   // Check if group is repeatable. If not, lets wrap that single fieldgroup in an array, so we can use the same map function over it.
   // We use the id of the first field of the group as key for transitions
   const fieldArray = field.repeatable ? field.fields as InputField[][] : [field.fields as InputField[]];

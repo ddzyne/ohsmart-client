@@ -11,11 +11,13 @@ import { StatusIcon } from '../generic/Icons';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getMetadata, getOpenPanel, setOpenPanel, setSectionStatus } from './metadataSlice';
 import { lookupLanguageString } from '../../app/i18n';
+import { useTranslation } from 'react-i18next';
 
 const Form = () => {
   const dispatch = useAppDispatch();
   const metadata = useAppSelector(getMetadata);
   const openPanel = useAppSelector(getOpenPanel);
+  const { t } = useTranslation('metadata');
 
   // initialize section statusses on initial render
   useEffect(() => {

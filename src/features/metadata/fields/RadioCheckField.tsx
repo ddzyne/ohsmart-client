@@ -12,11 +12,13 @@ import { StatusIcon } from '../../generic/Icons';
 import { lookupLanguageString } from '../../../app/i18n';
 import type { RadioFieldProps, CheckFieldProps } from '../../../types/Metadata';
 import { getMetadataSubmitStatus } from '../../submit/submitSlice';
+import { useTranslation } from 'react-i18next';
 
 // List of radio button options. First value of the options is selected by default, so no need for status checking.
 export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
   const dispatch = useAppDispatch();
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
+  const { t } = useTranslation('metadata');
 
   return (
     <FormControl>
@@ -53,6 +55,7 @@ export const CheckField = ({field, sectionIndex}: CheckFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
+  const { t } = useTranslation('metadata');
 
   return (
     <FormControl
