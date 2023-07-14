@@ -12,7 +12,6 @@ const section = {
         nl: 'Publiek',
       },
       name: 'audience',
-      required: false,
       multiselect: true,
       description: {
         en: 'Humanities; Arts and Culture; History of Arts and Architecture (for example)',
@@ -26,8 +25,7 @@ const section = {
         en: 'Related to',
         nl: 'Gerelateerd aan',
       },
-      name: 'relation',
-      required: false,
+      name: 'relation',     
       multiselect: true,
       description: {
         en: 'Other interviews, publications, projects',

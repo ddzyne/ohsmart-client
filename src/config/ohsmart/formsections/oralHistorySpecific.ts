@@ -45,7 +45,6 @@ const section = {
             nl: 'Voorkeursnaam',
           },
           name: 'interviewee_preferred_name',
-          required: false,
           private: true,
           repeatable: true,
         },
@@ -65,8 +64,7 @@ const section = {
             en: 'Function',
             nl: 'Functie',
           },
-          name: 'interviewee_function',
-          required: false,
+          name: 'interviewee_function',          
           private: true,
           repeatable: true,
         },
@@ -76,8 +74,7 @@ const section = {
             en: 'Affiliation',
             nl: 'Affiliatie',
           },
-          name: 'interviewee_affiliation',
-          required: false,
+          name: 'interviewee_affiliation',          
           private: true,
           repeatable: true,
         },
@@ -142,7 +139,7 @@ const section = {
             nl: 'Voorkeursnaam',
           },
           name: 'interviewer_preferred_name',
-          required: false,
+          
           private: true,
           repeatable: true,
         },
@@ -162,8 +159,7 @@ const section = {
             en: 'Function',
             nl: 'Functie',
           },
-          name: 'interviewer_function',
-          required: false,
+          name: 'interviewer_function',   
           private: true,
           repeatable: true,
         },
@@ -174,7 +170,6 @@ const section = {
             nl: 'Affiliatie',
           },
           name: 'interviewer_affiliation',
-          required: false,
           private: true,
           repeatable: true,
         },
@@ -239,7 +234,6 @@ const section = {
             nl: 'Functie',
           },
           name: 'interpreter_function',
-          required: false,
           private: true,
           repeatable: true,
         },
@@ -250,7 +244,6 @@ const section = {
             nl: 'Affiliatie',
           },
           name: 'interpreter_affiliation',
-          required: false,
           private: true,
           repeatable: true,
         },
@@ -295,7 +288,6 @@ const section = {
             nl: 'Voornaam',
           },
           name: 'others_first_name',
-          required: false,
           private: true,
         },
         {
@@ -305,7 +297,6 @@ const section = {
             nl: 'Achternaam',
           },
           name: 'others_last_name',
-          required: false,
           private: true,
         },
         {
@@ -315,7 +306,6 @@ const section = {
             nl: 'Functie',
           },
           name: 'others_function',
-          required: false,
           private: true,
           repeatable: true,
         },
@@ -326,7 +316,6 @@ const section = {
             nl: 'Affiliatie',
           },
           name: 'others_affiliation',
-          required: false,
           private: true,
           repeatable: true,
         },
@@ -337,7 +326,6 @@ const section = {
             nl: 'Toestemmingsformulier',
           },
           name: 'others_consent',
-          required: false,
           private: true,
           options: [
             {
@@ -447,7 +435,7 @@ const section = {
         nl: 'Opnameformaat',
       },
       name: 'recording_format',
-      required: false,
+      
       multiselect: true,
       description: {
         en: 'MIME type and other type information',
@@ -462,7 +450,7 @@ const section = {
         nl: 'Opnameapparatuur',
       },
       name: 'recording_equipment',
-      required: false,
+      
       repeatable: true,
     },
     {
@@ -505,7 +493,7 @@ const section = {
             nl: 'Functie',
           },
           name: 'transcript_human_function',
-          required: false,
+          
           private: true,
           repeatable: true,
         },
@@ -516,7 +504,7 @@ const section = {
             nl: 'Affiliatie',
           },
           name: 'transcript_human_affiliation',
-          required: false,
+          
           private: true,
           repeatable: true,
         },
@@ -527,7 +515,7 @@ const section = {
             nl: 'Toestemmingsformulier',
           },
           name: 'transcript_human_consent',
-          required: false,
+          
           private: true,
           options: [
             {

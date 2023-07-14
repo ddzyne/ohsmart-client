@@ -14,7 +14,6 @@ const section = {
         nl: 'Taal',
       },
       name: 'language',
-      required: false,
       description: {
         en: 'Language of interview',
         nl: 'Taal van het interview',
