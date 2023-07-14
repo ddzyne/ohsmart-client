@@ -10,6 +10,8 @@ import { useFetchRorByNameQuery } from '../api/ror';
 import { useFetchGeonamesFreeTextQuery } from '../api/geonames';
 import { useFetchGettyTermsQuery } from '../api/getty';
 import { useFetchSheetsQuery } from '../api/sheets';
+import { useFetchElsstTermQuery } from '../api/elsst';
+import { useFetchDansFormatsQuery } from '../../files/api/dansFormats';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
@@ -116,13 +118,44 @@ export const GettyField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   )
 }
 
+export const ElsstField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+  const [inputValue, setInputValue] = useState<string>('');
+  const debouncedInputValue = useDebounce(inputValue, 500)[0];
+  // Fetch data on input change
+  const {data, isFetching, isLoading} = useFetchElsstTermQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
 
-// Google Sheets field, gets all values at once
+  return (
+    <AutocompleteAPIField 
+      field={field} 
+      sectionIndex={sectionIndex} 
+      inputValue={inputValue} 
+      setInputValue={setInputValue} 
+      debouncedInputValue={debouncedInputValue} 
+      data={data} 
+      isLoading={isLoading} 
+      isFetching={isFetching} 
+    />
+  )
+}
+
+// Google Sheets and DANS file formats fields, get all values at once
 // So just use a simple AutocompleteField with options fetched from the API
-export const SheetsField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+export const DansFormatsField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   // Fetch data right away
-  const {data, isFetching, isLoading} = useFetchSheetsQuery<QueryReturnType>(field.sheetOptions);
+  const {data, isFetching, isLoading} = useFetchDansFormatsQuery<QueryReturnType>(null);
+  const newField = {...field, options: data && data.response ? data.response : []};
 
+  return (
+    <AutocompleteField 
+      field={newField} 
+      sectionIndex={sectionIndex} 
+      isLoading={isLoading || isFetching} 
+    />
+  )
+}
+
+export const SheetsField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+  const {data, isFetching, isLoading} = useFetchSheetsQuery<QueryReturnType>(field.sheetOptions);
   const newField = {...field, options: data && data.response ? data.response : []};
 
   return (

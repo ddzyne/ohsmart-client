@@ -60,6 +60,13 @@ export interface SheetsResponse {
   values: string[][];
 }
 
-export interface ElsstResponse {
+export interface ElsstItem {
+  uri: string;
+  prefLabel: string;
+  lang: string;
+  altLabel: string;
+}
 
+export interface ElsstResponse {
+  results: ElsstItem[];
 }

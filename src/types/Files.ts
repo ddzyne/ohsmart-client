@@ -63,8 +63,14 @@ interface DansFilesFormat {
   'required-convert-to': string;
 }
 
+interface DansFilesDescription {
+  lang: string;
+  title: string;
+}
+
 export interface DansFilesResponse {
   type: string;
+  description: DansFilesDescription[];
   format: DansFilesFormat[];
 }
 

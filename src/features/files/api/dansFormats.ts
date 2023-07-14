@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
-import type { DansSimpleList } from '../../../types/Files';
+import type { DansSimpleList, DansFilesResponse } from '../../../types/Files';
 
 export const dansFormatsApi = createApi({
   reducerPath: 'dansFormats',
@@ -10,6 +10,19 @@ export const dansFormatsApi = createApi({
         url: `dans-formats`,
         headers: {Accept: 'application/json'},
       }),
+      transformResponse: (response: DansFilesResponse[], meta, arg) => {
+        // transform this list for use in a MUI dropdown
+        return response.length > 0 ? 
+          ({
+            response: response.map( item => item.format.map(format => ({
+              label: `${format['file-extension']} (${format['mime-type'].join(', ')})`,
+              value: format['file-extension'],
+              header: item.description.reduce((obj, { lang, title }) => ({ ...obj, [lang]: title }), {})
+            }))).flat(),
+          })
+          :
+          [];
+      },
     }),
     fetchSimpleList: build.query({
       query: () => ({

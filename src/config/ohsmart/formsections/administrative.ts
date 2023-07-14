@@ -22,9 +22,9 @@ const section = {
       options: languageList.map( l => ({
         // Copied this list from https://gist.github.com/jrnk/8eb57b065ea0b098d571
         // We relabel the languages for processing in the form and in Dataverse
-        // Note that language names at the moment are not translated into Dutch (they should be)
+        // Note that language names at the moment are not translated into Dutch (they should be?)
         label: l.name,
-        value: `${l.code}|${l.name}`,
+        value: l.code,
       })),
     },
     {

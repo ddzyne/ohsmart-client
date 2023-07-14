@@ -32,7 +32,15 @@ const section = {
         en: 'One of a number of specific licences',
         nl: 'Eén of meerdere specifieke licenties',
       },
-      options: ['test1', 'test2'],
+      options: [
+        {
+          label: {
+            en: 'DANS Licence',
+            nl: 'DANS Licentie',
+          },
+          value: 'dans-licence',
+        },
+      ],
     },
   ],
 };

@@ -400,18 +400,43 @@ const section = {
       ],
     },
     {
-      type: 'text',
+      type: 'group',
       label: {
         en: 'Recorded by',
         nl: 'Opgenomen door',
       },
       name: 'recorded_by',
-      required: true,
       repeatable: true,
       description: {
-        en: 'Name of person assisting with recording and affiliation',
-        nl: 'Naam en affiliatie van persoon die interview heeft opgenomen',
+        en: 'Information about the person assisting with recording',
+        nl: 'Informatie over de persoon die het interview heeft opgenomen',
       },
+      fields: [
+        {
+          type: 'text',
+          label: {
+            en: 'First name',
+            nl: 'Voornaam',
+          },
+          name: 'recorder_by_first_name',
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Last name',
+            nl: 'Achternaam',
+          },
+          name: 'recorder_by_last_name',
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Affiliation',
+            nl: 'Affiliatie',
+          },
+          name: 'recorder_by_affiliation',
+        },
+      ],
     },
     {
       type: 'autocomplete',
@@ -421,15 +446,15 @@ const section = {
       },
       name: 'recording_format',
       required: false,
-      repeatable: true,
+      multiselect: true,
       description: {
         en: 'MIME type and other type information',
         nl: 'MIME type en andere type-informatie',
       },
-      options: ['test1', 'test2'],
+      options: 'dansFormats',
     },
     {
-      type: 'autocomplete',
+      type: 'text',
       label: {
         en: 'Recording equipment',
         nl: 'Opnameapparatuur',
@@ -437,7 +462,6 @@ const section = {
       name: 'recording_equipment',
       required: false,
       repeatable: true,
-      options: ['test1', 'test2'],
     },
     {
       type: 'group',

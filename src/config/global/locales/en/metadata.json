@@ -13,5 +13,7 @@
   "orcid": "ORCID",
   "ror": "RoR",
   "getty": "Getty AAT",
-  "geonames": "GeoNames"
+  "geonames": "GeoNames",
+  "elsst": "ELSST Thesaurus",
+  "sheets": "Google Sheets"
 }

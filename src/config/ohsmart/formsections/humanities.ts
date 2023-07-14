@@ -14,12 +14,11 @@ const section = {
       name: 'domain_specific_keywords',
       required: true,
       multiselect: true,
-      value: '',
       description: {
         en: '',
         nl: '',
       },
-      options: ['test1', 'test2'],
+      options: 'elsst',
     },
   ],
 };

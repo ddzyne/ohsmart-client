@@ -8,6 +8,7 @@ import { rorApi } from '../features/metadata/api/ror';
 import { gettyApi } from '../features/metadata/api/getty';
 import { geonamesApi } from '../features/metadata/api/geonames';
 import { sheetsApi } from '../features/metadata/api/sheets';
+import { elsstApi } from '../features/metadata/api/elsst';
 import { submitApi } from '../features/submit/submitApi';
 import { dansFormatsApi } from '../features/files/api/dansFormats';
 import { dansUtilityApi } from '../features/files/api/dansUtility';
@@ -24,6 +25,7 @@ export const store = configureStore({
     [geonamesApi.reducerPath]: geonamesApi.reducer,
     [sheetsApi.reducerPath]: sheetsApi.reducer,
     [submitApi.reducerPath]: submitApi.reducer,
+    [elsstApi.reducerPath]: elsstApi.reducer,
     [dansFormatsApi.reducerPath]: dansFormatsApi.reducer,
     [dansVerificationApi.reducerPath]: dansVerificationApi.reducer,
     [dansUtilityApi.reducerPath]: dansUtilityApi.reducer,
@@ -37,6 +39,7 @@ export const store = configureStore({
       .concat(gettyApi.middleware)
       .concat(geonamesApi.middleware)
       .concat(sheetsApi.middleware)
+      .concat(elsstApi.middleware)
       .concat(submitApi.middleware)
       .concat(dansFormatsApi.middleware)
       .concat(dansVerificationApi.middleware)

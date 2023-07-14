@@ -17,6 +17,7 @@ const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldPr
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   const options = Array.isArray(field.options) ? field.options as OptionsType[] : [];
+  const localizedOptions = options.map( option => ({...option, label: lookupLanguageString(option.label)})) as OptionsType[] || [];
 
   return (
     <Stack direction="row" alignItems="center">
@@ -24,7 +25,7 @@ const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldPr
         multiple={field.multiselect}
         fullWidth 
         id={field.id}
-        options={options}
+        options={localizedOptions}
         groupBy={(option) => (option.header && lookupLanguageString(option.header)) || ''}
         value={field.value || (field.multiselect ? [] : null)}
         renderInput={
