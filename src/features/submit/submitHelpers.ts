@@ -26,28 +26,28 @@ const getFieldValueObject = (field: Field) => ({
 // Function to rearrange the metadata for submission
 export const formatFormData = (sessionId: string, metadata: SectionType[], files?: SelectedFile[]) => {
   // Format the metadata fields
-  const formattedMetadata = metadata.map( section => 
-    section.fields.map( field => {
-      const fieldValue = getFieldValueObject(field);
-      if (field.type === 'repeatSingleField') {
-        return ({
-          ...fieldValue,
-          value: field.fields.map( repeatableField => repeatableField.value ),
-        })
-      }
-      if (field.type === 'group') {
-        return ({
-          ...fieldValue,
-          value: field.fields.map( fld => 
-            Array.isArray(fld) ? 
-            fld.map( f => getFieldValueObject(f)) :
-            getFieldValueObject(fld)
-          ),
-        })
-      }
-      return fieldValue;
-    })
-  ).flat();
+  // const formattedMetadata = metadata.map( section => 
+  //   section.fields.map( field => {
+  //     const fieldValue = getFieldValueObject(field);
+  //     if (field.type === 'repeatSingleField') {
+  //       return ({
+  //         ...fieldValue,
+  //         value: field.fields.map( repeatableField => repeatableField.value ),
+  //       })
+  //     }
+  //     if (field.type === 'group') {
+  //       return ({
+  //         ...fieldValue,
+  //         value: field.fields.map( fld => 
+  //           Array.isArray(fld) ? 
+  //           fld.map( f => getFieldValueObject(f)) :
+  //           getFieldValueObject(fld)
+  //         ),
+  //       })
+  //     }
+  //     return fieldValue;
+  //   })
+  // ).flat();
 
   // Create the file metadata array
   const fileMetadata = Array.isArray(files) && files.map( f => ({
@@ -61,7 +61,7 @@ export const formatFormData = (sessionId: string, metadata: SectionType[], files
 
   return {
     id: sessionId,
-    metadata: formattedMetadata,
+    metadata: metadata,
     "file-metadata": fileMetadata,
   };
 }

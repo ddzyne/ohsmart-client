@@ -55,7 +55,6 @@ const section = {
       },
       name: 'publisher',
       required: true,
-      list: 'custom',
       description: 'Institution - often the rights holder',
       options: 'ror',
     },

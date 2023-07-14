@@ -27,6 +27,8 @@ interface GeonamesItem {
   fcodeName: string;
   countryName?: string;
   geonameId: string;
+  lat: string;
+  lng: string;
 }
 
 export interface GeonamesResponse {
@@ -58,3 +60,6 @@ export interface SheetsResponse {
   values: string[][];
 }
 
+export interface ElsstResponse {
+
+}

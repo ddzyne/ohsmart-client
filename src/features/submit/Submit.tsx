@@ -160,7 +160,7 @@ const Submit = () => {
         }
         <Button
           variant="contained"
-          disabled={isSuccessMeta || isLoadingMeta || metadataStatus === 'error'}
+          disabled={isSuccessMeta || isLoadingMeta/* || metadataStatus === 'error'*/}
           onClick={handleButtonClick}
           size="large"
         >
