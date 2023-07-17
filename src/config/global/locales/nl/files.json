@@ -29,5 +29,6 @@
   "fileNotAllowed": "Deze bestandsnaam is niet toegestaan. Hernoem je bestand.",
   "fileSubmitSuccess": "Successvol verstuurd",
   "uploadFailed": "Gefaald",
-  "fileSubmitError": "Herstart uploaden"
+  "fileSubmitError": "Probeer opnieuw te uploaden",
+  "fileTypeCheckError": "Er ging iets mis met het controleren van het bestandstype. Probeer het nog eens."
 }

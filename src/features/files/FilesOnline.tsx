@@ -18,6 +18,7 @@ const URLRegex = new RegExp(URLExpression);
 // We could perhaps try and fetch headers of a file, see if it exists. CORS issues maybe though.
 // Can't really do much else, needs to be handled by server
 // File metadata, how are we handling that?
+// Not used for now!
 
 const FilesOnline = () => {
   const dispatch = useAppDispatch();

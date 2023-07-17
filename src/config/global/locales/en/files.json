@@ -29,5 +29,6 @@
   "fileNotAllowed": "This file name is not allowed. Please rename your file.",
   "fileSubmitSuccess": "Submitted successfully",
   "uploadFailed": "Failed",
-  "fileSubmitError": "Try uploading again"
+  "fileSubmitError": "Try uploading again",
+  "fileTypeCheckError": "Something went wrong checking the file type. Please try again."
 }

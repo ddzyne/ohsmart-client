@@ -23,7 +23,7 @@ import { getFiles, removeFile, setFileMeta } from './filesSlice';
 import fileRoles from '../../config/global/files/roles';
 import fileProcessing from '../../config/global/files/processing';
 import type { SelectedFile, FileActionOptionsProps, FileItemProps } from '../../types/Files';
-import { useCheckTypeQuery } from './api/dansUtility';
+import { dansUtilityApi, useCheckTypeQuery } from './api/dansUtility';
 import { LightTooltip } from '../generic/Tooltip';
 import styles from './FilesTable.module.css';
 import { getSessionId } from '../metadata/metadataSlice';
@@ -91,7 +91,8 @@ const FileActionOptions = ({file, type}: FileActionOptionsProps) => {
 }
 
 const FileConversion = ({file}: FileItemProps) => {
-  const { data } = useCheckTypeQuery<any>(file.type);
+  const dispatch = useAppDispatch();
+  const { data, isError } = useCheckTypeQuery<any>(file.type);
   const { t } = useTranslation('files');
 
   return (
@@ -133,6 +134,16 @@ const FileConversion = ({file}: FileItemProps) => {
         <InfoRoundedIcon color="warning" /> 
       }
     </LightTooltip>
+    :
+    isError ?
+    <IconButton 
+      onClick={() => dispatch(dansUtilityApi.endpoints.checkType.initiate(file.type, {forceRefetch: true}))} 
+      sx={{marginLeft: '-8px'}}
+    >
+      <Tooltip title={t('fileTypeCheckError')}>
+        <ReplayCircleFilledIcon color="error" />
+      </Tooltip>
+    </IconButton> 
     :
     <CircularProgress size={20} />
   )
