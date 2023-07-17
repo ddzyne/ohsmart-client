@@ -1,3 +1,5 @@
+import narcisSubjects from '../../global/data/narcisSubjects.json';
+
 const section = {
   id: 'citation',
   title: {
@@ -45,7 +47,7 @@ const section = {
         en: 'Broad Data Station End Use Community or Domain',
         nl: '',
       },
-      options: ['test1', 'test2'],
+      options: narcisSubjects,
     },
     {
       type: 'autocomplete',
