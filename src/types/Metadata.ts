@@ -46,7 +46,8 @@ export interface TextFieldType {
   options?: never;
 }
 
-export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames' | 'getty' | 'sheets' | 'elsst' | 'dansFormats';
+export type Datastations = 'elsst' | 'narcis';
+export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames' | 'getty' | 'sheets' | 'dansFormats' | Datastations;
 
 export interface AutocompleteFieldType {
   type: 'autocomplete';

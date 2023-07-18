@@ -1,4 +1,4 @@
-import type { AutocompleteAPIFieldData } from './Metadata';
+import type { AutocompleteAPIFieldData, Datastations } from './Metadata';
 
 interface RorItem {
   name: string;
@@ -60,13 +60,14 @@ export interface SheetsResponse {
   values: string[][];
 }
 
-export interface ElsstItem {
+export interface DatastationsItem {
   uri: string;
   prefLabel: string;
   lang: string;
   altLabel: string;
+  localname: string;
 }
 
-export interface ElsstResponse {
-  results: ElsstItem[];
+export interface DatastationsResponse {
+  results: DatastationsItem[];
 }

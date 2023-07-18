@@ -10,7 +10,7 @@ import { useFetchRorByNameQuery } from '../api/ror';
 import { useFetchGeonamesFreeTextQuery } from '../api/geonames';
 import { useFetchGettyTermsQuery } from '../api/getty';
 import { useFetchSheetsQuery } from '../api/sheets';
-import { useFetchElsstTermQuery } from '../api/elsst';
+import { useFetchDatastationsTermQuery } from '../api/datastations';
 import { useFetchDansFormatsQuery } from '../../files/api/dansFormats';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
@@ -118,11 +118,16 @@ export const GettyField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   )
 }
 
-export const ElsstField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+export const DatastationsField = ({field, sectionIndex}: AutocompleteFieldProps) => {
+  const { i18n } = useTranslation();
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
   // Fetch data on input change
-  const {data, isFetching, isLoading} = useFetchElsstTermQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
+  const {data, isFetching, isLoading} = useFetchDatastationsTermQuery<QueryReturnType>({
+    vocabulary: field.options,
+    lang: i18n.language,
+    query: debouncedInputValue,
+  }, {skip: debouncedInputValue === ''});
 
   return (
     <AutocompleteAPIField 

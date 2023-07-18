@@ -9,7 +9,7 @@ import { memo } from 'react';
 import type { SingleFieldProps, GroupedFieldProps, TextFieldType, InputField } from '../../types/Metadata';
 import grey from '@mui/material/colors/grey';
 import { DeleteButton, AddButtonText } from './MetadataButtons';
-import { OrcidField, RorField, MultiApiField, GeonamesField, GettyField, SheetsField, ElsstField, DansFormatsField } from './fields/AutocompleteAPIField';
+import { OrcidField, RorField, MultiApiField, GeonamesField, GettyField, SheetsField, DatastationsField, DansFormatsField } from './fields/AutocompleteAPIField';
 import AutocompleteField from './fields/AutocompleteField';
 import TextField from './fields/TextField';
 import { RadioField, CheckField } from './fields/RadioCheckField';
@@ -53,8 +53,8 @@ const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
         <GettyField field={field} sectionIndex={sectionIndex} /> :
         field.options === 'sheets' ?
         <SheetsField field={field} sectionIndex={sectionIndex} /> :
-        field.options === 'elsst' ?
-        <ElsstField field={field} sectionIndex={sectionIndex} /> :
+        field.options === 'elsst' || field.options === 'narcis' ?
+        <DatastationsField field={field} sectionIndex={sectionIndex} /> :
         field.options === 'dansFormats' ?
         <DansFormatsField field={field} sectionIndex={sectionIndex} /> :
         field.multiApiValue ?
