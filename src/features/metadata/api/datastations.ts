@@ -24,7 +24,8 @@ export const datastationsApi = createApi({
             arg: arg.query,
             response: 
               response.results.map( item => ({
-                label: item.prefLabel.charAt(0).toUpperCase() + item.prefLabel.slice(1).toLowerCase(),
+                // Elsst responses come in all caps. Not so nice, so let's change that
+                label: arg.vocabulary === 'elsst' ? item.prefLabel.charAt(0).toUpperCase() + item.prefLabel.slice(1).toLowerCase() : item.prefLabel,
                 value: item.uri,
                 id: item.localname,
               })),
