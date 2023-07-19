@@ -366,7 +366,7 @@ const section = {
       repeatable: true,
       description: {
         en: 'Date and time of interview',
-        nl: 'Data en tijd waarop het interview is afgenomen',
+        nl: 'Datum en tijd waarop het interview is afgenomen',
       },
       fields: [
         {

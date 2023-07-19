@@ -17,7 +17,7 @@ const section = {
         en: 'Humanities; Arts and Culture; History of Arts and Architecture (for example)',
         nl: 'Bijvoorbeeld geesteswetenschappen, kunst en cultuur, etc.',
       },
-      options: ['test1', 'test2'],
+      options: 'narcis',
     },
     {
       type: 'autocomplete',
@@ -31,7 +31,7 @@ const section = {
         en: 'Other interviews, publications, projects',
         nl: 'Andere interviews, publicaties, projecten',
       },
-      options: ['test1', 'test2'],
+      options: [],
     },
   ],
 };
