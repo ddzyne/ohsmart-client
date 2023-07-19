@@ -16,5 +16,10 @@
   "geonames": "GeoNames",
   "elsst": "ELSST Thesaurus",
   "narcis": "NARCIS Classification of Scientific Disciplines",
-  "sheets": "Google Sheets"
+  "sheets": "Google Sheets",
+  "selectDateType": "Select",
+  "YYYY": "Year",
+  "MM-YYYY": "Month and year",
+  "DD-MM-YYYY": "Date",
+  "DD-MM-YYYY HH:mm": "Date and time"
 }

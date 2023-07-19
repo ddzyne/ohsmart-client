@@ -11,6 +11,8 @@ import type { TextFieldProps } from '../../../types/Metadata';
 import { lookupLanguageString } from '../../../app/i18n';
 import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 
+// TODO: remove date-datetime references
+
 const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: TextFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getStatus(field);
@@ -37,7 +39,7 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
           value: e.target.value,
         }))}
         InputLabelProps={{ 
-          shrink: field.type === 'date' || field.type === 'datetime-local' || field.disabled
+          shrink: field.disabled
         }}
         sx={{
           mt: groupedFieldId && currentField !== 0 ? 1 : 0,

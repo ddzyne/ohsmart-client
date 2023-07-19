@@ -50,6 +50,7 @@ const section = {
         },
         {
           type: 'date',
+          format: 'DD-MM-YYYY',
           label: {
             en: 'Date of birth',
             nl: 'Geboortedatum',
@@ -145,6 +146,7 @@ const section = {
         },
         {
           type: 'date',
+          format: 'DD-MM-YYYY',
           label: {
             en: 'Date of birth',
             nl: 'Geboortedatum',
@@ -368,7 +370,8 @@ const section = {
       },
       fields: [
         {
-          type: 'datetime-local',
+          type: 'date',
+          format: 'DD-MM-YYYY HH:mm',
           label: {
             en: 'Start time and date',
             nl: 'Starttijd en -datum',
@@ -377,7 +380,8 @@ const section = {
           required: true,
         },
         {
-          type: 'datetime-local',
+          type: 'date',
+          format: 'DD-MM-YYYY HH:mm',
           label: {
             en: 'End time and date',
             nl: 'Eindtijd en -datum',

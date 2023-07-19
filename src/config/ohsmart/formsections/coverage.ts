@@ -34,7 +34,9 @@ const section = {
       },
       fields: [
         {
-          type: 'datetime-local',
+          type: 'date',
+          format: 'MM-YYYY',
+          formatOptions: ['DD-MM-YYYY HH:mm', 'DD-MM-YYYY', 'MM-YYYY', 'YYYY'],
           label: {
             en: 'Subject start time and date',
             nl: 'Starttijd van het onderwerp',
@@ -47,7 +49,9 @@ const section = {
           },
         },
         {
-          type: 'datetime-local',
+          type: 'date',
+          format: 'MM-YYYY',
+          formatOptions: ['DD-MM-YYYY HH:mm', 'DD-MM-YYYY', 'MM-YYYY', 'YYYY'],
           label: {
             en: 'Subject end time and date',
             nl: 'Eindtijd van het onderwerp',

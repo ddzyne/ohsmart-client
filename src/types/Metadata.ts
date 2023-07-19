@@ -22,11 +22,11 @@ export type OptionsType = {
   extraLabel?: string;
 };
 
-export type Field = TextFieldType | AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType | RadioFieldType | CheckFieldType;
-export type InputField = TextFieldType | AutocompleteFieldType | RadioFieldType | CheckFieldType | RepeatTextFieldType;
+export type Field = TextFieldType | DateFieldType| AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType | RadioFieldType | CheckFieldType;
+export type InputField = TextFieldType | DateFieldType | AutocompleteFieldType | RadioFieldType | CheckFieldType | RepeatTextFieldType;
 
 export interface TextFieldType {
-  type: 'text' | 'datetime-local' | 'date' | 'number';
+  type: 'text' | 'number';
   id: string;
   name: string;
   label: string | LanguageStrings;
@@ -41,6 +41,31 @@ export interface TextFieldType {
   description?: string | LanguageStrings;
   required?: boolean;
   private?: boolean;
+  format?: never;
+  fields?: never;
+  multiApiValue?: never;
+  options?: never;
+}
+
+export type DateTimeFormat = 'DD-MM-YYYY HH:mm' | 'DD-MM-YYYY' | 'MM-YYYY' | 'YYYY';
+
+export interface DateFieldType {
+  type: 'date';
+  id: string;
+  name: string;
+  format: DateTimeFormat;
+  formatOptions?: DateTimeFormat[];
+  label: string | LanguageStrings;
+  value?: string;
+  repeatable?: boolean;
+  valid?: boolean | '';
+  disabled?: boolean;
+  description?: string | LanguageStrings;
+  required?: boolean;
+  private?: boolean;
+  minDate?: string;
+  maxDate?: string;
+  validation?: never;
   fields?: never;
   multiApiValue?: never;
   options?: never;
@@ -67,6 +92,7 @@ export interface AutocompleteFieldType {
   repeatable?: never;
   multiApiValue?: TypeaheadAPI;
   sheetOptions?: SheetOptions;
+  format?: never;
 }
 
 interface SheetOptions {
@@ -92,6 +118,7 @@ export interface GroupedFieldType {
   valid?: never;
   multiApiValue?: never;
   options?: never;
+  format?: never;
 }
 
 export interface RepeatGroupedFieldType extends Omit<GroupedFieldType, 'fields'> {
@@ -111,6 +138,7 @@ export interface RepeatTextFieldType {
   multiApiValue?: never;
   options?: never;
   required?: never;
+  format?: never;
 }
 
 export interface RadioFieldType {
@@ -128,6 +156,7 @@ export interface RadioFieldType {
   options: OptionsType[];
   multiApiValue?: never;
   fields?: never;
+  format?: never;
 }
 
 export interface CheckFieldType {
@@ -145,6 +174,7 @@ export interface CheckFieldType {
   options: OptionsType[];
   multiApiValue?: never;
   fields?: never;
+  format?: never;
 }
 
 export interface AutocompleteAPIFieldData {
@@ -164,6 +194,13 @@ export interface GroupedFieldProps extends Omit<SingleFieldProps, 'field'> {
 
 export interface TextFieldProps extends Omit<SingleFieldProps, 'field'> {
   field: TextFieldType;
+  groupedFieldId?: string;
+  currentField?: number;
+  totalFields?: number;
+}
+
+export interface DateFieldProps extends Omit<SingleFieldProps, 'field'> {
+  field: DateFieldType;
   groupedFieldId?: string;
   currentField?: number;
   totalFields?: number;

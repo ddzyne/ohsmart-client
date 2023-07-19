@@ -28,6 +28,7 @@ const section = {
     },
     {
       type: 'date',
+      format: 'DD-MM-YYYY',
       label:  {
         en: 'Date available',
         nl: 'Datum beschikbaarheid',

@@ -13,6 +13,7 @@ import type {
   InitialSectionType,
   TypeaheadAPI,
   ValidationType,
+  DateTimeFormat,
 } from '../../types/Metadata';
 import { getValid, getStatus, formatInitialState, findById } from './metadataHelpers';
 import { v4 as uuidv4 } from 'uuid';
@@ -54,6 +55,13 @@ export const metadataSlice = createSlice({
       const field = findById(action.payload.id, section.fields);
       if (field) {
         field.multiApiValue = action.payload.value as TypeaheadAPI;
+      }
+    },
+    setDateTypeField: (state, action: PayloadAction<SetFieldPayload>) => {
+      const section = state.form[action.payload.sectionIndex];
+      const field = findById(action.payload.id, section.fields);
+      if (field) {
+        field.format = action.payload.value as DateTimeFormat;
       }
     },
     // functionality for adding new single (repeatable) fields/field groups
@@ -129,7 +137,16 @@ export const metadataSlice = createSlice({
   }
 });
 
-export const { setField, setMultiApiField, setOpenPanel, setSectionStatus, addField, deleteField, resetMetadata } = metadataSlice.actions;
+export const { 
+  setField, 
+  setMultiApiField, 
+  setOpenPanel, 
+  setSectionStatus, 
+  addField, 
+  deleteField, 
+  resetMetadata, 
+  setDateTypeField
+} = metadataSlice.actions;
 
 // Select values from state
 export const getSessionId = (state: RootState) => state.metadata.id;

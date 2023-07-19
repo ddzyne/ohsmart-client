@@ -16,5 +16,10 @@
   "geonames": "GeoNames",
   "elsst": "ELSST Thesaurus",
   "narcis": "NARCIS Classification of Scientific Disciplines",
-  "sheets": "Google Sheets"
+  "sheets": "Google Sheets",
+  "selectDateType": "Kies",
+  "YYYY": "Jaar",
+  "MM-YYYY": "Maand en jaar",
+  "DD-MM-YYYY": "Datum",
+  "DD-MM-YYYY HH:mm": "Datum en tijd"
 }

@@ -6,12 +6,13 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
 import { memo } from 'react';
-import type { SingleFieldProps, GroupedFieldProps, TextFieldType, InputField } from '../../types/Metadata';
+import type { SingleFieldProps, GroupedFieldProps, TextFieldType, DateFieldType, InputField } from '../../types/Metadata';
 import grey from '@mui/material/colors/grey';
 import { DeleteButton, AddButtonText } from './MetadataButtons';
 import { OrcidField, RorField, MultiApiField, GeonamesField, GettyField, SheetsField, DatastationsField, DansFormatsField } from './fields/AutocompleteAPIField';
 import AutocompleteField from './fields/AutocompleteField';
 import TextField from './fields/TextField';
+import DateTimeField from './fields/DateTimeField';
 import { RadioField, CheckField } from './fields/RadioCheckField';
 import { TransitionGroup } from 'react-transition-group';
 import { lookupLanguageString } from '../../app/i18n';
@@ -24,17 +25,22 @@ import { useTranslation } from 'react-i18next';
 const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
   return (
     <Grid xs={12} md={6}>
-      {(field.type === 'text' || 
-        field.type === 'datetime-local' ||
-        field.type === 'date' ||
-        field.type === 'number') &&
+      {(field.type === 'text' || field.type === 'number') &&
         <TextField field={field} sectionIndex={sectionIndex} />
+      }
+      { field.type === 'date' && 
+        <DateTimeField field={field} sectionIndex={sectionIndex} />
       }
       { field.type === 'repeatSingleField' &&
         <TransitionGroup>
-          {field.fields.map( (f: TextFieldType, i: number) => 
+          {field.fields.map( (f: TextFieldType | DateFieldType, i: number) => 
             <Collapse key={f.id}>
-              <TextField field={f} sectionIndex={sectionIndex} groupedFieldId={field.id} currentField={i} totalFields={field.fields.length} />
+              { (f.type === 'text' || f.type === 'number') && 
+                <TextField field={f} sectionIndex={sectionIndex} groupedFieldId={field.id} currentField={i} totalFields={field.fields.length} />
+              }
+              { f.type === 'date' && 
+                <DateTimeField field={f} sectionIndex={sectionIndex} groupedFieldId={field.id} currentField={i} totalFields={field.fields.length} /> 
+              }
             </Collapse>
           )}
         </TransitionGroup>
