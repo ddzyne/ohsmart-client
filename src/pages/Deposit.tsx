@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState, Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -7,21 +7,29 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Metadata from '../features/metadata/Metadata';
 import Files from '../features/files/Files';
 import type { TabPanelProps, TabHeaderProps } from '../types/Pages';
-import { useAppSelector } from '../app/hooks';
-import { getMetadataStatus } from '../features/metadata/metadataSlice';
+import type { InitialFormProps } from '../types/Metadata';
+import { useAppSelector, useAppDispatch } from '../app/hooks';
+import { getMetadataStatus, getSessionId, getOpenTab, setOpenTab } from '../features/metadata/metadataSlice';
 import { getFiles } from '../features/files/filesSlice';
 import { StatusIcon } from '../features/generic/Icons';
 import Submit from '../features/submit/Submit';
 import { useTranslation } from 'react-i18next';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
+import { initForm } from '../features/metadata/metadataSlice';
 
-const Deposit = () => {
-  // Have index 0 open on loading page
-  const [value, setValue] = useState(0);
-  const handleChange = (event: SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
+const Deposit = ({form}: InitialFormProps) => {
+  const dispatch = useAppDispatch();
+  const sessionId = useAppSelector(getSessionId);
+  const openTab = useAppSelector(getOpenTab);
+
+  // Initialize form only on initial render when there's no sessionId yet
+  // Or when form gets reset
+  useEffect(() => {
+    if (!sessionId) {
+      dispatch(initForm(form));  
+    }
+  }, [dispatch, sessionId, form]);
 
   return (
     <Container>
@@ -29,15 +37,15 @@ const Deposit = () => {
         <Grid xs={12} mt={4}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Suspense fallback={<Skeleton width={400} height={50} />}>
-              <TabHeader value={value} handleChange={handleChange} />
+              <TabHeader value={openTab} handleChange={(e, val) => dispatch(setOpenTab(val))} />
             </Suspense>
           </Box>
           <Suspense fallback={<Skeleton width={800} height={400} />}>
             <AnimatePresence initial={false}>
-              <TabPanel value={value} index={0} key="tab1">
+              <TabPanel value={openTab} index={0} key="tab1">
                 <Metadata />
               </TabPanel>
-              <TabPanel value={value} index={1} key="tab2">
+              <TabPanel value={openTab} index={1} key="tab2">
                 <Files />
               </TabPanel>
             </AnimatePresence>

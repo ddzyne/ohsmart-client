@@ -1,5 +1,6 @@
 import type { ReactNode, SyntheticEvent } from 'react';
 import type { Language, LanguageStrings } from './Language';
+import type { InitialFormType } from './Metadata';
 
 interface PageAction {
   link: string;
@@ -16,6 +17,7 @@ export interface Page {
   content?: string | LanguageStrings;
   action?: PageAction;
   logo?: boolean;
+  form?: any;
 }
 
 export interface Link {

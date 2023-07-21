@@ -13,18 +13,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Generic from './pages/Generic';
 import Deposit from './pages/Deposit';
 import NotificationList from './features/notification/Notification';
-import type { Page, ComponentTypes } from './types/Pages';
+import type { Page } from './types/Pages';
 import Skeleton from '@mui/material/Skeleton';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment'
 
 // Load pages
 const pages: Page[] = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/pages`).default;
-
-const components: ComponentTypes = {
-  generic: Generic,
-  deposit: Deposit,
-}
+const formSections = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/form`).default;
 
 const App = () =>
   <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -37,12 +33,11 @@ const App = () =>
         <MenuBar pages={pages} />
         <Routes>
           {pages.map( (page, i) => {
-            const Comp = components[page.template];
             return (
               <Route 
                 key={page.id} 
                 path={page.slug} 
-                element={<Comp page={page} />} 
+                element={page.template === 'deposit' ? <Deposit form={formSections} /> : <Generic page={page} />} 
               />
             )
           }

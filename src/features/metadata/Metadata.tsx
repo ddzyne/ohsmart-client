@@ -1,4 +1,4 @@
-import { useEffect, SyntheticEvent } from 'react';
+import { SyntheticEvent } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
@@ -9,7 +9,7 @@ import type { SectionType } from '../../types/Metadata';
 import { SingleField, GroupedField } from './MetadataFields';
 import { StatusIcon } from '../generic/Icons';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
-import { getMetadata, getOpenPanel, setOpenPanel, setSectionStatus } from './metadataSlice';
+import { getMetadata, getOpenPanel, setOpenPanel } from './metadataSlice';
 import { lookupLanguageString } from '../../app/i18n';
 import { useTranslation } from 'react-i18next';
 
@@ -19,14 +19,9 @@ const Form = () => {
   const openPanel = useAppSelector(getOpenPanel);
   const { t } = useTranslation('metadata');
 
-  // initialize section statusses on initial render
-  useEffect(() => {
-    dispatch(setSectionStatus(null));
-  }, [dispatch]);
-
   // handles accordion open/close actions, sends to redux store
   const handleChange =
-    (panel: string) => (event: SyntheticEvent, isExpanded: boolean) => {
+    (panel: string) => (e: SyntheticEvent, isExpanded: boolean) => {
       dispatch(setOpenPanel(isExpanded ? panel : ''));
     };
 

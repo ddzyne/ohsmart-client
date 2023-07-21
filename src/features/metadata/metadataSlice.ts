@@ -14,24 +14,39 @@ import type {
   TypeaheadAPI,
   ValidationType,
   DateTimeFormat,
+  InitialFormType,
 } from '../../types/Metadata';
 import { getValid, getStatus, formatInitialState, findById } from './metadataHelpers';
 import { v4 as uuidv4 } from 'uuid';
 
-// dynamic section load
-const formSections = require(`../../config/${process.env.REACT_APP_CONFIG_FOLDER}/form`).default;
-
 // load the imported form and close all accordion panels by default
 const initialState: InitialStateType = {
-  id: uuidv4(),
-  form: formatInitialState(formSections as InitialSectionType[]) as SectionType[],
+  id: '',
+  form: [],
   panel: '',
+  tab: 0,
 }
 
 export const metadataSlice = createSlice({
   name: 'metadata',
   initialState,
   reducers: {
+    initForm: (state, action: PayloadAction<InitialFormType | InitialSectionType[]>) => {
+      if (!Array.isArray(action.payload) && action.payload.id) {
+        // form is loaded from existing data
+        state.id = action.payload.id;
+        state.form = action.payload.metadata;
+        state.panel = action.payload.metadata[0].id;
+      }
+      else {
+        // otherwise initialize a brand new form
+        state.id = uuidv4();
+        state.form = formatInitialState(action.payload as InitialSectionType[]);
+        state.panel = '';
+      }
+      // and set initial validation state
+      metadataSlice.caseReducers.setSectionStatus(state, {payload: null, type: ''});
+    },
     // keep track of form state
     setField: (state, action: PayloadAction<SetFieldPayload>) => {
       const section = state.form[action.payload.sectionIndex];
@@ -95,6 +110,10 @@ export const metadataSlice = createSlice({
     setOpenPanel: (state, action: PayloadAction<string>) => {
       state.panel = action.payload;
     },
+    // keep track of open tab (metadata/files)
+    setOpenTab: (state, action: PayloadAction<number>) => {
+      state.tab = action.payload;
+    },
     setSectionStatus: (state, action: PayloadAction<SetFieldPayload | null>) => {
       if (action.payload) {
         // setting status based on user interaction
@@ -128,30 +147,30 @@ export const metadataSlice = createSlice({
       }
     },
     resetMetadata: (state) => {
-      // reset form with new uuid
-      return state = {
-        ...initialState,
-        id: uuidv4(),
-      };
+      // We only need to remove the id. Deposit.tsx will then reinit the form
+      state.id = '';
     }
   }
 });
 
 export const { 
+  initForm,
   setField, 
   setMultiApiField, 
   setOpenPanel, 
+  setOpenTab,
   setSectionStatus, 
   addField, 
   deleteField, 
   resetMetadata, 
-  setDateTypeField
+  setDateTypeField,
 } = metadataSlice.actions;
 
 // Select values from state
 export const getSessionId = (state: RootState) => state.metadata.id;
 export const getMetadata = (state: RootState) => state.metadata.form;
 export const getOpenPanel = (state: RootState) => state.metadata.panel;
+export const getOpenTab = (state: RootState) => state.metadata.tab;
 export const getMetadataStatus = (state: RootState) => {
   const statusArray = state.metadata.form.map(section => section.status);
   return getStatus(statusArray);

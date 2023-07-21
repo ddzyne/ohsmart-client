@@ -273,6 +273,17 @@ export interface InitialStateType {
   id: string;
   form: SectionType[];
   panel: string;
+  tab: number;
+}
+
+export interface InitialFormType {
+  metadata: SectionType[];
+  id?: string;
+  'file-metadata'?: any;
+}
+
+export interface InitialFormProps {
+  form: InitialFormType;
 }
 
 // To do
