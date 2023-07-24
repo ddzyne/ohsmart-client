@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useFetchOrcidQuery } from '../api/orcid';
 import { useFetchRorByNameQuery } from '../api/ror';
 import { useFetchGeonamesFreeTextQuery } from '../api/geonames';
-import { useFetchGettyTermsQuery } from '../api/getty';
+import { useFetchGettyAATTermsQuery } from '../api/getty';
 import { useFetchSheetsQuery } from '../api/sheets';
 import { useFetchDatastationsTermQuery } from '../api/datastations';
 import { useFetchDansFormatsQuery } from '../../files/api/dansFormats';
@@ -102,7 +102,7 @@ export const GettyField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
   // Fetch data on input change
-  const {data, isFetching, isLoading} = useFetchGettyTermsQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
+  const {data, isFetching, isLoading} = useFetchGettyAATTermsQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
 
   return (
     <AutocompleteAPIField 

@@ -4,11 +4,11 @@ import type { GettyResponse } from '../../../types/Api';
 
 export const gettyApi = createApi({
   reducerPath: 'getty',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://vocabsservices.getty.edu/AATService.asmx/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://vocabsservices.getty.edu/' }),
   endpoints: (build) => ({
-    fetchGettyTerms: build.query({
+    fetchGettyAATTerms: build.query({
       query: (content) => ({
-        url: `AATGetTermMatch?term=${content}&logop=and&notes=`,
+        url: `AATService.asmx/AATGetTermMatch?term=${content}&logop=and&notes=`,
         // convert XML response to text string, so we can parse that later on
         responseHandler: (response) => response.text(),
       }),
@@ -35,5 +35,5 @@ export const gettyApi = createApi({
 });
 
 export const {
-  useFetchGettyTermsQuery,
+  useFetchGettyAATTermsQuery,
 } = gettyApi;

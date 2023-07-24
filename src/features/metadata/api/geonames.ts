@@ -3,7 +3,7 @@ import type { GeonamesResponse } from '../../../types/Api';
 
 export const geonamesApi = createApi({
   reducerPath: 'geonames',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://api.geonames.org/searchJSON?q=' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://secure.geonames.org/searchJSON?q=' }),
   endpoints: (build) => ({
     fetchGeonamesFreeText: build.query({
       query: (content) => ({
