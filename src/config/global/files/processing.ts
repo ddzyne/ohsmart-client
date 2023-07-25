@@ -1,15 +1,7 @@
 const processing = [
   {
-    label: "Create thumbnail",
-    value: "create_thumbnail",
-  },
-  {
-    label: "Encrypt",
-    value: "encrypt",
-  },
-  {
-    label: "Create transcript",
-    value: "create_transcript",
+    label: "Not specced. Removed for rls.",
+    value: "not_specced",
   },
 ];
 

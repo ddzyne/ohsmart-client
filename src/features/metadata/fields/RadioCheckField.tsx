@@ -19,17 +19,19 @@ export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
   const dispatch = useAppDispatch();
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
   const { t } = useTranslation('metadata');
+  const status = field.defaultValue ? 'success' : getStatus(field);
 
   return (
     <FormControl>
       <FormLabel id={field.id} sx={{display:'flex', mb: 1}}>
-        <StatusIcon status="success" margin="r" title={lookupLanguageString(field.description)} />
+        <StatusIcon status={status} margin="r" title={lookupLanguageString(field.description)} />
         {lookupLanguageString(field.label)}
       </FormLabel>
       <RadioGroup
+        row={field.layout === 'row'}
         aria-labelledby={field.id}
         name={field.name}
-        value={field.value || field.options[0].value}
+        value={field.value || field.defaultValue || ''}
         onChange={(e) => dispatch(setField({
           sectionIndex: sectionIndex,
           id: field.id,

@@ -55,6 +55,7 @@ const section = {
             nl: 'Naam',
           },
           name: 'contact_name',
+          required: true,
           description: {
             en: 'Name of the person to contact in respect of metadata (curator)',
             nl: 'Naam van contactpersoon voor de metadata (curator)',

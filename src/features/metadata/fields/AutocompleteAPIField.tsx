@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { setField, setMultiApiField } from '../metadataSlice';
-import type { AutocompleteFieldProps, AutocompleteAPIFieldProps, TypeaheadAPI, ApiLinkProps } from '../../../types/Metadata';
+import type { AutocompleteFieldProps, AutocompleteAPIFieldProps, TypeaheadAPI, ApiLinkProps, OptionsType } from '../../../types/Metadata';
 import type { QueryReturnType } from '../../../types/Api';
 import { lookupLanguageString } from '../../../app/i18n';
 import Select from '@mui/material/Select';
@@ -250,6 +250,7 @@ const AutocompleteAPIField = ({
         fullWidth 
         includeInputInList
         id={field.id}
+        freeSolo={field.allowFreeText}
         options={inputValue && debouncedInputValue === inputValue && data && data.arg === debouncedInputValue ? data.response : []}
         value={field.value || (field.multiselect ? [] : null)}
         inputValue={
@@ -264,31 +265,48 @@ const AutocompleteAPIField = ({
               label={`${lookupLanguageString(field.label)}${field.required ? ' *' : ''}`}
               error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required}
               helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required && t('incorrect')}
+              placeholder={lookupLanguageString(field.placeholder)}
               InputProps={{
                 ...params.InputProps,
-                startAdornment: !field.multiselect && field.value && !Array.isArray(field.value) ? 
+                startAdornment: !field.multiselect && field.value && !Array.isArray(field.value) && field.value.value.startsWith('http') ? 
                   <ApiLink link={field.value.value} apiValue={apiValue} /> :
                   params.InputProps.startAdornment,
               }}
             />
         }
         renderTags={(value, getTagProps) => 
-          value.map((option, index) => (
+          value.map((option, index) => 
             <Chip
-              label={lookupLanguageString(option.label)}
+              label={(lookupLanguageString(option.label) || option) as string}
               size="medium"
-              icon={<ApiLink link={option.value} apiValue={apiValue} chip={true} />}
+              icon={option.value && option.value.startsWith('http') ? <ApiLink link={option.value} apiValue={apiValue} chip={true} /> : undefined}
               {...getTagProps({ index })}
+              disabled={option.mandatory}
             />
-          ))
+          )
         }
-        onChange={(e, newValue) => {
+        onChange={(e, newValue, reason) => {
           // Gets set when user selects a value from the list
+          // Make sure a mandatory value cannot get erased
+          const saveValues = Array.isArray(field.value) && reason === 'clear' && field.value.filter(v => v.mandatory);
+
+          // In case freesolo is enabled, we create a new custom field value
+          const setValue = 
+            typeof newValue === 'string' && field.multiselect ?
+            [{label: newValue, value: newValue}] :
+            typeof newValue === 'string' ? 
+            {label: newValue, value: newValue} :
+            newValue;
+
+          // Set the field
           dispatch(setField({
             sectionIndex: sectionIndex,
             id: field.id,
-            value: newValue,
+            value: (saveValues || setValue) as OptionsType | OptionsType[],
           }));
+
+          // For freesolo, we reset the input value here
+          reason === 'createOption' && setInputValue('');
         }}
         onInputChange={(e, newValue) => {
           // Gets set when user starts typing

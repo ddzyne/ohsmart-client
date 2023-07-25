@@ -77,7 +77,16 @@ const section = {
         en: 'List of relevant keywords: Audiovisual-specific',
         nl: 'Een lijst van audiovisueelspecifieke relevante trefwoorden',
       },
+      placeholder: {
+        en: 'Enter keywords...',
+        nl: 'Trefwoorden...',
+      },
       options: 'getty',
+      value: [{
+        label: 'oral history (discipline)',
+        value: 'http://vocab.getty.edu/page/aat/300054402',
+        mandatory: true,
+      }],
     },
   ],
 };

@@ -178,6 +178,7 @@ const FileTableRow = ({file}: FileItemProps) => {
           />
         </TableCell>
         <TableCell sx={{p: 1, borderBottom: 0, minWidth: 150}}><FileActionOptions type="role" file={file} /></TableCell>
+        {/* TODO: remove or spec this */}
         <TableCell sx={{p: 1, borderBottom: 0, minWidth: 150}}><FileActionOptions type="process" file={file}  /></TableCell>
       </TableRow>
       <UploadProgress file={file} />

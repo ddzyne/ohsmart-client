@@ -55,8 +55,12 @@ const section = {
       },
       name: 'publisher',
       required: true,
-      description: 'Institution - often the rights holder',
+      description: {
+        en: 'Institution - often the rights holder',
+        nl: 'Instituut - vaak de rechthebbende',
+      },
       options: 'ror',
+      allowFreeText: true,
     },
     {
       // TODO: read-only and pre-filled by system
@@ -99,6 +103,7 @@ const section = {
             en: 'First and last name',
             nl: 'Voor en achternaam',
           },
+          value: 'User XXX',
         },
         {
           type: 'text',
@@ -112,6 +117,7 @@ const section = {
             en: '',
             nl: '',
           },
+          value: 'User XXX affiliation',
         },
       ]
     },

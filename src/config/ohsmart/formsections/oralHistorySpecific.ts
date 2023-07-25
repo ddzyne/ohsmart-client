@@ -216,7 +216,6 @@ const section = {
             nl: 'Voornaam',
           },
           name: 'interpreter_first_name',
-          required: true,
           private: true,
         },
         {
@@ -226,7 +225,6 @@ const section = {
             nl: 'Achternaam',
           },
           name: 'interpreter_last_name',
-          required: true,
           private: true,
         },
         {
@@ -256,7 +254,6 @@ const section = {
             nl: 'Toestemmingsformulier',
           },
           name: 'interpreter_consent',
-          required: true,
           private: true,
           options: [
             {
@@ -438,8 +435,7 @@ const section = {
         en: 'Recording format',
         nl: 'Opnameformaat',
       },
-      name: 'recording_format',
-      
+      name: 'recording_format', 
       multiselect: true,
       description: {
         en: 'MIME type and other type information',
@@ -454,7 +450,6 @@ const section = {
         nl: 'Opnameapparatuur',
       },
       name: 'recording_equipment',
-      
       repeatable: true,
     },
     {
@@ -540,7 +535,6 @@ const section = {
         nl: 'Machinetranscriptie',
       },
       name: 'transcript_machine',
-      required: true,
       repeatable: false,
     },
   ],

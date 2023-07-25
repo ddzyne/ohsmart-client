@@ -20,6 +20,7 @@ export type OptionsType = {
   header?: string | LanguageStrings;
   extra?: string[];
   extraLabel?: string;
+  mandatory?: boolean;
 };
 
 export type Field = TextFieldType | DateFieldType| AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType | RadioFieldType | CheckFieldType;
@@ -84,7 +85,9 @@ export interface AutocompleteFieldType {
   description?: string | LanguageStrings;
   required?: boolean;
   private?: boolean;
+  placeholder?: string | LanguageStrings;
   options: OptionsType[] | TypeaheadAPI[] | TypeaheadAPI;
+  allowFreeText?: boolean;
   valid?: boolean | '';
   disabled?: boolean;
   validation?: never;
@@ -146,6 +149,8 @@ export interface RadioFieldType {
   id: string;
   name: string;
   label: string | LanguageStrings;
+  layout?: 'row';
+  defaultValue?: string;
   value?: string;
   valid?: never;
   validation?: never;

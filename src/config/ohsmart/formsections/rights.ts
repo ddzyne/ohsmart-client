@@ -42,6 +42,40 @@ const section = {
         },
       ],
     },
+    {
+      type: 'radio',
+      label: {
+        en: 'Does this submission contain personal data?',
+        nl: 'Bevat deze dataset persoonlijke gegevens?',
+      },
+      name: 'personal_data',
+      required: true,
+      layout: 'row',
+      defaultValue: 'personal_data_true',
+      options: [
+        {
+          value: 'personal_data_true',
+          label: {
+            en: 'Yes',
+            nl: 'Ja',
+          },
+        },
+        {
+          value: 'personal_data_false',
+          label: {
+            en: 'No',
+            nl: 'Nee',
+          },
+        },
+        {
+          value: 'personal_data_unknown',
+          label: {
+            en: 'Unknown',
+            nl: 'Onbekend',
+          },
+        },
+      ],
+    },
   ],
 };
 
