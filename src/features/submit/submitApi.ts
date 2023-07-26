@@ -5,8 +5,6 @@ import type { AxiosRequestConfig, AxiosError, AxiosProgressEvent } from 'axios'
 import { setMetadataSubmitStatus, setFilesSubmitStatus } from './submitSlice';
 import { store } from '../../app/store';
 
-const targetRepo = require(`../../config/${process.env.REACT_APP_CONFIG_FOLDER}/form`).targetRepo;
-
 // We use Axios to enable file upload progress monitoring
 const axiosBaseQuery =
   (
@@ -81,7 +79,7 @@ const axiosBaseQuery =
 
 export const submitApi = createApi({
   reducerPath: 'submitApi',
-  baseQuery: axiosBaseQuery({ baseUrl: 'https://utility.packaging.dataverse.tk/inbox/' }),
+  baseQuery: axiosBaseQuery({ baseUrl: process.env.REACT_APP_SUBMIT_API as string }),
   endpoints: (build) => ({
     submitData: build.mutation({
       // Custom query for chaining Post functions
@@ -90,14 +88,13 @@ export const submitApi = createApi({
         console.log(arg)
         // First post the metadata
         const metadataResult = await fetchWithBQ({
-          url: `metadata?repo_target=${targetRepo}`,
+          url: `metadata?repo_target=${process.env.REACT_APP_TARGET_REPO}`,
           method: 'POST',
           data: arg,
           headers: {
-            Authorization: 'Bearer D@NS-ei-2023',
-            // TODO: replace with real user credentials. To be built.
-            'target-username': 'user001',
-            'target-password': 'user001',
+            Authorization: `Bearer ${process.env.REACT_APP_PACKAGING_API_KEY}`,
+            'target-username': process.env.REACT_APP_TARGET_USERNAME,
+            'target-password': process.env.REACT_APP_TARGET_PASSWORD,
           },
         });
 
@@ -116,10 +113,9 @@ export const submitApi = createApi({
           method: 'POST',
           data: file,
           headers: {
-            Authorization: 'Bearer D@NS-ei-2023',
-            // TODO: replace with real user credentials. To be built.
-            'target-username': 'user001',
-            'target-password': 'user001',
+            Authorization: `Bearer ${process.env.REACT_APP_PACKAGING_API_KEY}`,
+            'target-username': process.env.REACT_APP_TARGET_USERNAME,
+            'target-password': process.env.REACT_APP_TARGET_PASSWORD,
           },
         })));
 

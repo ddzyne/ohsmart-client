@@ -3,7 +3,7 @@ import type { DansSimpleList, DansFilesResponse } from '../../../types/Files';
 
 export const dansFormatsApi = createApi({
   reducerPath: 'dansFormats',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://facades.type.dataverse.tk/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_FORMATS_API }),
   endpoints: (build) => ({
     fetchDansFormats: build.query({
       query: () => ({

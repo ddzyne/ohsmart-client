@@ -2,7 +2,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export const dansUtilityApi = createApi({
   reducerPath: 'dansUtility',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://utility.formats.dataverse.tk/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_UTILITY_API }),
   endpoints: (build) => ({
     checkType: build.query({
       query: (content) => ({

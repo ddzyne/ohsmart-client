@@ -5,7 +5,6 @@ import type {
   AddFieldPayload,
   DeleteFieldPayload,
   InitialStateType, 
-  SectionType, 
   RepeatTextFieldType,
   RepeatGroupedFieldType,
   InputField,

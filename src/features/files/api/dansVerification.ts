@@ -7,7 +7,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export const dansVerificationApi = createApi({
   reducerPath: 'fileVerification',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://utility.type.verification.dataverse.tk/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_TYPE_VERIFICATION_API }),
   endpoints: (build) => ({
     verifyFile: build.mutation({
       query: (content) => ({
@@ -15,7 +15,7 @@ export const dansVerificationApi = createApi({
         method: 'POST',
         // body: content.data,
         headers: {
-          Authorization: 'Bearer D@NS-ei-2023'
+          Authorization: `Bearer ${process.env.REACT_APP_PACKAGING_API_KEY}`
         }
       }),
     }),
