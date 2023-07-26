@@ -9,6 +9,8 @@ import rights from './formsections/rights';
 // Section data are formatted as js/ts, so we can easily import things like option lists, or set a variable that gets reused
 // For now, see types/Metadata.ts to check the types of input fields you can use
 
+// NOTE: This config is OLD!
+
 const sections = [
   administrative,
   citation,
@@ -17,7 +19,5 @@ const sections = [
   relations,
   rights,
 ];
-
-export const targetRepo = 'dar.dans.knaw.nl';
 
 export default sections;

@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, current } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
 import type { 
   SetFieldPayload, 
@@ -130,6 +130,11 @@ export const metadataSlice = createSlice({
               return field.fields.flatMap( f => getStatus(f));
             }
             if (field.type === 'group' && field.fields) {
+              console.log(field.fields.flatMap( f => 
+                Array.isArray(f) ? 
+                f.flatMap( inner => getStatus(inner)) :
+                getStatus(f)
+              ))
               // grouped field, can have either a fields key with a single array as value, or an array of arrays
               return field.fields.flatMap( f => 
                 Array.isArray(f) ? 

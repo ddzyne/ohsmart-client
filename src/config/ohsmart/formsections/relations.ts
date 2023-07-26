@@ -1,3 +1,19 @@
+const relationships = [
+  "Conforms to",
+  "Has Format",
+  "Has part",
+  "References",
+  "Replaces",
+  "Requires",
+  "Has version",
+  "Is format of",
+  "Is part of",
+  "Is referenced by",
+  "Is replaced by",
+  "Is required by",
+  "Is version of",
+];
+
 const section = {
   id: 'relations',
   title: {
@@ -20,18 +36,58 @@ const section = {
       options: 'narcis',
     },
     {
-      type: 'autocomplete',
+      type: 'group',
       label: {
         en: 'Related to',
         nl: 'Gerelateerd aan',
       },
-      name: 'relation',     
-      multiselect: true,
+      name: 'relation',
+      repeatable: true,
       description: {
         en: 'Other interviews, publications, projects',
         nl: 'Andere interviews, publicaties, projecten',
       },
-      options: [],
+      fields: [
+        {
+          type: 'text',
+          label: {
+            en: 'Related item',
+            nl: 'Gerelateerd item',
+          },
+          name: 'relation_item',     
+          description: {
+            en: 'Title of an external item related to this dataset',
+            nl: 'Titel van een extern item gerelateerd aan deze dataset',
+          },
+        },
+        {
+          type: 'autocomplete',
+          label: {
+            en: 'Type of relation',
+            nl: 'Type relatie',
+          },
+          name: 'relation_type',     
+          description: {
+            en: 'The type of relation to this external item',
+            nl: 'Type relatie met dit externe item',
+          },
+          options: relationships.map((r: string) => ({label: r, value: r})),
+        },
+        {
+          type: 'text',
+          label: {
+            en: 'Item reference',
+            nl: 'Item referentie',
+          },
+          name: 'relation_reference',
+          placeholder: 'https://...',
+          // validation: 'uri',
+          description: {
+            en: 'A web link or PID reference for this external item',
+            nl: 'Een weblink of PID referentie naar dit externe item',
+          },
+        },
+      ],
     },
   ],
 };

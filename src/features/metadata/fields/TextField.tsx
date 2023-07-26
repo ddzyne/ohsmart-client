@@ -23,7 +23,12 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
     <Stack direction="row" alignItems="start">
       <TextField 
         fullWidth
-        error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required}
+        error={
+          field.hasOwnProperty('valid') && (
+            (!field.valid && field.valid !== '' && field.required) ||
+            (field.hasOwnProperty('validation') && field.valid === false && field.value !== ''
+          )
+        )}
         helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
         variant="outlined" 
         type={field.type}
@@ -44,6 +49,7 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
         sx={{
           mt: groupedFieldId && currentField !== 0 ? 1 : 0,
         }}
+        placeholder={field.placeholder}
         InputProps={{
           endAdornment:
             <InputAdornment position="end">

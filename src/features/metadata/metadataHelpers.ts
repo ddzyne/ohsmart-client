@@ -11,13 +11,14 @@ import type {
 // Helper functions for the Metadata form
 
 // some simple validation, not fully implemented
-export const validateData = (type: ValidationType, value: string) => {
+export const validateData = (type: ValidationType, value: string): boolean => {
   switch (type) {
     case 'email':
-      const res = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-      return res.test(value.toLowerCase());
+      return /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value.toLowerCase());
+    case 'uri':
+      return /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value.toLowerCase());
     default:
-      return;
+      return true;
   }
 }
 
@@ -39,15 +40,24 @@ export const findById = (id: string, fields: Field[]): Field | undefined => {
   return;
 };
 
-// Simple logic to check the status (color of indicator) for a specific field,
-// needed in multiple functions
-export const getStatus = (toCheck: InputField | SectionStatus[]) => {
+// Simple logic to check the status (color of indicator) for a specific field, needed in multiple functions
+// Can be error, warning, success
+// TODO this is a bit of a mess and doesn't really work well with fields that have validation
+export const getStatus = (toCheck: InputField | SectionStatus[]): SectionStatus => {
   const check1 = 
-    Array.isArray(toCheck) ? toCheck.indexOf('error') !== -1 :
-    toCheck.required && (!toCheck.value || (Array.isArray(toCheck.value) && toCheck.value.length === 0));
+    Array.isArray(toCheck) ? 
+    // check if array, then it's a section
+    toCheck.indexOf('error') !== -1 :
+    // otherwise it's a field
+    (toCheck.required && (!toCheck.value || (Array.isArray(toCheck.value) && toCheck.value.length === 0))) || 
+    (toCheck.hasOwnProperty('validation') && toCheck.hasOwnProperty('valid') && toCheck.valid === false && toCheck.value !== '');
   const check2 = 
-    Array.isArray(toCheck) ? toCheck.indexOf('warning') !== -1 :
+    Array.isArray(toCheck) ? 
+    toCheck.indexOf('warning') !== -1 :
     !toCheck.required && (!toCheck.value || (Array.isArray(toCheck.value) && toCheck.value.length === 0));
+
+  !Array.isArray(toCheck) && console.log(`${toCheck.value} - c1: ${check1} - c2: ${check2}`)
+
   return (
     check1 ?
     'error' : 
@@ -57,15 +67,15 @@ export const getStatus = (toCheck: InputField | SectionStatus[]) => {
   )
 }
 
-// As getStatus, but then check in a field is valid or not
-export const getValid = (value: string, validation?: ValidationType) => {
-  return (
-    validation ? 
-    validateData(validation, value) : 
-    value && value.length !== 0 ? 
-    true :
-    false
-  )
+// Check if a field conforms to validation type specified
+export const getValid = (value: string, validation?: ValidationType): boolean => {
+  if (validation) {
+    return validateData(validation, value);
+  }
+  else if (value && value.length !== 0) { 
+    return true;
+  }
+  return false;
 }
 
 /*

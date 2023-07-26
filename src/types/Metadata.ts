@@ -32,7 +32,8 @@ export interface TextFieldType {
   id: string;
   name: string;
   label: string | LanguageStrings;
-  validation?: 'email' | 'number';
+  placeholder?: string;
+  validation?: ValidationType;
   maxValue?: number;
   minValue?: number; 
   value?: string;
@@ -293,4 +294,4 @@ export interface InitialFormProps {
 }
 
 // To do
-export type ValidationType = 'email';
+export type ValidationType = 'email' | 'uri' | 'number';
