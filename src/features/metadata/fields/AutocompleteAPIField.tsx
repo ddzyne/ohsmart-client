@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import Stack from '@mui/material/Stack';
-import Autocomplete from '@mui/material/Autocomplete';
+import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useDebounce } from 'use-debounce';
@@ -202,7 +202,7 @@ export const MultiApiField = ({field, sectionIndex}: AutocompleteFieldProps) => 
           disabled={metadataSubmitStatus !== ''}
         >
           {Array.isArray(field.options) && (field.options as TypeaheadAPI[]).map( option => 
-            <MenuItem key={option} value={option}>{t(option)}</MenuItem>
+            <MenuItem key={option} value={option}>{t(`multi-${option}`)}</MenuItem>
           )}
         </Select>
       </FormControl>
@@ -226,6 +226,10 @@ const ApiLink = ({link, apiValue, chip}: ApiLinkProps) => {
   )
 }
 
+function isFreeSoloOption(option: OptionsType | string | (string | OptionsType)[] | null): option is OptionsType {
+  return (option as OptionsType) !== null && (option as OptionsType).hasOwnProperty('freetext');
+}
+
 const AutocompleteAPIField = ({
   field, 
   sectionIndex, 
@@ -246,7 +250,6 @@ const AutocompleteAPIField = ({
     <Stack direction="row" alignItems="center" sx={{flex: 1}}>
       <Autocomplete
         multiple={field.multiselect}
-        filterOptions={x => x}
         fullWidth 
         includeInputInList
         id={field.id}
@@ -268,7 +271,7 @@ const AutocompleteAPIField = ({
               placeholder={lookupLanguageString(field.placeholder)}
               InputProps={{
                 ...params.InputProps,
-                startAdornment: !field.multiselect && field.value && !Array.isArray(field.value) && field.value.value.startsWith('http') ? 
+                startAdornment: !field.multiselect && field.value && !Array.isArray(field.value) && field.value.value && field.value.value.startsWith('http') ? 
                   <ApiLink link={field.value.value} apiValue={apiValue} /> :
                   params.InputProps.startAdornment,
               }}
@@ -277,7 +280,7 @@ const AutocompleteAPIField = ({
         renderTags={(value, getTagProps) => 
           value.map((option, index) => 
             <Chip
-              label={(lookupLanguageString(option.label) || option) as string}
+              label={(option.freetext ? (option.value) : lookupLanguageString(option.label)) as string}
               size="medium"
               icon={option.value && option.value.startsWith('http') ? <ApiLink link={option.value} apiValue={apiValue} chip={true} /> : undefined}
               {...getTagProps({ index })}
@@ -291,11 +294,16 @@ const AutocompleteAPIField = ({
           const saveValues = Array.isArray(field.value) && reason === 'clear' && field.value.filter(v => v.mandatory);
 
           // In case freesolo is enabled, we create a new custom field value
+          // Note that on selection of a value in the dropdown, the value as created as in createFilterOptions (reason is selectOption),
+          // But if selected using 'Enter', it's a string (reason is createOption)
           const setValue = 
-            typeof newValue === 'string' && field.multiselect ?
-            [{label: newValue, value: newValue}] :
-            typeof newValue === 'string' ? 
-            {label: newValue, value: newValue} :
+            // check if it's a multiselect field with a freetext input and value is selected using enter
+            Array.isArray(newValue) && field.allowFreeText && typeof newValue[newValue.length - 1] === 'string' ?
+            [...newValue.slice(0, -1), { value: newValue[newValue.length - 1], freetext: true, label: newValue[newValue.length - 1] }] :
+            // the same for non-multiselect
+            (isFreeSoloOption(newValue) || typeof newValue === 'string')  ? 
+            {label: typeof newValue === 'string' ? newValue : newValue.value, value: typeof newValue === 'string' ? newValue : newValue.value, freetext: true} :
+            // otherwise just return the new value
             newValue;
 
           // Set the field
@@ -306,7 +314,7 @@ const AutocompleteAPIField = ({
           }));
 
           // For freesolo, we reset the input value here
-          reason === 'createOption' && setInputValue('');
+          (reason === 'createOption' || reason === 'selectOption') && setInputValue('');
         }}
         onInputChange={(e, newValue) => {
           // Gets set when user starts typing
@@ -315,7 +323,7 @@ const AutocompleteAPIField = ({
           // or when a user clicks outside of the box without selecting a value 
           e && (e.type === 'click' || e.type === 'blur') && setInputValue('');
         }}
-        noOptionsText={!inputValue ? t('startTyping') : t('noResults')}
+        noOptionsText={!inputValue ? t('startTyping', {api: t(apiValue)}) : t('noResults')}
         loading={isFetching || isLoading || debouncedInputValue !== inputValue}
         loadingText={<Stack direction="row" justifyContent="space-between" alignItems="end">{t('loading')} <CircularProgress size={18} /></Stack>}
         renderOption={(props, option) => 
@@ -328,6 +336,29 @@ const AutocompleteAPIField = ({
             }
           </li>
         }
+        filterOptions={(options, params) => {
+          if ((data && !data.response) && !isLoading) {
+            const filter = createFilterOptions<OptionsType>();
+            const filtered = filter(options, params);
+            const { inputValue } = params;
+            // Suggest the creation of a new value
+            const isExisting = options.some((option) => inputValue === option.label);
+            if (inputValue !== '' && !isExisting) {
+              filtered.push({
+                value: inputValue,
+                freetext: true,
+                label: t('freetext', {name: inputValue, api: t(apiValue)}) as string, 
+              });
+            }
+
+            return filtered;
+          }
+          else {
+            return options;
+          }
+        }}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
+        clearOnBlur
         disabled={metadataSubmitStatus !== ''}
       />
       <StatusIcon 

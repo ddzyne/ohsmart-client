@@ -46,6 +46,11 @@ const section = {
         nl: '',
       },
       options: 'narcis',
+      value: [{
+        label: 'Arts and culture',
+        value: 'https://www.narcis.nl/classification/D35000',
+        id: '"D35000"',
+      }],
     },
     {
       type: 'autocomplete',
@@ -87,12 +92,13 @@ const section = {
       name: 'author',
       repeatable: true,
       description: {
-        en: 'You can optionally change this data and/or add any other authors.',
-        nl: 'Je kunt deze data aanpassen en/of andere auteurs toevoegen',
+        en: 'Add one or more authors.',
+        nl: 'Voeg een of meerdere auteurs toe',
       },
       fields: [
         {
-          type: 'text',
+          type: 'autocomplete',
+          freetext: true,
           label: {
             en: 'Name',
             nl: 'Naam',
@@ -103,7 +109,7 @@ const section = {
             en: 'First and last name',
             nl: 'Voor en achternaam',
           },
-          value: 'User XXX',
+          options: 'orcid',
         },
         {
           type: 'text',
@@ -117,7 +123,6 @@ const section = {
             en: '',
             nl: '',
           },
-          value: 'User XXX affiliation',
         },
       ]
     },

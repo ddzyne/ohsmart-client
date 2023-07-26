@@ -1,17 +1,19 @@
 {
   "heading": "Metadata",
   "incorrect": "Incorrectly entered",
-  "startTyping": "Start typing to search",
+  "startTyping": "Start typing to search in {{api}}",
   "loading": "Loading...",
   "noResults": "No results",
   "add": "Add another",
   "delete": "Delete",
-  "multiApiSelectLabel": "Select registry",
+  "multiApiSelectLabel": "Select type",
   "institutions": "Institutions",
   "apiValue": "Looks up data from the {{api}} API as you type",
   "checkApi": "Double-check your selected value in the {{api}} registry (opens in new tab)",
   "orcid": "ORCID",
+  "multi-orcid": "Person",
   "ror": "RoR",
+  "multi-ror": "Organisation",
   "getty": "Getty AAT",
   "geonames": "GeoNames",
   "elsst": "ELSST Thesaurus",
@@ -21,5 +23,6 @@
   "YYYY": "Year",
   "MM-YYYY": "Month and year",
   "DD-MM-YYYY": "Date",
-  "DD-MM-YYYY HH:mm": "Date and time"
+  "DD-MM-YYYY HH:mm": "Date and time",
+  "freetext": "Add \"{{name}}\" (not in {{api}})"
 }

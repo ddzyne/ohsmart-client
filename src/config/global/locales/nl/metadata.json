@@ -6,7 +6,7 @@
   "noResults": "Geen resultaten",
   "add": "Voeg toe",
   "delete": "Verwijder",
-  "multiApiSelectLabel": "Selecteer register",
+  "multiApiSelectLabel": "Selecteer type",
   "institutions": "Instellingen",
   "apiValue": "Haalt data uit de {{api}} API terwijl je typt",
   "checkApi": "Double-check je geselecteerde waarde in de {{api}} database (opent in nieuwe tab)",
@@ -21,5 +21,6 @@
   "YYYY": "Jaar",
   "MM-YYYY": "Maand en jaar",
   "DD-MM-YYYY": "Datum",
-  "DD-MM-YYYY HH:mm": "Datum en tijd"
+  "DD-MM-YYYY HH:mm": "Datum en tijd",
+  "freetext": "Voeg \"{{name}}\" toe (niet in {{api}})"
 }

@@ -7,6 +7,7 @@ const section = {
   fields: [
     {
       type: 'autocomplete',
+      freetext: true,
       label: {
         en: 'Rights holder',
         nl: 'Rechthebbende',

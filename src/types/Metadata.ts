@@ -21,6 +21,7 @@ export type OptionsType = {
   extra?: string[];
   extraLabel?: string;
   mandatory?: boolean;
+  freetext?: boolean;
 };
 
 export type Field = TextFieldType | DateFieldType| AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType | RadioFieldType | CheckFieldType;

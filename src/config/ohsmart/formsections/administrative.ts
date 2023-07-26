@@ -14,6 +14,7 @@ const section = {
         nl: 'Taal',
       },
       name: 'language',
+      required: true,
       description: {
         en: 'Language of interview',
         nl: 'Taal van het interview',
@@ -47,6 +48,10 @@ const section = {
         nl: 'Contactinformatie',
       },
       name: 'contact',
+      description: {
+        en: 'The person to contact in respect of metadata (curator)',
+        nl: 'Contactpersoon voor de metadata (curator)',
+      },
       fields: [
         {
           type: 'text',
@@ -55,11 +60,8 @@ const section = {
             nl: 'Naam',
           },
           name: 'contact_name',
-          required: true,
-          description: {
-            en: 'Name of the person to contact in respect of metadata (curator)',
-            nl: 'Naam van contactpersoon voor de metadata (curator)',
-          }
+          value: 'Name (logged in user)',
+          disabled: true,
         },
         {
           type: 'text',
@@ -68,7 +70,7 @@ const section = {
             nl: 'Affiliation',
           },
           name: 'contact_affiliation',
-          value: 'DANS',
+          value: 'Org (logged in user)',
           disabled: true,
         },
         {
@@ -78,7 +80,7 @@ const section = {
             nl: 'Email',
           },
           name: 'contact_email',
-          value: 'datateam@dans.knaw.nl',
+          value: 'user@email.org (logged in user)',
           disabled: true,
         },
       ]
