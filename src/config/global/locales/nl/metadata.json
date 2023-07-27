@@ -8,6 +8,7 @@
   "delete": "Verwijder",
   "multiApiSelectLabel": "Selecteer type",
   "institutions": "Instellingen",
+  "country": "Land",
   "apiValue": "Haalt data uit de {{api}} API terwijl je typt",
   "checkApi": "Double-check je geselecteerde waarde in de {{api}} database (opent in nieuwe tab)",
   "orcid": "ORCID",

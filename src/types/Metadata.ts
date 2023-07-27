@@ -18,8 +18,10 @@ export type OptionsType = {
   label: string | LanguageStrings;
   value: string;
   header?: string | LanguageStrings;
-  extra?: string[];
   extraLabel?: string;
+  extraContent?: string;
+  idLabel?: string;
+  id?: string;
   mandatory?: boolean;
   freetext?: boolean;
 };

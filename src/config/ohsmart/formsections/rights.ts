@@ -20,6 +20,7 @@ const section = {
       },
       multiApiValue: 'orcid',
       options: ['ror', 'orcid'],
+      allowFreeText: true,
     },
     {
       type: 'autocomplete',

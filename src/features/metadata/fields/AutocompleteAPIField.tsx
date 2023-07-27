@@ -314,7 +314,7 @@ const AutocompleteAPIField = ({
           }));
 
           // For freesolo, we reset the input value here
-          (reason === 'createOption' || reason === 'selectOption') && setInputValue('');
+          field.allowFreeText && (reason === 'createOption' || reason === 'selectOption') && setInputValue('');
         }}
         onInputChange={(e, newValue) => {
           // Gets set when user starts typing
@@ -329,15 +329,21 @@ const AutocompleteAPIField = ({
         renderOption={(props, option) => 
           <li {...props} key={option.value} style={{flexWrap: 'wrap'}}>
             {lookupLanguageString(option.label)}
-            {option.extra && option.extraLabel && option.extra.length > 0 &&
+            {option.extraContent && option.extraLabel &&
               <div className={styles.optionExtra}>
-                {t(option.extraLabel)}: {option.extra.map( (o, i) => `${o}${i < option.extra!.length - 1 ? ', ' : ''}` )}
+                <span>{t(option.extraLabel)}</span>: {option.extraContent}
+              </div>
+            }
+            {option.id && option.idLabel &&
+              <div className={styles.optionExtra}>
+                <span>{t(option.idLabel)}</span>: {option.id}
               </div>
             }
           </li>
         }
         filterOptions={(options, params) => {
-          if ((data && !data.response) && !isLoading) {
+          // only for freesolo
+          if (field.allowFreeText && (data && !data.response) && !isLoading) {
             const filter = createFilterOptions<OptionsType>();
             const filtered = filter(options, params);
             const { inputValue } = params;

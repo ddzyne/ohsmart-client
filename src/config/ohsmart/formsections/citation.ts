@@ -49,7 +49,7 @@ const section = {
       value: [{
         label: 'Humanities',
         value: 'https://www.narcis.nl/classification/D30000',
-        id: '"D30000"',
+        id: 'D30000',
       }],
     },
     {
@@ -110,6 +110,7 @@ const section = {
             nl: 'Voor en achternaam',
           },
           options: 'orcid',
+          allowFreeText: true,
         },
         {
           type: 'text',

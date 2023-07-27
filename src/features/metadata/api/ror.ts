@@ -11,6 +11,7 @@ export const rorApi = createApi({
         headers: {Accept: "application/json"},
       }),
       transformResponse: (response: RorResponse, meta, arg) => {
+        console.log(response)
         // Return an empty array when no results, which is what the Autocomplete field expects
         return response.number_of_results > 0 ? 
           ({
@@ -19,6 +20,8 @@ export const rorApi = createApi({
               response.items.map( item => ({
                 label: item.name,
                 value: item.id, 
+                extraLabel: 'country',
+                extraContent: item.country.country_name,
               })),
           })
           :

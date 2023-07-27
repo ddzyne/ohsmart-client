@@ -1,8 +1,14 @@
 import type { AutocompleteAPIFieldData, Datastations } from './Metadata';
 
+interface RorCountry {
+  country_name: string;
+  country_code: string;
+}
+
 interface RorItem {
   name: string;
   id: string;
+  country: RorCountry;
 }
 
 export interface RorResponse {
