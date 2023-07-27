@@ -19,7 +19,6 @@ export const datastationsApi = createApi({
       }),
       transformResponse: (response: DatastationsResponse, meta, arg) => {
         // Return an empty array when no results, which is what the Autocomplete field expects
-        console.log(response)
         return response.results.length > 0 ? 
           ({
             arg: arg.query,

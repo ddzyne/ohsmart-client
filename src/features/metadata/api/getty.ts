@@ -16,7 +16,6 @@ export const gettyApi = createApi({
         // convert xml text string to JSON
         const parser = new XMLParser();
         const json: GettyResponse = parser.parse(response);
-        console.log(json)
         // Return an empty array when no results, which is what the Autocomplete field expects
         return json.Vocabulary.Count > 0 ? 
           ({
