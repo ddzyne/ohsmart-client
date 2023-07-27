@@ -343,7 +343,7 @@ const AutocompleteAPIField = ({
         }
         filterOptions={(options, params) => {
           // only for freesolo
-          if (field.allowFreeText && (data && !data.response) && !isLoading) {
+          if (field.allowFreeText && (data && !data.response) && !isLoading && debouncedInputValue === inputValue) {
             const filter = createFilterOptions<OptionsType>();
             const filtered = filter(options, params);
             const { inputValue } = params;
