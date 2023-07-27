@@ -47,9 +47,9 @@ const section = {
       },
       options: 'narcis',
       value: [{
-        label: 'Arts and culture',
-        value: 'https://www.narcis.nl/classification/D35000',
-        id: '"D35000"',
+        label: 'Humanities',
+        value: 'https://www.narcis.nl/classification/D30000',
+        id: '"D30000"',
       }],
     },
     {
