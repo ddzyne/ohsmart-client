@@ -3,7 +3,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getStatus } from '../metadataHelpers';
+import { getFieldStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { setField } from '../metadataSlice';
 import type { AutocompleteFieldProps, OptionsType } from '../../../types/Metadata';
@@ -12,7 +12,7 @@ import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 
 const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldProps) => {
   const dispatch = useAppDispatch();
-  const status = getStatus(field);
+  const status = getFieldStatus(field);
   const { t } = useTranslation('metadata');
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
@@ -33,8 +33,8 @@ const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldPr
             <TextField 
               {...params}
               label={`${lookupLanguageString(field.label)}${field.required ? ' *' : ''}`}
-              error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required}
-              helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required && t('incorrect')}
+              error={status === 'error' && field.touched}
+              helperText={status === 'error' && field.touched && t('incorrect')}
             />
         }
         onChange={(e, newValue) => dispatch(setField({

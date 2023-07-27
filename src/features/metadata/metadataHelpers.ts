@@ -16,7 +16,7 @@ export const validateData = (type: ValidationType, value: string): boolean => {
     case 'email':
       return /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value.toLowerCase());
     case 'uri':
-      return /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(value.toLowerCase());
+      return /^(https?|ftp):\/\/[^\s/$.?#]*\.[^\s]*$/.test(value.toLowerCase());
     default:
       return true;
   }
@@ -40,28 +40,26 @@ export const findById = (id: string, fields: Field[]): Field | undefined => {
   return;
 };
 
-// Simple logic to check the status (color of indicator) for a specific field, needed in multiple functions
-// Can be error, warning, success
-// TODO this is a bit of a mess and doesn't really work well with fields that have validation
-export const getStatus = (toCheck: InputField | SectionStatus[]): SectionStatus => {
-  const check1 = 
-    Array.isArray(toCheck) ? 
-    // check if array, then it's a section
-    toCheck.indexOf('error') !== -1 :
-    // otherwise it's a field
-    (toCheck.required && (!toCheck.value || (Array.isArray(toCheck.value) && toCheck.value.length === 0))) || 
-    (toCheck.hasOwnProperty('validation') && toCheck.hasOwnProperty('valid') && toCheck.valid === false && toCheck.value !== '');
-  const check2 = 
-    Array.isArray(toCheck) ? 
-    toCheck.indexOf('warning') !== -1 :
-    !toCheck.required && (!toCheck.value || (Array.isArray(toCheck.value) && toCheck.value.length === 0));
+// Get the status of a single field
+export const getFieldStatus = (field: InputField): SectionStatus => {
+  const fieldEmpty = !field.value || ( Array.isArray(field.value) && field.value.length === 0 );
+  if (!field.required && fieldEmpty) {
+    return 'warning';
+  }
+  if ( (field.required && fieldEmpty) || (!fieldEmpty && field.validation && !field.valid) ) {
+    return 'error';
+  }
+  else {
+    return 'success';
+  }
+}
 
-  !Array.isArray(toCheck) && console.log(`${toCheck.value} - c1: ${check1} - c2: ${check2}`)
-
+// Get the status (color of indicator) for a specific section, based on an array of section statusses
+export const getSectionStatus = (section: SectionStatus[]): SectionStatus => {
   return (
-    check1 ?
+    section.indexOf('error') !== -1 ?
     'error' : 
-    check2 ?
+    section.indexOf('warning') !== -1 ?
     'warning' :
     'success'
   )
@@ -111,7 +109,7 @@ export const formatInitialState = (form: InitialSectionType[]) => {
             type: 'repeatSingleField', 
             name: f.name, 
             private: f.private, 
-            fields: [{...f, id: uuidv4()}]} :
+            fields: [{...f, id: uuidv4(), touched: false}]} :
           {...f, id: uuidv4()}
         ));
         return ({
@@ -126,10 +124,10 @@ export const formatInitialState = (form: InitialSectionType[]) => {
           type: 'repeatSingleField', 
           name: field.name, 
           private: field.private, 
-          fields: [{...field, id: uuidv4()}]});
+          fields: [{...field, id: uuidv4(), touched: false}]});
       }
       else {
-        return {...field, id: uuidv4()};
+        return {...field, id: uuidv4(), touched: false};
       }
     })
   }));

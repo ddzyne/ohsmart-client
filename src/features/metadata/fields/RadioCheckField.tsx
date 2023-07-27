@@ -7,7 +7,7 @@ import FormGroup from '@mui/material/FormGroup';
 import Checkbox from '@mui/material/Checkbox';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { setField } from '../metadataSlice';
-import { getStatus } from '../metadataHelpers';
+import { getFieldStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { lookupLanguageString } from '../../../app/i18n';
 import type { RadioFieldProps, CheckFieldProps } from '../../../types/Metadata';
@@ -19,7 +19,7 @@ export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
   const dispatch = useAppDispatch();
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
   const { t } = useTranslation('metadata');
-  const status = field.defaultValue ? 'success' : getStatus(field);
+  const status = getFieldStatus(field);
 
   return (
     <FormControl>
@@ -31,7 +31,7 @@ export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
         row={field.layout === 'row'}
         aria-labelledby={field.id}
         name={field.name}
-        value={field.value || field.defaultValue || ''}
+        value={field.value || ''}
         onChange={(e) => dispatch(setField({
           sectionIndex: sectionIndex,
           id: field.id,
@@ -55,7 +55,7 @@ export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
 // For a list of checkboxes, we keep the selected values in an array.
 export const CheckField = ({field, sectionIndex}: CheckFieldProps) => {
   const dispatch = useAppDispatch();
-  const status = getStatus(field);
+  const status = getFieldStatus(field);
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
   const { t } = useTranslation('metadata');
 

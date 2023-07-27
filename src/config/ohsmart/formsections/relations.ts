@@ -81,7 +81,7 @@ const section = {
           },
           name: 'relation_reference',
           placeholder: 'https://...',
-          // validation: 'uri',
+          validation: 'uri',
           description: {
             en: 'A web link or PID reference for this external item',
             nl: 'Een weblink of PID referentie naar dit externe item',

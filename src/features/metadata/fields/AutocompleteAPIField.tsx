@@ -13,7 +13,7 @@ import { useFetchSheetsQuery } from '../api/sheets';
 import { useFetchDatastationsTermQuery } from '../api/datastations';
 import { useFetchDansFormatsQuery } from '../../files/api/dansFormats';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
-import { getStatus } from '../metadataHelpers';
+import { getFieldStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { setField, setMultiApiField } from '../metadataSlice';
 import type { AutocompleteFieldProps, AutocompleteAPIFieldProps, TypeaheadAPI, ApiLinkProps, OptionsType } from '../../../types/Metadata';
@@ -241,7 +241,7 @@ const AutocompleteAPIField = ({
   isFetching,
 }: AutocompleteAPIFieldProps) => {
   const dispatch = useAppDispatch();
-  const status = getStatus(field);
+  const status = getFieldStatus(field);
   const { t } = useTranslation('metadata');
   const apiValue = (Array.isArray(field.options) ? field.multiApiValue : field.options) as TypeaheadAPI;
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
@@ -266,8 +266,8 @@ const AutocompleteAPIField = ({
             <TextField 
               {...params}
               label={`${lookupLanguageString(field.label)}${field.required ? ' *' : ''}`}
-              error={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required}
-              helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required && t('incorrect')}
+              error={status === 'error' && field.touched}
+              helperText={status === 'error' && field.touched && t('incorrect')}
               placeholder={lookupLanguageString(field.placeholder)}
               InputProps={{
                 ...params.InputProps,

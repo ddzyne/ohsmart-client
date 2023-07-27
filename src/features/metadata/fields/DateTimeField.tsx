@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { StatusIcon } from '../../generic/Icons';
 import { AddButton, DeleteButton } from '../MetadataButtons';
 import { setField, setDateTypeField } from '../metadataSlice';
-import { getStatus } from '../metadataHelpers';
+import { getFieldStatus } from '../metadataHelpers';
 import type { DateFieldProps } from '../../../types/Metadata';
 import { lookupLanguageString } from '../../../app/i18n';
 import { getMetadataSubmitStatus } from '../../submit/submitSlice';
@@ -22,7 +22,7 @@ import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 
 const DateTimeField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: DateFieldProps) => {
   const dispatch = useAppDispatch();
-  const status = getStatus(field);
+  const status = getFieldStatus(field);
   const { t } = useTranslation('metadata');
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
@@ -60,7 +60,7 @@ const DateTimeField = ({field, sectionIndex, groupedFieldId, currentField = 0, t
       <MUIDateTimeField 
         fullWidth
         format={field.format}
-        helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
+        helperText={status === 'error' && field.touched && t('incorrect')}
         label={lookupLanguageString(field.label)}
         required={field.required}
         value={(field.value && moment(field.value, field.format)) || null}
@@ -91,7 +91,7 @@ const DateTimeField = ({field, sectionIndex, groupedFieldId, currentField = 0, t
             </InputAdornment>
           ,
         }}
-        slotProps={{ textField: { error: field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && field.required } }}
+        slotProps={{ textField: { error: status === 'error' && field.touched } }}
       />
       {groupedFieldId && !metadataSubmitStatus && [
         totalFields > 1 && 

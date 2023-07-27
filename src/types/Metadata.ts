@@ -27,23 +27,27 @@ export type OptionsType = {
 export type Field = TextFieldType | DateFieldType| AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType | RadioFieldType | CheckFieldType;
 export type InputField = TextFieldType | DateFieldType | AutocompleteFieldType | RadioFieldType | CheckFieldType | RepeatTextFieldType;
 
-export interface TextFieldType {
-  type: 'text' | 'number';
+interface BasisFieldType {
   id: string;
   name: string;
   label: string | LanguageStrings;
+  touched: boolean;
   placeholder?: string;
   validation?: ValidationType;
-  maxValue?: number;
-  minValue?: number; 
   value?: string;
   repeatable?: boolean;
   valid?: boolean | '';
   disabled?: boolean;
-  multiline?: boolean;
   description?: string | LanguageStrings;
   required?: boolean;
   private?: boolean;
+}
+
+export interface TextFieldType extends BasisFieldType {
+  type: 'text' | 'number';
+  maxValue?: number;
+  minValue?: number; 
+  multiline?: boolean;
   format?: never;
   fields?: never;
   multiApiValue?: never;
@@ -52,20 +56,10 @@ export interface TextFieldType {
 
 export type DateTimeFormat = 'DD-MM-YYYY HH:mm' | 'DD-MM-YYYY' | 'MM-YYYY' | 'YYYY';
 
-export interface DateFieldType {
+export interface DateFieldType extends BasisFieldType {
   type: 'date';
-  id: string;
-  name: string;
   format: DateTimeFormat;
   formatOptions?: DateTimeFormat[];
-  label: string | LanguageStrings;
-  value?: string;
-  repeatable?: boolean;
-  valid?: boolean | '';
-  disabled?: boolean;
-  description?: string | LanguageStrings;
-  required?: boolean;
-  private?: boolean;
   minDate?: string;
   maxDate?: string;
   validation?: never;
@@ -77,26 +71,16 @@ export interface DateFieldType {
 export type Datastations = 'elsst' | 'narcis';
 export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames' | 'getty' | 'sheets' | 'dansFormats' | Datastations;
 
-export interface AutocompleteFieldType {
+export interface AutocompleteFieldType extends Omit<BasisFieldType, 'value' | 'repeatable'> {
   type: 'autocomplete';
-  id: string;
-  name: string;
-  label: string | LanguageStrings;
   multiselect?: boolean;
   value?: OptionsType | OptionsType[] | null;
-  description?: string | LanguageStrings;
-  required?: boolean;
-  private?: boolean;
-  placeholder?: string | LanguageStrings;
   options: OptionsType[] | TypeaheadAPI[] | TypeaheadAPI;
   allowFreeText?: boolean;
-  valid?: boolean | '';
-  disabled?: boolean;
-  validation?: never;
-  fields?: never;
-  repeatable?: never;
   multiApiValue?: TypeaheadAPI;
   sheetOptions?: SheetOptions;
+  repeatable?: never;
+  fields?: never;
   format?: never;
 }
 
@@ -109,33 +93,25 @@ interface SheetOptions {
   headerCol: number;
 }
 
-export interface GroupedFieldType {
+export interface GroupedFieldType extends Omit<BasisFieldType, 'value' | 'touched'> {
   type: 'group';
-  id: string;
-  name: string;
-  label: string | LanguageStrings;
-  private?: boolean;
-  repeatable?: boolean;
-  description?: string | LanguageStrings;
-  value?: never;
   fields: InputField[] | InputField[][];
+  value?: never;
   validation?: never;
   valid?: never;
   multiApiValue?: never;
   options?: never;
   format?: never;
+  touched?: never;
 }
 
 export interface RepeatGroupedFieldType extends Omit<GroupedFieldType, 'fields'> {
   fields: InputField[][];
 }
 
-export interface RepeatTextFieldType {
+export interface RepeatTextFieldType extends Omit<BasisFieldType, 'value' | 'validation' | 'valid' | 'repeatable' | 'touched'> {
   type: 'repeatSingleField';
-  id: string;
-  name: string;
   fields: TextFieldType[];
-  private?: boolean;
   value?: never;
   validation?: never;
   valid?: never;
@@ -144,41 +120,27 @@ export interface RepeatTextFieldType {
   options?: never;
   required?: never;
   format?: never;
+  touched?: never;
 }
 
-export interface RadioFieldType {
+export interface RadioFieldType extends Omit<BasisFieldType, 'validation' | 'valid' | 'required'> {
   type: 'radio';
-  id: string;
-  name: string;
-  label: string | LanguageStrings;
   layout?: 'row';
-  defaultValue?: string;
-  value?: string;
+  options: OptionsType[];
   valid?: never;
   validation?: never;
-  disabled?: boolean;
-  description?: string | LanguageStrings;
   required?: never;
-  private?: boolean;
-  options: OptionsType[];
   multiApiValue?: never;
   fields?: never;
   format?: never;
 }
 
-export interface CheckFieldType {
+export interface CheckFieldType extends Omit<BasisFieldType, 'value' | 'validation' | 'valid'> {
   type: 'check';
-  id: string;
-  name: string;
-  label: string | LanguageStrings;
   value: string[];
-  valid?: boolean | '';
-  validation?: never;
-  disabled?: boolean;
-  description?: string | LanguageStrings;
-  required?: boolean;
-  private?: boolean;
   options: OptionsType[];
+  validation?: never;
+  valid?: never;
   multiApiValue?: never;
   fields?: never;
   format?: never;
@@ -275,6 +237,10 @@ export interface DeleteFieldPayload {
   groupedFieldId: string;
   deleteField: number;
 };
+
+export interface SectionStatusPayload {
+  sectionIndex: number;
+}
 
 export interface InitialStateType {
   id: string;

@@ -4,6 +4,7 @@ import type {
   SetFieldPayload, 
   AddFieldPayload,
   DeleteFieldPayload,
+  SectionStatusPayload,
   InitialStateType, 
   RepeatTextFieldType,
   RepeatGroupedFieldType,
@@ -15,7 +16,7 @@ import type {
   DateTimeFormat,
   InitialFormType,
 } from '../../types/Metadata';
-import { getValid, getStatus, formatInitialState, findById } from './metadataHelpers';
+import { getValid, getFieldStatus, getSectionStatus, formatInitialState, findById } from './metadataHelpers';
 import { v4 as uuidv4 } from 'uuid';
 
 // load the imported form and close all accordion panels by default
@@ -43,7 +44,7 @@ export const metadataSlice = createSlice({
         state.form = formatInitialState(action.payload as InitialSectionType[]);
         state.panel = '';
       }
-      // and set initial validation state
+      // and set initial validation status
       metadataSlice.caseReducers.setSectionStatus(state, {payload: null, type: ''});
     },
     // keep track of form state
@@ -54,13 +55,15 @@ export const metadataSlice = createSlice({
       // field is found, lets set it
       if (field) {
         field.value = action.payload.value;
+        field.touched = true;
         
-        // After every input, we need to update status and section state status as well.
+        // After every input, we need to update field valid status and section status as well.
         // Only needed when the new status differs from the old one.
-        // Lets set accordion valid/invalid state by calling its reducer with the current input state
         if (getValid(action.payload.value as string, field.validation as ValidationType) !== field.valid) {
-          metadataSlice.caseReducers.setSectionStatus(state, action);
+          // set the field
           field.valid = getValid(action.payload.value as string, field.validation as ValidationType);
+          // then set the section/accordion
+          metadataSlice.caseReducers.setSectionStatus(state, action);
         }
       }
     },
@@ -85,12 +88,12 @@ export const metadataSlice = createSlice({
       if (field) { 
         const newField = action.payload.type === 'single' ?
           // single repeatable field is just a copy with a new id, value and valid state
-          {...(field as RepeatTextFieldType).fields[0], id: uuidv4(), value: '', valid: ''} :
+          {...(field as RepeatTextFieldType).fields[0], id: uuidv4(), value: '', valid: '', touched: false} :
           // grouped fields a bit more complicated, since grouped fields can also contain single repeatable fields
           (field as RepeatGroupedFieldType).fields[0].map( f => (
             f.type === 'repeatSingleField' ?
-            {...f, id: uuidv4(), fields: [{...f.fields[0], id: uuidv4(), value: '', valid: ''}]} :
-            {...f, id: uuidv4(), value: '', valid: ''}
+            {...f, id: uuidv4(), fields: [{...f.fields[0], id: uuidv4(), value: '', valid: '', touched: false}]} :
+            {...f, id: uuidv4(), value: '', valid: '', touched: false}
           ));
 
         field.fields = [
@@ -103,6 +106,8 @@ export const metadataSlice = createSlice({
       const field = findById(action.payload.groupedFieldId, section.fields);
       if (field) { 
         (field as RepeatTextFieldType | RepeatGroupedFieldType).fields.splice(action.payload.deleteField, 1);
+        // need to also update the section/accordion status
+        metadataSlice.caseReducers.setSectionStatus(state, action);
       }
     },
     // keep track of the accordion state
@@ -113,7 +118,7 @@ export const metadataSlice = createSlice({
     setOpenTab: (state, action: PayloadAction<number>) => {
       state.tab = action.payload;
     },
-    setSectionStatus: (state, action: PayloadAction<SetFieldPayload | null>) => {
+    setSectionStatus: (state, action: PayloadAction<SectionStatusPayload | null>) => {
       if (action.payload) {
         // setting status based on user interaction
         set(action.payload.sectionIndex)
@@ -124,26 +129,21 @@ export const metadataSlice = createSlice({
       }
 
       function set(sectionIndex: number) {
-        const status = getStatus(state.form[sectionIndex].fields.flatMap(field => {
+        const status = getSectionStatus(state.form[sectionIndex].fields.flatMap(field => {
             if (field.type !== 'group' && field.fields) {
               // this is a single repeatable field
-              return field.fields.flatMap( f => getStatus(f));
+              return field.fields.flatMap( f => getFieldStatus(f));
             }
             if (field.type === 'group' && field.fields) {
-              console.log(field.fields.flatMap( f => 
-                Array.isArray(f) ? 
-                f.flatMap( inner => getStatus(inner)) :
-                getStatus(f)
-              ))
               // grouped field, can have either a fields key with a single array as value, or an array of arrays
               return field.fields.flatMap( f => 
                 Array.isArray(f) ? 
-                f.flatMap( inner => getStatus(inner)) :
-                getStatus(f)
+                f.flatMap( inner => getFieldStatus(inner)) :
+                getFieldStatus(f)
               );
             }
             else {
-              return getStatus(field);
+              return getFieldStatus(field);
             }
           })
         );
@@ -177,7 +177,7 @@ export const getOpenPanel = (state: RootState) => state.metadata.panel;
 export const getOpenTab = (state: RootState) => state.metadata.tab;
 export const getMetadataStatus = (state: RootState) => {
   const statusArray = state.metadata.form.map(section => section.status);
-  return getStatus(statusArray);
+  return getSectionStatus(statusArray);
 }
 
 export default metadataSlice.reducer;

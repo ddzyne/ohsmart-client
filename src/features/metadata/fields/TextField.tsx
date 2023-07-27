@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { StatusIcon } from '../../generic/Icons';
 import { AddButton, DeleteButton } from '../MetadataButtons';
 import { setField } from '../metadataSlice';
-import { getStatus } from '../metadataHelpers';
+import { getFieldStatus } from '../metadataHelpers';
 import type { TextFieldProps } from '../../../types/Metadata';
 import { lookupLanguageString } from '../../../app/i18n';
 import { getMetadataSubmitStatus } from '../../submit/submitSlice';
@@ -15,7 +15,7 @@ import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 
 const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: TextFieldProps) => {
   const dispatch = useAppDispatch();
-  const status = getStatus(field);
+  const status = getFieldStatus(field);
   const { t } = useTranslation('metadata');
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
@@ -23,13 +23,8 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
     <Stack direction="row" alignItems="start">
       <TextField 
         fullWidth
-        error={
-          field.hasOwnProperty('valid') && (
-            (!field.valid && field.valid !== '' && field.required) ||
-            (field.hasOwnProperty('validation') && field.valid === false && field.value !== ''
-          )
-        )}
-        helperText={field.hasOwnProperty('valid') && (!field.valid && field.valid !== '') && t('incorrect')}
+        error={status === 'error' && field.touched}
+        helperText={status === 'error' && field.touched && t('incorrect')}
         variant="outlined" 
         type={field.type}
         label={lookupLanguageString(field.label)}

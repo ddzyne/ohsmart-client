@@ -52,7 +52,7 @@ const section = {
       name: 'personal_data',
       required: true,
       layout: 'row',
-      defaultValue: 'personal_data_true',
+      value: 'personal_data_true',
       options: [
         {
           value: 'personal_data_true',
