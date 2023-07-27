@@ -22,11 +22,11 @@ export const orcidApi = createApi({
             response: 
               response['expanded-result'].map( item => ({
                 label: `${item['given-names']} ${item['family-names']}`,
+                value: `https://orcid.org/${item['orcid-id']}`, 
                 extraLabel: 'institutions',
                 extraContent: item['institution-name'].length > 0 ? item['institution-name'].map( (o, i) => `${o}${i < item['institution-name'].length - 1 ? ', ' : ''}` ) : '',
                 idLabel: 'ORCID ID',
                 id: item['orcid-id'],
-                value: `https://orcid.org/${item['orcid-id']}`, 
               })),
           }) :
           [];

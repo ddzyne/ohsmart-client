@@ -42,7 +42,7 @@ const section = {
       required: true,
       multiselect: true,
       description: {
-        en: 'Broad Data Station End Use Community or Domain',
+        en: 'Broad data station end use community or domain',
         nl: '',
       },
       options: 'narcis',
