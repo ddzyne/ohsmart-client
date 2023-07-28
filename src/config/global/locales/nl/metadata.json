@@ -23,5 +23,6 @@
   "MM-YYYY": "Maand en jaar",
   "DD-MM-YYYY": "Datum",
   "DD-MM-YYYY HH:mm": "Datum en tijd",
-  "freetext": "Voeg \"{{name}}\" toe (niet in {{api}})"
+  "freetextLabel": "Niet gevonden in {{api}}",
+  "freetextContent": "Voeg \"{{name}}\" als custom waarde"
 }

@@ -10,7 +10,9 @@ export const StatusIcon = ({status, title, subtitle, margin}: StatusIconProps) =
   const { t } = useTranslation('generic');
   const iconSx = {
     cursor: 'help', 
-    mr: margin === 'r' || margin === 'lr' ? 1 : 0, ml: margin === 'l' || margin === 'lr' ? 1 : 0,
+    mr: margin && margin.includes('r') ? 1 : 0, 
+    ml: margin && margin.includes('l') ? 1 : 0,
+    mt: margin && margin.includes('t') ? 2 : 0,
   }
 
   return (

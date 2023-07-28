@@ -25,5 +25,6 @@
   "MM-YYYY": "Month and year",
   "DD-MM-YYYY": "Date",
   "DD-MM-YYYY HH:mm": "Date and time",
-  "freetext": "Add \"{{name}}\" (not in {{api}})"
+  "freetextLabel": "Not found in {{api}}",
+  "freetextContent": "Add \"{{name}}\" as custom value"
 }

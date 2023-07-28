@@ -20,7 +20,7 @@ const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldPr
   const localizedOptions = options.map( option => ({...option, label: lookupLanguageString(option.label)})) as OptionsType[] || [];
 
   return (
-    <Stack direction="row" alignItems="center">
+    <Stack direction="row" alignItems="start">
       <Autocomplete
         multiple={field.multiselect}
         fullWidth 
@@ -45,7 +45,7 @@ const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldPr
         loading={isLoading === true}
         disabled={metadataSubmitStatus !== ''}
       />
-      {field.description && <StatusIcon margin="l" status={status} title={lookupLanguageString(field.description)} />}
+      {field.description && <StatusIcon margin="lt" status={status} title={lookupLanguageString(field.description)} />}
     </Stack>
   )
 }

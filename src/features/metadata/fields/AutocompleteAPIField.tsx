@@ -226,10 +226,6 @@ const ApiLink = ({link, apiValue, chip}: ApiLinkProps) => {
   )
 }
 
-function isFreeSoloOption(option: OptionsType | string | (string | OptionsType)[] | null): option is OptionsType {
-  return (option as OptionsType) !== null && (option as OptionsType).hasOwnProperty('freetext');
-}
-
 const AutocompleteAPIField = ({
   field, 
   sectionIndex, 
@@ -247,13 +243,14 @@ const AutocompleteAPIField = ({
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   return (
-    <Stack direction="row" alignItems="center" sx={{flex: 1}}>
+    <Stack direction="row" alignItems="start" sx={{flex: 1}}>
       <Autocomplete
         multiple={field.multiselect}
         fullWidth 
         includeInputInList
         id={field.id}
         freeSolo={field.allowFreeText}
+        forcePopupIcon 
         options={inputValue && debouncedInputValue === inputValue && data && data.arg === debouncedInputValue ? data.response : []}
         value={field.value || (field.multiselect ? [] : null)}
         inputValue={
@@ -284,25 +281,25 @@ const AutocompleteAPIField = ({
               size="medium"
               icon={option.value && option.value.startsWith('http') ? <ApiLink link={option.value} apiValue={apiValue} chip={true} /> : undefined}
               {...getTagProps({ index })}
-              disabled={option.mandatory}
+              disabled={option.mandatory || metadataSubmitStatus !== ''}
             />
           )
         }
         onChange={(e, newValue, reason) => {
           // Gets set when user selects a value from the list
-          // Make sure a mandatory value cannot get erased
-          const saveValues = Array.isArray(field.value) && reason === 'clear' && field.value.filter(v => v.mandatory);
+          // Make sure a mandatory value cannot get erased from a multiselect
+          const saveValues = (reason === 'clear' || reason === 'removeOption') && Array.isArray(field.value) && Array.isArray(newValue) && 
+            [...field.value.filter(v => v.mandatory), ...newValue.filter(v => !v.hasOwnProperty('mandatory'))];
 
-          // In case freesolo is enabled, we create a new custom field value
-          // Note that on selection of a value in the dropdown, the value as created as in createFilterOptions (reason is selectOption),
-          // But if selected using 'Enter', it's a string (reason is createOption)
+          // In case freesolo is enabled and value selected using 'Enter', it's a string.
+          // So we need to convert that string to an OptionsType
           const setValue = 
             // check if it's a multiselect field with a freetext input and value is selected using enter
             Array.isArray(newValue) && field.allowFreeText && typeof newValue[newValue.length - 1] === 'string' ?
             [...newValue.slice(0, -1), { value: newValue[newValue.length - 1], freetext: true, label: newValue[newValue.length - 1] }] :
             // the same for non-multiselect
-            (isFreeSoloOption(newValue) || typeof newValue === 'string')  ? 
-            {label: typeof newValue === 'string' ? newValue : newValue.value, value: typeof newValue === 'string' ? newValue : newValue.value, freetext: true} :
+            (typeof newValue === 'string')  ? 
+            {label: newValue, value: newValue, freetext: true} :
             // otherwise just return the new value
             newValue;
 
@@ -324,10 +321,19 @@ const AutocompleteAPIField = ({
           e && (e.type === 'click' || e.type === 'blur') && setInputValue('');
         }}
         noOptionsText={!inputValue ? t('startTyping', {api: t(apiValue)}) : t('noResults')}
-        loading={isFetching || isLoading || debouncedInputValue !== inputValue}
-        loadingText={<Stack direction="row" justifyContent="space-between" alignItems="end">{t('loading')} <CircularProgress size={18} /></Stack>}
+        loading={isFetching || isLoading || debouncedInputValue !== inputValue ||
+          // this final check is somewhat hacky: we want freesolo to always display a dropdown box
+          field.allowFreeText
+        }
+        loadingText={
+          field.allowFreeText && !isLoading && !isFetching && debouncedInputValue === inputValue ?
+          // for freesolo, display the dropdown message when not searching
+          t('startTyping', {api: t(apiValue)}) :
+          // otherwise the loading indicator
+          <Stack direction="row" justifyContent="space-between" alignItems="end">{t('loading')} <CircularProgress size={18} /></Stack>
+        }
         renderOption={(props, option) => 
-          <li {...props} key={option.value} style={{flexWrap: 'wrap'}}>
+          <li {...props} key={option.value} style={{flexWrap: 'wrap'}} >
             {lookupLanguageString(option.label)}
             {option.extraContent && option.extraLabel &&
               <div className={styles.optionExtra}>
@@ -352,8 +358,10 @@ const AutocompleteAPIField = ({
             if (inputValue !== '' && !isExisting) {
               filtered.push({
                 value: inputValue,
+                label: inputValue,
                 freetext: true,
-                label: t('freetext', {name: inputValue, api: t(apiValue)}) as string, 
+                extraLabel: t('freetextLabel', {api: t(apiValue)}) as string,
+                extraContent: t('freetextContent', {name: inputValue}) as string,
               });
             }
 
@@ -364,11 +372,16 @@ const AutocompleteAPIField = ({
           }
         }}
         isOptionEqualToValue={(option, value) => option.value === value.value}
+        /* 
+         * For freesolo, we can either choose autoSelect or clearOnBlur, depends on the behaviour we want.
+         * AutoSelect just uses the value as typed, clearOnBlur forces the user to make a conscious selection
+         * For autoSelect, we could remove most of the filterOptions logic and the extra check in onChange.
+         */
         clearOnBlur
         disabled={metadataSubmitStatus !== ''}
       />
       <StatusIcon 
-        margin="l" 
+        margin="lt"
         status={status} 
         title={lookupLanguageString(field.description)} 
         subtitle={t('apiValue', {api: t(apiValue)}) as string} 
