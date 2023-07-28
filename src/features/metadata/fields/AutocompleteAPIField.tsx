@@ -249,8 +249,6 @@ const AutocompleteAPIField = ({
         fullWidth 
         includeInputInList
         id={field.id}
-        freeSolo={field.allowFreeText}
-        forcePopupIcon 
         options={inputValue && debouncedInputValue === inputValue && data && data.arg === debouncedInputValue ? data.response : []}
         value={field.value || (field.multiselect ? [] : null)}
         inputValue={
@@ -347,9 +345,11 @@ const AutocompleteAPIField = ({
             }
           </li>
         }
+        freeSolo={field.allowFreeText}
+        forcePopupIcon 
         filterOptions={(options, params) => {
-          // only for freesolo
-          if (field.allowFreeText && (data && !data.response) && !isLoading && debouncedInputValue === inputValue) {
+          // only for freesolo, add input directly as option
+          if (field.allowFreeText && !isLoading && debouncedInputValue === inputValue) {
             const filter = createFilterOptions<OptionsType>();
             const filtered = filter(options, params);
             const { inputValue } = params;

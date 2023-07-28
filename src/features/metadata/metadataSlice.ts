@@ -136,9 +136,14 @@ export const metadataSlice = createSlice({
             }
             if (field.type === 'group' && field.fields) {
               // grouped field, can have either a fields key with a single array as value, or an array of arrays
+              // note the check for a single repeatable field inside a grouped or repeatable grouped field
               return field.fields.flatMap( f => 
                 Array.isArray(f) ? 
-                f.flatMap( inner => getFieldStatus(inner)) :
+                f.flatMap( inner => 
+                  inner.fields ? inner.fields.flatMap( f => getFieldStatus(f) ) : getFieldStatus(inner)
+                ) :
+                f.fields ?
+                f.fields.flatMap( f => getFieldStatus(f) ) :
                 getFieldStatus(f)
               );
             }
