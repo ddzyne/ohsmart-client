@@ -44,6 +44,7 @@ const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldPr
         }))}
         loading={isLoading === true}
         disabled={metadataSubmitStatus !== ''}
+        isOptionEqualToValue={(option, value) => option.value === value.value}
       />
       {field.description && <StatusIcon margin="lt" status={status} title={lookupLanguageString(field.description)} />}
     </Stack>
