@@ -86,8 +86,6 @@ const Submit = () => {
     color: 'white',
   }
 
-  console.log(process.env.REACT_APP_SKIP_VALIDATION)
-
   return (
     <Stack direction="column" alignItems="flex-end">
       <Stack direction="row" alignItems="center">
