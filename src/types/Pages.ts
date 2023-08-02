@@ -5,6 +5,7 @@ import type { InitialFormType } from './Metadata';
 interface PageAction {
   link: string;
   text: string | LanguageStrings;
+  restricted?: boolean;
 }
 
 export interface Page {
@@ -18,6 +19,7 @@ export interface Page {
   action?: PageAction;
   logo?: boolean;
   form?: any;
+  restricted?: boolean; // display only when logged in
 }
 
 export interface Link {

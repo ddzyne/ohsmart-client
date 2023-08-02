@@ -10,6 +10,7 @@ const pages = [
     action: {
       link: "deposit",
       text: "Deposit data",
+      restricted: true,
     },
     logo: true,
   },
@@ -19,6 +20,7 @@ const pages = [
     slug: "deposit",
     template: "deposit",
     inMenu: true,
+    restricted: true,
     menuTitle: {
       en: "Deposit",
       nl: "Indienen",

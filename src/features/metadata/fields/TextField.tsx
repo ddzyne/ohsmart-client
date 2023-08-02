@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Stack from '@mui/material/Stack';
 import TextField from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -10,14 +11,31 @@ import { getFieldStatus } from '../metadataHelpers';
 import type { TextFieldProps } from '../../../types/Metadata';
 import { lookupLanguageString } from '../../../app/i18n';
 import { getMetadataSubmitStatus } from '../../submit/submitSlice';
-
-// TODO: remove date-datetime references
+import { useAuth } from 'react-oidc-context';
 
 const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: TextFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getFieldStatus(field);
   const { t } = useTranslation('metadata');
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
+  const auth = useAuth();
+
+  useEffect(() => {
+    // autofill user data from oidc
+    if (auth.user && ( field.name === 'contact_name' || field.name === 'contact_email' || field.name === 'contact_affiliation')) {
+      const map = {
+        contact_name: auth.user.profile.name,
+        contact_email: auth.user.profile.email,
+        contact_affiliation: auth.user.profile.voperson_external_affiliation,
+      };
+      const value = map[field.name];
+      dispatch(setField({
+        sectionIndex: sectionIndex,
+        id: field.id,
+        value: value as string,
+      }));
+    }
+  }, []);
 
   return (
     <Stack direction="row" alignItems="start">

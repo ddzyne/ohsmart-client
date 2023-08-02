@@ -59,8 +59,7 @@ const section = {
             en: 'Name',
             nl: 'Naam',
           },
-          name: 'contact_name',
-          value: 'Name (logged in user)',
+          name: 'contact_name', // gets filled in automatically
           disabled: true,
         },
         {
@@ -69,8 +68,7 @@ const section = {
             en: 'Affiliatie',
             nl: 'Affiliation',
           },
-          name: 'contact_affiliation',
-          value: 'Org (logged in user)',
+          name: 'contact_affiliation', // gets filled in automatically
           disabled: true,
         },
         {
@@ -79,8 +77,7 @@ const section = {
             en: 'Email',
             nl: 'Email',
           },
-          name: 'contact_email',
-          value: 'user@email.org (logged in user)',
+          name: 'contact_email', // gets filled in automatically
           disabled: true,
         },
       ]
