@@ -145,23 +145,23 @@ interface SheetOptions {
   headerCol: number;
 }
 
-// Option format for autocomplete dropdown
+// Option format for values in the autocomplete dropdown
 export type OptionsType = {
   label: string | LanguageStrings;
   value: string;
-  header?: string | LanguageStrings;
-  extraLabel?: string;
+  header?: string | LanguageStrings; // if options need to be grouped, you can specify the header group this option belongs to
+  extraLabel?: string; // extra info, used for displaying in dropdown option
   extraContent?: string;
-  idLabel?: string;
+  idLabel?: string; // extra info, used for displaying in dropdown option
   id?: string;
-  mandatory?: boolean;
-  freetext?: boolean;
+  mandatory?: boolean; // if true, this option will always be pre-selected. Can be set in config.
+  freetext?: boolean; // indicates if a value is manually entered by user
 };
 
 // Validation for text fields
 export type ValidationType = 'email' | 'uri' | 'number';
 
-// Format to return API response in
+// Format to return API response in, used by RTK's transformResponse
 export interface AutocompleteAPIFieldData {
   arg?: string;
   response: OptionsType[];

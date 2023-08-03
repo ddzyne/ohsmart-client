@@ -13,7 +13,7 @@ export const rtkQueryErrorLogger: Middleware =
       console.log(action)
       // Convert the error to a string, probably is one already, but just in case
       const error = JSON.stringify(action.payload.error || action.payload.data || action.payload);
-      api.dispatch(setNotification({ message: error, type: 'error' }));
+      api.dispatch(setNotification({ message: `Error! ${error}`, type: 'error' }));
     }
 
     return next(action)
