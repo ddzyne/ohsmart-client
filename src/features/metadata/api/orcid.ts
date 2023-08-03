@@ -8,7 +8,7 @@ export const orcidApi = createApi({
     fetchOrcid: build.query({
       query: (content) => {
         // Reformat the input string, replacing all spaces with +AND+ operators (and remove double spaces and spaces at the end too)
-        const search = content.replace(/ +(?= |$)/g,'').replace(/ +/g, '+AND+');
+        const search = content.replace(/ +(?= |$)/g,'').replace(/ +/g, '+AND+')+'*';
         return ({
           url: `?q=${search}`,
           headers: {Accept: "application/vnd.orcid+json"},

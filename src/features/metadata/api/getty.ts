@@ -7,11 +7,13 @@ export const gettyApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_GETTY_PROXY }),
   endpoints: (build) => ({
     fetchGettyAATTerms: build.query({
-      query: (content) => ({
-        url: `?term=${content}`, //AATService.asmx/AATGetTermMatch?term=${content}&logop=and&notes=`,
-        // convert XML response to text string, so we can parse that later on
-        responseHandler: (response) => response.text(),
-      }),
+      query: (content) => {
+        const search = content.replace(/ +(?= |$)/g,'').replace(/ +/g, ' AND ')+'*';
+        return ({
+          url: `?term=${search}`, //AATService.asmx/AATGetTermMatch?term=${content}&logop=and&notes=`,
+          // convert XML response to text string, so we can parse that later on
+          responseHandler: (response) => response.text(),
+      })},
       transformResponse: (response: any, meta, arg) => {
         // convert xml text string to JSON
         const parser = new XMLParser();

@@ -3,11 +3,11 @@ import type { RorResponse } from '../../../types/Api';
 
 export const rorApi = createApi({
   reducerPath: 'ror',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.ror.org' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.ror.org/' }),
   endpoints: (build) => ({
     fetchRorByName: build.query({
       query: (content) => ({
-        url: `organizations?query.advanced=name:${content}`,
+        url: `organizations?query.advanced=name:${content}*`,
         headers: {Accept: "application/json"},
       }),
       transformResponse: (response: RorResponse, meta, arg) => {
