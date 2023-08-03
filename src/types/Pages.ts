@@ -5,7 +5,7 @@ import type { InitialFormType } from './Metadata';
 interface PageAction {
   link: string;
   text: string | LanguageStrings;
-  restricted?: boolean;
+  restricted?: boolean; // display when logged in, otherwise show a login button
 }
 
 export interface Page {
