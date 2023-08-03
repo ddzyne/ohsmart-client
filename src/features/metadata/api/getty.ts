@@ -1,23 +1,22 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import { XMLParser } from 'fast-xml-parser';
-import type { GettyResponse } from '../../../types/Api';
+import type { GettyResponse, ProxyResponse } from '../../../types/Api';
 
 export const gettyApi = createApi({
   reducerPath: 'getty',
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_GETTY_PROXY }),
+  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_HTTP_REDIRECT_PROXY }),
   endpoints: (build) => ({
     fetchGettyAATTerms: build.query({
       query: (content) => {
         const search = content.replace(/ +(?= |$)/g,'').replace(/ +/g, ' AND ')+'*';
         return ({
-          url: `?term=${search}`, //AATService.asmx/AATGetTermMatch?term=${content}&logop=and&notes=`,
-          // convert XML response to text string, so we can parse that later on
-          responseHandler: (response) => response.text(),
+          url: `proxy?url=${encodeURIComponent(`http://vocabsservices.getty.edu/AATService.asmx/AATGetTermMatch?term=${search}&logop=and&notes=`)}`,
+          headers: {Accept: "application/json"},
       })},
-      transformResponse: (response: any, meta, arg) => {
+      transformResponse: (response: ProxyResponse, meta, arg) => {
         // convert xml text string to JSON
         const parser = new XMLParser();
-        const json: GettyResponse = parser.parse(response);
+        const json: GettyResponse = parser.parse(response.text);
         // Return an empty array when no results, which is what the Autocomplete field expects
         return json.Vocabulary.Count > 0 ? 
           ({

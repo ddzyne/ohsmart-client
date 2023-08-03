@@ -42,6 +42,11 @@ export interface GeonamesResponse {
   geonames: GeonamesItem[];
 }
 
+export interface ProxyResponse {
+  status_code: number;
+  text: string;
+}
+
 export interface GettyResponse {
   Vocabulary: GettyVocabulary;
 }
