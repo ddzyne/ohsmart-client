@@ -87,7 +87,7 @@ export const metadataSlice = createSlice({
       const field = findById(action.payload.groupedFieldId, section.fields);
       if (field) { 
         const newField = action.payload.type === 'single' ?
-          // single repeatable field is just a copy with a new id, value and valid state
+          // single repeatable field is just a copy with a new id, value, valid, touched state
           {...(field as RepeatTextFieldType).fields[0], id: uuidv4(), value: '', valid: '', touched: false} :
           // grouped fields a bit more complicated, since grouped fields can also contain single repeatable fields
           (field as RepeatGroupedFieldType).fields[0].map( f => (

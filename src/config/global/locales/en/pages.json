@@ -1,0 +1,7 @@
+{
+	"account": "Account",
+	"loggedIn": "Logged in as",
+	"logout": "Log out",
+	"signingIn": "Signing you in...",
+	"signinError": "Error signing you in!"
+}

@@ -60,17 +60,17 @@ const section = {
             nl: 'Naam',
           },
           name: 'contact_name',
-          value: 'Name (logged in user)',
+          autofill: 'name',
           disabled: true,
         },
         {
           type: 'text',
           label: {
-            en: 'Affiliatie',
-            nl: 'Affiliation',
+            en: 'Affiliation',
+            nl: 'Affiliatie',
           },
-          name: 'contact_affiliation',
-          value: 'Org (logged in user)',
+          name: 'contact_affiliation', // gets filled in automatically
+          autofill: 'voperson_external_affiliation',
           disabled: true,
         },
         {
@@ -79,8 +79,8 @@ const section = {
             en: 'Email',
             nl: 'Email',
           },
-          name: 'contact_email',
-          value: 'user@email.org (logged in user)',
+          name: 'contact_email', // gets filled in automatically
+          autofill: 'email',
           disabled: true,
         },
       ]

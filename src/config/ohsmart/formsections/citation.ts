@@ -32,7 +32,6 @@ const section = {
       },
     },
     {
-      // TODO: implement DANS schema 
       type: 'autocomplete',
       label: {
         en: 'Subject',
@@ -68,20 +67,14 @@ const section = {
       allowFreeText: true,
     },
     {
-      // TODO: read-only and pre-filled by system
       type: 'text',
       label: {
         en: 'Depositor',
         nl: 'Indiener',
       },
       name: 'depositor',
-      required: true,
       disabled: true,
-      description: {
-        en: 'Your user account',
-        nl: 'Jouw gebruikersaccount',
-      },
-      value: 'User XXX',
+      autofill: 'email',
     },
     {
       type: 'group',

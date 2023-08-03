@@ -22,7 +22,7 @@ const customTheme = createTheme({
     neutralDark: {
       main: grey[300],
       contrastText: grey[500],
-    }
+    },
   },
   components: {
     MuiAppBar: {

@@ -5,10 +5,15 @@ import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
 import type { PageProps } from '../types/Pages';
 import { lookupLanguageString } from '../app/i18n';
+import { useAuth } from 'react-oidc-context';
+import { useTranslation } from 'react-i18next';
 
 const logo = require(`../config/${process.env.REACT_APP_CONFIG_FOLDER}/images/logo.png`);
 
 const Generic = ({page}: PageProps) => {
+  const auth = useAuth();
+  const { t } = useTranslation('pages');
+
   return (
     <Container>
       <Grid container>
@@ -34,9 +39,19 @@ const Generic = ({page}: PageProps) => {
           }
           {page.action && 
             <Box mt={4} display="flex" justifyContent="center">
-              <Link to={`/${page.action.link}`}>
-                <Button variant="contained" size="large">{lookupLanguageString(page.action.text)}</Button>
-              </Link>
+              {
+                (page.action.restricted && auth.isAuthenticated) || !page.action.restricted ?
+                <Link to={`/${page.action.link}`}>
+                  <Button variant="contained" size="large">{lookupLanguageString(page.action.text)}</Button>
+                </Link>:
+                <Button
+                  variant="contained"
+                  size="large"
+                  onClick={() => void auth.signinRedirect()}
+                >
+                  {t('login')}
+                </Button>
+              }
             </Box>
           }
         </Grid>
