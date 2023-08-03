@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react';
 import type { Language, LanguageStrings } from './Language';
 
+// Accordion sections
 export interface InitialSectionType {
   id: string;
   title: string | LanguageStrings;
@@ -14,49 +15,40 @@ export interface SectionType extends Omit<InitialSectionType, 'fields'> {
   status: SectionStatus;
 }
 
-export type OptionsType = {
-  label: string | LanguageStrings;
-  value: string;
-  header?: string | LanguageStrings;
-  extraLabel?: string;
-  extraContent?: string;
-  idLabel?: string;
-  id?: string;
-  mandatory?: boolean;
-  freetext?: boolean;
-};
-
-export type Field = TextFieldType | DateFieldType| AutocompleteFieldType | GroupedFieldType | RepeatTextFieldType | RadioFieldType | CheckFieldType;
+// All user input field types
 export type InputField = TextFieldType | DateFieldType | AutocompleteFieldType | RadioFieldType | CheckFieldType | RepeatTextFieldType;
 
+// General field, can be input or group
+export type Field = InputField | GroupedFieldType | RepeatGroupedFieldType;
+
+// All fields extend the basic field type
 interface BasisFieldType {
-  id: string;
-  name: string;
-  label: string | LanguageStrings;
-  touched: boolean;
-  placeholder?: string;
-  validation?: ValidationType;
-  value?: string;
-  repeatable?: boolean;
-  valid?: boolean | '';
-  disabled?: boolean;
-  description?: string | LanguageStrings;
-  required?: boolean;
-  private?: boolean;
+  id: string; // auto generated uuid
+  name: string; // gets mapped by packager
+  label: string | LanguageStrings; // appears above field in UI
+  touched: boolean; // checks if user has interacted with field, for validation purposes
+  placeholder?: string; // appears if no text has been filled in in UI
+  validation?: ValidationType; // optional field validation
+  value?: string; // field value, can also be pre-filled in config
+  repeatable?: boolean; // creates a repeatable single field
+  valid?: boolean | ''; // keeps track of field validation state
+  disabled?: boolean; // read only field
+  description?: string | LanguageStrings; // appears in tooltip in UI
+  required?: boolean; // Form won't submit if this field has not been filled in
+  private?: boolean; // gets sent to a separate non-public metadata file
 }
 
 export interface TextFieldType extends BasisFieldType {
   type: 'text' | 'number';
-  maxValue?: number;
-  minValue?: number; 
-  multiline?: boolean;
+  maxValue?: number; // for numbers only
+  minValue?: number; // for numbers only
+  multiline?: boolean; // creates a textarea
+  autofill?: 'name' | 'email' | 'voperson_external_affiliation' | 'family_name' | 'given_name'; // some values that the system can pull and fill in from the User Auth
   format?: never;
   fields?: never;
   multiApiValue?: never;
   options?: never;
 }
-
-export type DateTimeFormat = 'DD-MM-YYYY HH:mm' | 'DD-MM-YYYY' | 'MM-YYYY' | 'YYYY';
 
 export interface DateFieldType extends BasisFieldType {
   type: 'date';
@@ -64,40 +56,28 @@ export interface DateFieldType extends BasisFieldType {
   formatOptions?: DateTimeFormat[];
   minDate?: string;
   maxDate?: string;
-  validation?: never;
+  validation?: never; // not needed, as a user is forced to enter the date as specified by the format option
   fields?: never;
   multiApiValue?: never;
   options?: never;
 }
 
-export type Datastations = 'elsst' | 'narcis';
-export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames' | 'getty' | 'sheets' | 'dansFormats' | Datastations;
-
 export interface AutocompleteFieldType extends Omit<BasisFieldType, 'value' | 'repeatable'> {
   type: 'autocomplete';
-  multiselect?: boolean;
+  multiselect?: boolean; // enables multiple selections in UI
   value?: OptionsType | OptionsType[] | null;
-  options: OptionsType[] | TypeaheadAPI[] | TypeaheadAPI;
-  allowFreeText?: boolean;
-  multiApiValue?: TypeaheadAPI;
-  sheetOptions?: SheetOptions;
+  options: OptionsType[] | TypeaheadAPI[] | TypeaheadAPI; // either a list of (json) options or an API
+  allowFreeText?: boolean; // allow the user to enter values not in options
+  multiApiValue?: TypeaheadAPI; // allow the user to pick an API from a list
+  sheetOptions?: SheetOptions; // only for Google sheets
   repeatable?: never;
   fields?: never;
   format?: never;
 }
 
-interface SheetOptions {
-  sheetId: string;
-  page: string;
-  startAtRow: number;
-  labelCol: number;
-  valueCol: number;
-  headerCol: number;
-}
-
 export interface GroupedFieldType extends Omit<BasisFieldType, 'value' | 'touched'> {
-  type: 'group';
-  fields: InputField[] | InputField[][];
+  type: 'group'; // This type groups multiple single fields
+  fields: InputField[];
   value?: never;
   validation?: never;
   valid?: never;
@@ -108,11 +88,11 @@ export interface GroupedFieldType extends Omit<BasisFieldType, 'value' | 'touche
 }
 
 export interface RepeatGroupedFieldType extends Omit<GroupedFieldType, 'fields'> {
-  fields: InputField[][];
+  fields: InputField[][]; // only for code, not for config, a group of grouped fields
 }
 
 export interface RepeatTextFieldType extends Omit<BasisFieldType, 'value' | 'validation' | 'valid' | 'repeatable' | 'touched'> {
-  type: 'repeatSingleField';
+  type: 'repeatSingleField'; // group type for repeatable text fields, only used in code, not in config
   fields: TextFieldType[];
   value?: never;
   validation?: never;
@@ -127,7 +107,7 @@ export interface RepeatTextFieldType extends Omit<BasisFieldType, 'value' | 'val
 
 export interface RadioFieldType extends Omit<BasisFieldType, 'validation' | 'valid' | 'required'> {
   type: 'radio';
-  layout?: 'row';
+  layout?: 'row'; // if specified, radiobuttons will appear inline
   options: OptionsType[];
   valid?: never;
   validation?: never;
@@ -148,6 +128,40 @@ export interface CheckFieldType extends Omit<BasisFieldType, 'value' | 'validati
   format?: never;
 }
 
+// Date and time formats to be used in a Date field
+export type DateTimeFormat = 'DD-MM-YYYY HH:mm' | 'DD-MM-YYYY' | 'MM-YYYY' | 'YYYY';
+
+// API's that can be used by Autocomplete fields
+export type Datastations = 'elsst' | 'narcis';
+export type TypeaheadAPI = 'orcid' | 'ror' | 'geonames' | 'getty' | 'sheets' | 'dansFormats' | Datastations;
+
+// Options that should be specified if Google Sheet API is used in Autocomplete
+interface SheetOptions {
+  sheetId: string;
+  page: string;
+  startAtRow: number;
+  labelCol: number;
+  valueCol: number;
+  headerCol: number;
+}
+
+// Option format for autocomplete dropdown
+export type OptionsType = {
+  label: string | LanguageStrings;
+  value: string;
+  header?: string | LanguageStrings;
+  extraLabel?: string;
+  extraContent?: string;
+  idLabel?: string;
+  id?: string;
+  mandatory?: boolean;
+  freetext?: boolean;
+};
+
+// Validation for text fields
+export type ValidationType = 'email' | 'uri' | 'number';
+
+// Format to return API response in
 export interface AutocompleteAPIFieldData {
   arg?: string;
   response: OptionsType[];
@@ -160,7 +174,7 @@ export interface SingleFieldProps {
 }
 
 export interface GroupedFieldProps extends Omit<SingleFieldProps, 'field'> {
-  field: GroupedFieldType;
+  field: GroupedFieldType | RepeatGroupedFieldType;
 }
 
 export interface TextFieldProps extends Omit<SingleFieldProps, 'field'> {
@@ -260,6 +274,3 @@ export interface InitialFormType {
 export interface InitialFormProps {
   form: InitialFormType;
 }
-
-// To do
-export type ValidationType = 'email' | 'uri' | 'number';

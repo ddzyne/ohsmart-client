@@ -119,6 +119,8 @@ const UserMenu = () => {
     setAnchorElUser(null);
   };
 
+  console.log(auth);
+
   // useEffect(() => {
   //   if (!hasAuthParams() &&
   //     !auth.isAuthenticated && !auth.activeNavigator && !auth.isLoading) {

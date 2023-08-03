@@ -22,17 +22,11 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
 
   useEffect(() => {
     // autofill user data from oidc
-    if (auth.user && ( field.name === 'contact_name' || field.name === 'contact_email' || field.name === 'contact_affiliation')) {
-      const map = {
-        contact_name: auth.user.profile.name,
-        contact_email: auth.user.profile.email,
-        contact_affiliation: auth.user.profile.voperson_external_affiliation,
-      };
-      const value = map[field.name];
+    if (auth.user && field.autofill) {
       dispatch(setField({
         sectionIndex: sectionIndex,
         id: field.id,
-        value: value as string,
+        value: auth.user.profile[field.autofill] as string,
       }));
     }
   }, []);

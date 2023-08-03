@@ -59,16 +59,18 @@ const section = {
             en: 'Name',
             nl: 'Naam',
           },
-          name: 'contact_name', // gets filled in automatically
+          name: 'contact_name',
+          autofill: 'name',
           disabled: true,
         },
         {
           type: 'text',
           label: {
-            en: 'Affiliatie',
-            nl: 'Affiliation',
+            en: 'Affiliation',
+            nl: 'Affiliatie',
           },
           name: 'contact_affiliation', // gets filled in automatically
+          autofill: 'voperson_external_affiliation',
           disabled: true,
         },
         {
@@ -78,6 +80,7 @@ const section = {
             nl: 'Email',
           },
           name: 'contact_email', // gets filled in automatically
+          autofill: 'email',
           disabled: true,
         },
       ]
