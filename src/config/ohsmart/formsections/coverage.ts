@@ -56,7 +56,7 @@ const section = {
             en: 'Subject end time and date',
             nl: 'Eindtijd van het onderwerp',
           },
-          name: 'subject_date_time_start',         
+          name: 'subject_date_time_end',         
           description: {
             en: 'The end time that the interview material deals with',
             nl: 'Eindtijd van het onderwerp waar het interview over gaat',
