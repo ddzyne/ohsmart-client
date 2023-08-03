@@ -4,7 +4,7 @@
 
  - Create a project folder in ./src/config/
  - Create a form.ts and a pages.ts file in that folder
- - Edit the .env file in the root directory accordingly
+ - Create a .production.env (for the build script) and .development.env (for the start script) file based on the .env file in the root directory
 
 #### pages.ts
 The pages file should have a default export of an array of page objects.
@@ -36,11 +36,16 @@ The pages file should have a default export of an array of page objects.
       
       // Optional action button
       action: {
-      // slug the button links to
+        // slug the button links to
         link: "link_to_slug",
         // button text, can be a string, or a language object
-        text: "Button text"
+        text: "Button text",
+        // only display this button if user is logged in, otherwise show a login button
+        restricted: true,
       },
+      
+      // if true, only logged in users can access this page
+      restricted: true,
       
       // Optional page logo. If true, create a 'images' folder in your project dir and add a logo.png file
       logo: true
@@ -55,7 +60,7 @@ The form file should have a default export of an array of section objects. Each 
       // unique identifier for this section
       id: "section_id",
     
-      // section title, can be a string or a language object
+      // section title, can be a string or a language object ({en: ..., nl: ..., etc})
       title: {
         en: 'English title',
         nl: 'Nederlandse titel'
@@ -67,49 +72,70 @@ The form file should have a default export of an array of section objects. Each 
           // Field type. Can be:
           // * autocomplete - this is a selectbox with either a pre-defined list or typeahead service coupled
           // * text - plain textbox
-          // * date - date selector
-          // * datetime-local - date and time selector
+          // * date - date/time selector
           // * number - numbers only
           // * group - a field group, this group contains another fields array
           // * radio - a radio button selection field (one option is always selected)
           // * check - a checkbox selection field (select zero or more options)
           type: 'text',
     
-          // label can be a string or language object
+          // Label can be a string or preferably a language object
           label: 'Some string',
     
-          // name for this field, gets sent to the API
+          // Name for this field, gets sent to the API, needed for mapping
           name: 'some_string',
     
-          // field is required or not. Not applicable to radio buttons or group fields
+          // Optionally set field to required or not. Not applicable to radio buttons or group fields.
           required: true,
     
-          // validation options for textfields. Can be 'email'...
-          validation: 'email',
-    
-          // optional field description, can be a string or a language object
+          // Optional field description, can be a string or a language object. Appears in tooltip or under label in case of group field
           description: 'Some description',
     
-          // optional pre-set value of this field. A string in case of a text field, an options object in case of an autocomplete field
+          // Optional pre-set value of this field. A string in case of a text field, an options object in case of an autocomplete field
           value: 'Some value string',
     
           // Optionally set field to private - this data won't be public
           private: true,
     
-          // Repeatable field, for text and group fields only
+          // You can set the disabled flag if you don't want the user to change this field's value
+          disabled: true,
+    
+          // Text and group fields only, make field repeatable field
           repeatable: true,
     
-          // Selectable options, for the autocomplete, radio and check fieldtypes. Can be:
+          // Text field only, enable this if you want a larger textarea
+          multiline: true,
+    
+          // Textfield only, to validate input. See ValidationType in types/Metadata.ts
+          validation: 'email', 
+    
+          // Textfield only. Optionally provide this value if you want to fill a textfield based on user authentication object. See AuthProperty in types/Metadata.ts for options.
+          autofill: 'name',
+    
+          // Date field only. Specify the format you want to use. See DateTimeFormat in types/Metadata.ts.
+          format: 'DD-MM-YYYY HH:mm',
+    
+          // Date field only. Specify an optional minimum and/or maximum input date.
+          minDate: '01-01-2020 12:00',
+          maxDate: '01-01-2024 12:00',
+    
+          // Number field only, specify min and/or max number
+          minValue: '10',
+          maxValue: '20',
+    
+          // Autocomplete, radio and check fields only. Selectable options, can be:
           // * an array of option objects like below
-          // * an API service: 'orcid', 'ror', 'geonames', 'getty', 'sheets' (autocomplete only)
-          // * an array of API services ['orcid', 'ror'] (note: not sheets for now) (autocomplete only)
+          // * an API service: 'orcid', 'ror', 'narcis', etc (autocomplete only). See TypeaheadAPI in types/Metadata.ts.
+          // * an array of API services ['orcid', 'ror'] (autocomplete only)
           options: [
-            // this is an options object
+            // This is an options object
             { 
-              // can be a string or language object
+              // Can be a string or language object
               label: 'Some label',
-              // value is a string, gets sent to server
+              // Value is a string, gets sent to server
               value: 'some_string',
+              // Optionally set this to true, to always have this value selected. Autocomplete only.
+              mandatory: true,
             }
           ],
           
@@ -130,13 +156,16 @@ The form file should have a default export of an array of section objects. Each 
             headerCol: 2,
           },
     
-          // In case an array of typeahead services is provided, pick the default service (required)
+          // Autocompletefield only. In case an array of typeahead services is provided, pick the default service (required)
           multiApiValue: "orcid",
     
-          // Multiple selections possible, only for autocomplete field type
+          // Autocompletefield only. Make multiple selections possible.
           multiselect: true,
     
-          // An array of inputfields (text, autocomplete, etc, as above), only for group field type
+          // Autocompletefield only. Allow user to enter a value not in dropdown/API.
+          allowFreeText: true,
+    
+          // Group field only. An array of inputfields (text, autocomplete, etc, as above).
           fields: [{...}],
         },
       ]

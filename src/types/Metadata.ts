@@ -29,7 +29,7 @@ interface BasisFieldType {
   touched: boolean; // checks if user has interacted with field, for validation purposes
   placeholder?: string; // appears if no text has been filled in in UI
   validation?: ValidationType; // optional field validation
-  value?: string; // field value, can also be pre-filled in config
+  value?: string; // field value, can be pre-filled in config
   repeatable?: boolean; // creates a repeatable single field
   valid?: boolean | ''; // keeps track of field validation state
   disabled?: boolean; // read only field
@@ -43,7 +43,7 @@ export interface TextFieldType extends BasisFieldType {
   maxValue?: number; // for numbers only
   minValue?: number; // for numbers only
   multiline?: boolean; // creates a textarea
-  autofill?: 'name' | 'email' | 'voperson_external_affiliation' | 'family_name' | 'given_name'; // some values that the system can pull and fill in from the User Auth
+  autofill?: AuthProperty;
   format?: never;
   fields?: never;
   multiApiValue?: never;
@@ -144,6 +144,9 @@ interface SheetOptions {
   valueCol: number;
   headerCol: number;
 }
+
+// Some values that the system can pull and fill in from the User Auth object
+type AuthProperty = 'name' | 'email' | 'voperson_external_affiliation' | 'family_name' | 'given_name'; 
 
 // Option format for values in the autocomplete dropdown
 export type OptionsType = {
