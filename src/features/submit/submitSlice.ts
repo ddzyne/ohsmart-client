@@ -1,26 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../../app/store';
-import type { ReduxFileSubmitActions, SubmittedFile, SubmitStatus } from '../../types/Submit';
+import type { 
+  ReduxFileSubmitActions, 
+  SubmittedFile, 
+  SubmitStatus, 
+  InitialStateType 
+} from '../../types/Submit';
 
-const initialState = {
+const initialState: InitialStateType = {
   metadataStatus: '',
-  submittedFiles: [{
-    id: '',
-    progress: 0,
-    status: '',
-  }],
+  submittedFiles: [],
 }
 
 export const submitSlice = createSlice({
   name: 'submit',
   initialState,
   reducers: {
-    // setIsSubmittingMeta: (state, action: PayloadAction<boolean>) => {
-    //   state.isSubmittingMeta = action.payload;
-    // },
-    // setIsSubmittingFiles: (state, action: PayloadAction<boolean>) => {
-    //   state.isSubmittingFiles = action.payload;
-    // },
     setMetadataSubmitStatus: (state, action: PayloadAction<SubmitStatus>) => {
       state.metadataStatus = action.payload;
     },
@@ -51,7 +46,7 @@ export const { setMetadataSubmitStatus, setFilesSubmitStatus, resetFilesSubmitSt
 
 // Select values from state
 export const getMetadataSubmitStatus = (state: RootState) => state.submit.metadataStatus;
-export const getFilesSubmitStatus = (state: RootState) => state.submit.submittedFiles.filter(f => f.id !== '');
-export const getSingleFileSubmitStatus = (id: string) => (state: RootState) => state.submit.submittedFiles.find( (file: SubmittedFile) => file.id === id);
+export const getFilesSubmitStatus = (state: RootState) => state.submit.submittedFiles;
+export const getSingleFileSubmitStatus = (id: string) => (state: RootState) => state.submit.submittedFiles.find((file: SubmittedFile) => file.id === id);
 
 export default submitSlice.reducer;

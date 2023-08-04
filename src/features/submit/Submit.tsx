@@ -25,7 +25,7 @@ const Submit = () => {
   const selectedFiles = useAppSelector(getFiles);
   const sessionId = useAppSelector(getSessionId);
   // File status exists in an array, so we need to do some processing and filtering. 
-  const filesSubmitStatus = useAppSelector(getFilesSubmitStatus);
+  const filesSubmitStatus = useAppSelector(getFilesSubmitStatus).filter(f => f.id !== '');
   const totalFileProgress = filesSubmitStatus.reduce( (n, {progress}) => n + (progress || 0), 0) / filesSubmitStatus.length || undefined;
   // If any file has an error, the form should indicate that.
   const fileStatusArray = [...new Set(filesSubmitStatus.map(f => f.status))];

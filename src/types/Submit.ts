@@ -17,3 +17,8 @@ export interface ReduxFileSubmitActions {
   progress?: number;
   status?: SubmitStatus;
 }
+
+export interface InitialStateType {
+  metadataStatus: string;
+  submittedFiles: ReduxFileSubmitActions[];
+}
