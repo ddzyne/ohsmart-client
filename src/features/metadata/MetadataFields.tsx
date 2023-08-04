@@ -74,7 +74,7 @@ const SingleField = memo(({field, sectionIndex}: SingleFieldProps) => {
 });
 
 const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
-  const { t } = useTranslation('metadata');
+  const { i18n } = useTranslation();
   // Check if group is repeatable. If not, lets wrap that single fieldgroup in an array, so we can use the same map function over it.
   // We use the id of the first field of the group as key for transitions
   const fieldArray = field.repeatable ? field.fields as InputField[][] : [field.fields as InputField[]];
@@ -84,8 +84,8 @@ const GroupedField = ({field, sectionIndex}: GroupedFieldProps) => {
     <Grid xs={12}>
       <Card>
         <CardHeader 
-          title={lookupLanguageString(field.label)} 
-          subheader={field.description && lookupLanguageString(field.description)} 
+          title={lookupLanguageString(field.label, i18n.language)} 
+          subheader={field.description && lookupLanguageString(field.description, i18n.language)} 
           titleTypographyProps={{fontSize: 16}}
           subheaderTypographyProps={{fontSize: 12}}
           sx={{pb: 0, pl: 2.25, pr: 2.25}} 

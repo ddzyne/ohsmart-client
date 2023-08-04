@@ -12,7 +12,7 @@ const logo = require(`../config/${process.env.REACT_APP_CONFIG_FOLDER}/images/lo
 
 const Generic = ({page}: PageProps) => {
   const auth = useAuth();
-  const { t } = useTranslation('pages');
+  const { t, i18n } = useTranslation('pages');
 
   return (
     <Container>
@@ -28,21 +28,21 @@ const Generic = ({page}: PageProps) => {
           <h1>
             {page.logo ? 
               <img src={logo} alt="OH-SMArt" title="OH-SMArt" /> :
-              lookupLanguageString(page.name)
+              lookupLanguageString(page.name, i18n.language)
             }
           </h1>
         </Grid>
 
         <Grid xs={12} mdOffset={2.5} md={7}>
           {page.content && 
-            <div dangerouslySetInnerHTML={{__html: lookupLanguageString(page.content) || ''}} />
+            <div dangerouslySetInnerHTML={{__html: lookupLanguageString(page.content, i18n.language) || ''}} />
           }
           {page.action && 
             <Box mt={4} display="flex" justifyContent="center">
               {
                 (page.action.restricted && auth.isAuthenticated) || !page.action.restricted ?
                 <Link to={`/${page.action.link}`}>
-                  <Button variant="contained" size="large">{lookupLanguageString(page.action.text)}</Button>
+                  <Button variant="contained" size="large">{lookupLanguageString(page.action.text, i18n.language)}</Button>
                 </Link>:
                 <Button
                   variant="contained"

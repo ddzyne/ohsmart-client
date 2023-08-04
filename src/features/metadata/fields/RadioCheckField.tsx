@@ -18,14 +18,14 @@ import { useTranslation } from 'react-i18next';
 export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
   const dispatch = useAppDispatch();
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
-  const { t } = useTranslation('metadata');
+  const { i18n } = useTranslation();
   const status = getFieldStatus(field);
 
   return (
     <FormControl>
       <FormLabel id={field.id} sx={{display:'flex', mb: 1}}>
-        <StatusIcon status={status} margin="r" title={lookupLanguageString(field.description)} />
-        {lookupLanguageString(field.label)}
+        <StatusIcon status={status} margin="r" title={lookupLanguageString(field.description, i18n.language)} />
+        {lookupLanguageString(field.label, i18n.language)}
       </FormLabel>
       <RadioGroup
         row={field.layout === 'row'}
@@ -43,7 +43,7 @@ export const RadioField = ({field, sectionIndex}: RadioFieldProps) => {
             key={option.value} 
             value={option.value} 
             control={<Radio sx={{mr: 0.15}}/>} 
-            label={lookupLanguageString(option.label)} 
+            label={lookupLanguageString(option.label, i18n.language)} 
             disabled={metadataSubmitStatus !== ''}
           />
         )}
@@ -57,7 +57,7 @@ export const CheckField = ({field, sectionIndex}: CheckFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getFieldStatus(field);
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
-  const { t } = useTranslation('metadata');
+  const { i18n } = useTranslation();
 
   return (
     <FormControl
@@ -66,8 +66,8 @@ export const CheckField = ({field, sectionIndex}: CheckFieldProps) => {
       component="fieldset"
     >
       <FormLabel id={field.id} sx={{display:'flex', mb: 1}}>
-        <StatusIcon status={status} margin="r" title={lookupLanguageString(field.description)} />
-        {lookupLanguageString(field.label)}
+        <StatusIcon status={status} margin="r" title={lookupLanguageString(field.description, i18n.language)} />
+        {lookupLanguageString(field.label, i18n.language)}
       </FormLabel>
       <FormGroup>
         {field.options.map( option =>
@@ -86,7 +86,7 @@ export const CheckField = ({field, sectionIndex}: CheckFieldProps) => {
                 disabled={metadataSubmitStatus !== ''}
               />
             }
-            label={lookupLanguageString(option.label)}
+            label={lookupLanguageString(option.label, i18n.language)}
           />
         )}
       </FormGroup>

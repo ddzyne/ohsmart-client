@@ -14,7 +14,7 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import EmailIcon from '@mui/icons-material/Email';
 
 const Footer = () => {
-  const { t } = useTranslation('footer');
+  const { t, i18n } = useTranslation('footer');
   return (
     <>
       <Box
@@ -32,18 +32,18 @@ const Footer = () => {
                 <Grid xs={4} sm={2} md={1} key={`footer-${i}`}>
                   <Stack direction="column" alignItems="start">
                     {item.header && 
-                      <h4>{lookupLanguageString(item.header)}</h4>
+                      <h4>{lookupLanguageString(item.header, i18n.language)}</h4>
                     }
                     {item.links && item.links.map( (link, j) =>
                       <Link href={link.link} underline="none" target="_blank" key={`link-${j}`} sx={{ display: 'flex', alignItems: 'center'}}>
                         {link.icon && link.icon === 'twitter' && <TwitterIcon sx={{mr: 1}} fontSize="small" />}
                         {link.icon && link.icon === 'youtube' && <YouTubeIcon sx={{mr: 1}} fontSize="small" />}
                         {link.icon && link.icon === 'email' && <EmailIcon sx={{mr: 1}} fontSize="small" />}
-                        {lookupLanguageString(link.name)}
+                        {lookupLanguageString(link.name, i18n.language)}
                       </Link>
                     )}
                     {item.freetext && 
-                      <span dangerouslySetInnerHTML={{__html: lookupLanguageString(item.freetext) || '' }} className={styles.footerFreeText} />
+                      <span dangerouslySetInnerHTML={{__html: lookupLanguageString(item.freetext, i18n.language) || '' }} className={styles.footerFreeText} />
                     }
                   </Stack>
                 </Grid>

@@ -17,7 +17,7 @@ const Form = () => {
   const dispatch = useAppDispatch();
   const metadata = useAppSelector(getMetadata);
   const openPanel = useAppSelector(getOpenPanel);
-  const { t } = useTranslation('metadata');
+  const { i18n } = useTranslation();
 
   // handles accordion open/close actions, sends to redux store
   const handleChange =
@@ -40,7 +40,7 @@ const Form = () => {
             id={`${section.id}-header`}
           >
             <StatusIcon status={section.status} margin="r" />
-            <Typography>{lookupLanguageString(section.title)}</Typography>
+            <Typography>{lookupLanguageString(section.title, i18n.language)}</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Grid container spacing={2}>

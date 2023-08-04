@@ -1,6 +1,6 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { Provider } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { store } from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -23,11 +23,11 @@ const oidcConfig = {
 root.render(
   <React.StrictMode>
     <AuthProvider {...oidcConfig}>
-      <Provider store={store}>
+      <ReduxProvider store={store}>
         <I18nextProvider i18n={i18n}>
           <App />
         </I18nextProvider>
-      </Provider>
+      </ReduxProvider>
     </AuthProvider>
   </React.StrictMode>
 );

@@ -6,10 +6,16 @@ const pages = [
     template: "generic",
     inMenu: true,
     menuTitle: "Home",
-    content: "<p>DANS collaborates with the OH-SMART project to provide infrastructure for the deposit, preservation, processing and application of audiovisual materials collected by museums and research institutions. OH-SMART concentrates on oral histories - interviews conducted at art museums.</p>",
+    content: {
+      en: "<p>DANS collaborates with the OH-SMArt project to provide infrastructure for the deposit, preservation, processing and application of audiovisual materials collected by museums and research institutions. OH-SMArt concentrates on oral histories - interviews conducted at art museums.</p>",
+      nl: '<p>DANS werkt samen met het OH-SMArt project om een infrastructuur te bieden voor het indienen, verwerken, behouden en toepassen van audiovisueel materiaal dat verzameld wordt door musea en onderzoeksinstituten. OH-SMArt richt zich op mondelinge geschiedenis - interviews afgenomen bij musea.</p>',
+    },
     action: {
       link: "deposit",
-      text: "Deposit data",
+      text: {
+        en: "Deposit data",
+        nl: "Data indienen",
+      },
       restricted: true,
     },
     logo: true,

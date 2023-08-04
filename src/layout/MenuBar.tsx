@@ -21,6 +21,7 @@ import { useAuth } from 'react-oidc-context';
 import { useTranslation } from 'react-i18next';
 
 const MenuBar = ({pages}: MenuBarProps) => {
+  const { i18n } = useTranslation();
   const auth = useAuth();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -73,7 +74,7 @@ const MenuBar = ({pages}: MenuBarProps) => {
                   component={RouterLink} 
                   to={page.slug}
                 >
-                  {lookupLanguageString(page.menuTitle)}
+                  {lookupLanguageString(page.menuTitle, i18n.language)}
                 </Link>
               </MenuItem>
             ))}
@@ -96,7 +97,7 @@ const MenuBar = ({pages}: MenuBarProps) => {
                 component={RouterLink} 
                 to={page.slug}
               >
-                {lookupLanguageString(page.menuTitle)}
+                {lookupLanguageString(page.menuTitle, i18n.language)}
               </Button>
             ))}
           </Box>

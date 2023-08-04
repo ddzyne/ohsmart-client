@@ -16,12 +16,12 @@ import { useAuth } from 'react-oidc-context';
 const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: TextFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getFieldStatus(field);
-  const { t } = useTranslation('metadata');
+  const { t, i18n } = useTranslation('metadata');
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
   const auth = useAuth();
 
   useEffect(() => {
-    // autofill user data from oidc
+    // if requested, auto fill user data from oidc
     if (auth.user && field.autofill) {
       dispatch(setField({
         sectionIndex: sectionIndex,
@@ -29,7 +29,7 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
         value: auth.user.profile[field.autofill] as string,
       }));
     }
-  }, []);
+  }, [auth.user, dispatch, field.autofill, field.id, sectionIndex]);
 
   return (
     <Stack direction="row" alignItems="start">
@@ -39,7 +39,7 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
         helperText={status === 'error' && field.touched && t('incorrect')}
         variant="outlined" 
         type={field.type}
-        label={lookupLanguageString(field.label)}
+        label={lookupLanguageString(field.label, i18n.language)}
         required={field.required}
         multiline={field.multiline}
         rows={field.multiline ? 4 : ''}
@@ -60,7 +60,7 @@ const SingleTextField = ({field, sectionIndex, groupedFieldId, currentField = 0,
         InputProps={{
           endAdornment:
             <InputAdornment position="end">
-              <StatusIcon status={status} title={field.description && lookupLanguageString(field.description)} />
+              <StatusIcon status={status} title={field.description && lookupLanguageString(field.description, i18n.language)} />
             </InputAdornment>
           ,
         }}

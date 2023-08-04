@@ -242,7 +242,7 @@ const AutocompleteAPIField = ({
 }: AutocompleteAPIFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getFieldStatus(field);
-  const { t } = useTranslation('metadata');
+  const { t, i18n } = useTranslation('metadata');
   const apiValue = (Array.isArray(field.options) ? field.multiApiValue : field.options) as TypeaheadAPI;
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
@@ -257,17 +257,17 @@ const AutocompleteAPIField = ({
         value={field.value || (field.multiselect ? [] : null)}
         inputValue={
           inputValue ||
-          (!inputValue && field.value && !Array.isArray(field.value) && lookupLanguageString(field.value.label)) || 
+          (!inputValue && field.value && !Array.isArray(field.value) && lookupLanguageString(field.value.label, i18n.language)) || 
           ''
         }
         renderInput={
           (params) => 
             <TextField 
               {...params}
-              label={`${lookupLanguageString(field.label)}${field.required ? ' *' : ''}`}
+              label={`${lookupLanguageString(field.label, i18n.language)}${field.required ? ' *' : ''}`}
               error={status === 'error' && field.touched}
               helperText={status === 'error' && field.touched && t('incorrect')}
-              placeholder={lookupLanguageString(field.placeholder)}
+              placeholder={lookupLanguageString(field.placeholder, i18n.language)}
               InputProps={{
                 ...params.InputProps,
                 startAdornment: !field.multiselect && field.value && !Array.isArray(field.value) && field.value.value && field.value.value.startsWith('http') ? 
@@ -279,7 +279,7 @@ const AutocompleteAPIField = ({
         renderTags={(value, getTagProps) => 
           value.map((option, index) => 
             <Chip
-              label={(option.freetext ? (option.value) : lookupLanguageString(option.label)) as string}
+              label={(option.freetext ? (option.value) : lookupLanguageString(option.label, i18n.language)) as string}
               size="medium"
               icon={option.value && option.value.startsWith('http') ? <ApiLink link={option.value} apiValue={apiValue} chip={true} /> : undefined}
               {...getTagProps({ index })}
@@ -336,7 +336,7 @@ const AutocompleteAPIField = ({
         }
         renderOption={(props, option) => 
           <li {...props} key={option.value} style={{flexWrap: 'wrap'}} >
-            {lookupLanguageString(option.label)}
+            {lookupLanguageString(option.label, i18n.language)}
             {option.extraContent && option.extraLabel &&
               <div className={styles.optionExtra}>
                 <span>{t(option.extraLabel)}</span>: {option.extraContent}
@@ -387,7 +387,7 @@ const AutocompleteAPIField = ({
       <StatusIcon 
         margin="lt"
         status={status} 
-        title={lookupLanguageString(field.description)} 
+        title={lookupLanguageString(field.description, i18n.language)} 
         subtitle={t('apiValue', {api: t(apiValue)}) as string} 
       />
     </Stack>

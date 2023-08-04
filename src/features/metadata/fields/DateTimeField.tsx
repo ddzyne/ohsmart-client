@@ -23,7 +23,7 @@ import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 const DateTimeField = ({field, sectionIndex, groupedFieldId, currentField = 0, totalFields = 1}: DateFieldProps) => {
   const dispatch = useAppDispatch();
   const status = getFieldStatus(field);
-  const { t } = useTranslation('metadata');
+  const { t, i18n } = useTranslation('metadata');
   const metadataSubmitStatus = useAppSelector(getMetadataSubmitStatus);
 
   return (
@@ -61,7 +61,7 @@ const DateTimeField = ({field, sectionIndex, groupedFieldId, currentField = 0, t
         fullWidth
         format={field.format}
         helperText={status === 'error' && field.touched && t('incorrect')}
-        label={lookupLanguageString(field.label)}
+        label={lookupLanguageString(field.label, i18n.language)}
         required={field.required}
         value={(field.value && moment(field.value, field.format)) || null}
         disabled={field.disabled || metadataSubmitStatus !== ''}
@@ -87,7 +87,7 @@ const DateTimeField = ({field, sectionIndex, groupedFieldId, currentField = 0, t
         InputProps={{
           endAdornment:
             <InputAdornment position="end">
-              <StatusIcon status={status} title={field.description && lookupLanguageString(field.description)} />
+              <StatusIcon status={status} title={field.description && lookupLanguageString(field.description, i18n.language)} />
             </InputAdornment>
           ,
         }}
