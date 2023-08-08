@@ -12,7 +12,6 @@ import '@fontsource/roboto/700.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Generic from './pages/Generic';
 import Deposit from './pages/Deposit';
-import { SignIn, AuthRoute } from './pages/Auth';
 import NotificationList from './features/notification/Notification';
 import type { Page } from './types/Pages';
 import Skeleton from '@mui/material/Skeleton';
@@ -34,7 +33,6 @@ const App = () => {
           </Suspense>
           <MenuBar pages={pages} />
           <Routes>
-            <Route path="signin-callback" element={<SignIn />} />
             {pages.map( (page, i) => {
               return (
                 <Route 
@@ -42,7 +40,7 @@ const App = () => {
                   path={page.slug} 
                   element={
                     page.template === 'deposit' ? 
-                    <AuthRoute><Deposit form={formSections} /></AuthRoute> : 
+                    <Deposit form={formSections} /> : 
                     <Generic page={page} />
                   } 
                 />

@@ -19,13 +19,7 @@ const section = {
         en: 'Language of interview',
         nl: 'Taal van het interview',
       },
-      options: languageList.map( l => ({
-        // Copied this list from https://gist.github.com/jrnk/8eb57b065ea0b098d571
-        // We relabel the languages for processing in the form and in Dataverse
-        // Note that language names at the moment are not translated into Dutch (they should be?)
-        label: l.name,
-        value: l.code,
-      })),
+      options: languageList,
     },
     {
       type: 'date',
@@ -60,7 +54,7 @@ const section = {
             nl: 'Naam',
           },
           name: 'contact_name',
-          autofill: 'name',
+          value: 'TBR: will be logged in user name',
           disabled: true,
         },
         {
@@ -70,7 +64,7 @@ const section = {
             nl: 'Affiliatie',
           },
           name: 'contact_affiliation',
-          autofill: 'voperson_external_affiliation',
+          value: 'TBR: will be logged in user voperson_external_affiliation',
           disabled: true,
         },
         {
@@ -80,7 +74,7 @@ const section = {
             nl: 'Email',
           },
           name: 'contact_email',
-          autofill: 'email',
+          value: 'TBR: will be logged in user email',
           disabled: true,
         },
       ]
