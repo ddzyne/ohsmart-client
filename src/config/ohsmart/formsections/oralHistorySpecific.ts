@@ -145,17 +145,6 @@ const section = {
           repeatable: true,
         },
         {
-          type: 'date',
-          format: 'DD-MM-YYYY',
-          label: {
-            en: 'Date of birth',
-            nl: 'Geboortedatum',
-          },
-          name: 'interviewer_dob',
-          required: true,
-          private: true,
-        },
-        {
           type: 'text',
           label: {
             en: 'Function',

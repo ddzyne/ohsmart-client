@@ -49,7 +49,7 @@ const section = {
       },
       name: 'contact',
       description: {
-        en: 'The person to contact in respect of metadata (curator)',
+        en: 'The person to contact regarding the metadata (curator)',
         nl: 'Contactpersoon voor de metadata (curator)',
       },
       fields: [
@@ -69,7 +69,7 @@ const section = {
             en: 'Affiliation',
             nl: 'Affiliatie',
           },
-          name: 'contact_affiliation', // gets filled in automatically
+          name: 'contact_affiliation',
           autofill: 'voperson_external_affiliation',
           disabled: true,
         },
@@ -79,7 +79,7 @@ const section = {
             en: 'Email',
             nl: 'Email',
           },
-          name: 'contact_email', // gets filled in automatically
+          name: 'contact_email',
           autofill: 'email',
           disabled: true,
         },

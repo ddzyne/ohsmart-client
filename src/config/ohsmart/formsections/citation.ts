@@ -20,6 +20,18 @@ const section = {
     },
     {
       type: 'text',
+      label:  {
+        en: 'Subtitle',
+        nl: 'Ondertitel',
+      },
+      name: 'subtitle',
+      description:  {
+        en: 'Optional subtitle for the interview',
+        nl: 'Optionele ondertitel bij het interview',
+      },
+    },
+    {
+      type: 'text',
       label: {
         en: 'Description',
         nl: 'Beschrijving',
