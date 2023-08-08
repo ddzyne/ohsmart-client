@@ -86,7 +86,7 @@ const section = {
       },
       name: 'depositor',
       disabled: true,
-      autofill: 'email',
+      value: 'user@email.org',
     },
     {
       type: 'group',

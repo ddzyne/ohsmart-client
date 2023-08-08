@@ -176,6 +176,9 @@ The form file should have a default export of an array of section objects. Each 
 ## Available Scripts
 In the project directory, you can run:
 
+### `npm install --legacy-peer-deps`
+Install node modules first.
+
 ### `npm start`
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.

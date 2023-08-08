@@ -54,7 +54,7 @@ const section = {
             nl: 'Naam',
           },
           name: 'contact_name',
-          value: 'TBR: will be logged in user name',
+          value: 'User name',
           disabled: true,
         },
         {
@@ -64,7 +64,7 @@ const section = {
             nl: 'Affiliatie',
           },
           name: 'contact_affiliation',
-          value: 'TBR: will be logged in user voperson_external_affiliation',
+          value: 'User affiliation',
           disabled: true,
         },
         {
@@ -74,7 +74,7 @@ const section = {
             nl: 'Email',
           },
           name: 'contact_email',
-          value: 'TBR: will be logged in user email',
+          value: 'user@email.org',
           disabled: true,
         },
       ]
