@@ -4,7 +4,6 @@ import MenuBar from './layout/MenuBar';
 import Footer from './layout/Footer';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './config/global/theme';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
@@ -22,6 +21,9 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AuthProvider } from 'react-oidc-context';
 import { getAuthProvider } from './auth/authSlice';
 import { useAppSelector } from './app/hooks';
+
+// Load theme
+const theme = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/theme`).default;
 
 // Load pages
 const pages: Page[] = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/pages`).default;
