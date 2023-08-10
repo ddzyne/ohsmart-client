@@ -1,7 +1,10 @@
 {
 	"account": "Account",
 	"loggedIn": "Logged in as",
-	"logout": "Log out",
-	"signingIn": "Signing you in...",
-	"signinError": "Error signing you in!"
+	"userMenuSettings": "Settings",
+	"userMenuSubmissions": "Submissions",
+	"userSettings": "Your settings",
+	"userSubmissions": "Your submissions",
+	"dataverseKeyDescription": "To submit metadata, you need a Dataverse API key.",
+	"dataverseKey": "Your personal Dataverse API key"
 }

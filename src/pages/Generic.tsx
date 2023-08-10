@@ -7,12 +7,13 @@ import type { PageProps } from '../types/Pages';
 import { lookupLanguageString } from '../app/i18n';
 import { useAuth } from 'react-oidc-context';
 import { useTranslation } from 'react-i18next';
+import { LoginButton } from '../auth/Auth';
 
 const logo = require(`../config/${process.env.REACT_APP_CONFIG_FOLDER}/images/logo.png`);
 
 const Generic = ({page}: PageProps) => {
   const auth = useAuth();
-  const { t, i18n } = useTranslation('pages');
+  const { i18n } = useTranslation('pages');
 
   return (
     <Container>
@@ -44,13 +45,7 @@ const Generic = ({page}: PageProps) => {
                 <Link to={`/${page.action.link}`}>
                   <Button variant="contained" size="large">{lookupLanguageString(page.action.text, i18n.language)}</Button>
                 </Link>:
-                <Button
-                  variant="contained"
-                  size="large"
-                  onClick={() => void auth.signinRedirect()}
-                >
-                  {t('login')}
-                </Button>
+                <LoginButton variant="contained" />
               }
             </Box>
           }

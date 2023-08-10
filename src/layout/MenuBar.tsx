@@ -19,6 +19,7 @@ import type { MenuBarProps } from '../types/Pages';
 import { lookupLanguageString } from '../app/i18n';
 import { useAuth } from 'react-oidc-context';
 import { useTranslation } from 'react-i18next';
+import { LoginButton, LogoutButton } from '../auth/Auth';
 
 const MenuBar = ({pages}: MenuBarProps) => {
   const { i18n } = useTranslation();
@@ -160,28 +161,19 @@ const UserMenu = () => {
             <Typography sx={{fontSize: '90%', color: 'neutralDark.contrastText'}}>{auth.user.profile.email}</Typography>
           </Box>
           <Divider />
-          <MenuItem onClick={() => void auth.removeUser()}>
-            <Typography>{t('logout')}</Typography>
-          </MenuItem>
+          <Link component={RouterLink} to="/user-settings" underline="none" color="inherit" >
+            <MenuItem>{t('userMenuSettings')}</MenuItem>
+          </Link>
+          <Link component={RouterLink} to="/user-submissions" underline="none" color="inherit" >
+            <MenuItem divider={true}>{t('userMenuSubmissions')}</MenuItem>
+          </Link>
+          <LogoutButton />
         </Menu>
       </Box>
     );
   }
   return (
-    <Button
-      variant="outlined"
-      onClick={() => void auth.signinRedirect()}
-      sx={{
-        color: '#fff', 
-        borderColor: '#fff',
-        '&:hover': {
-          borderColor: '#fff',
-          backgroundColor: 'rgba(255,255,255,0.1)'
-        },
-      }}
-    >
-      {t('login')}
-    </Button>
+    <LoginButton />
   );
 }
 
