@@ -1,5 +1,5 @@
 import { Fragment, ReactNode, useState, useEffect } from 'react';
-import { useAuth } from 'react-oidc-context';
+import { useAuth, hasAuthParams } from 'react-oidc-context';
 import { Navigate } from 'react-router';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslation } from 'react-i18next';
@@ -13,8 +13,9 @@ import Fade from '@mui/material/Fade';
 import Backdrop from '@mui/material/Backdrop';
 import Button from '@mui/material/Button';
 import { useAppDispatch, useAppSelector } from '../app/hooks';
-import { setAuthProvider, getAuthProvider } from './authSlice';
+import { setAuthProvider, resetAuthProvider, getAuthProvider } from './authSlice';
 import type { AuthProvider } from '../types/Auth';
+import { Log } from 'oidc-client-ts';
 
 export const AuthRoute = ({ children }: { children: ReactNode }) => {
   const auth = useAuth();
@@ -37,27 +38,12 @@ export const SignInCallback = () => {
   const { t } = useTranslation('auth');
   const dispatch = useAppDispatch();
 
-  // Since on callback, the state is lost, the selected login provider is also lost. 
-  // We solve that by getting the neccessary data from the URL, and reentering that into state.
-  const params = new URLSearchParams(window.location.search);
-  const sessionState = params.get('state') as string;
-  const sessionCode = params.get('code') as string;
+  // Since on callback the app gets reloaded, the state is lost.
+  // So we get the login provider from the storage we set on login. 
+  const provider = sessionStorage.getItem('dansAuthProvider') as AuthProvider;
   useEffect(() => {
-    if (sessionState && sessionCode) {
-      const provider = 
-        window.location.search.indexOf('googleapis') !== -1 ?
-        'Google' :
-        window.location.search.indexOf('sram') !== -1 ?
-        'SRAM' :
-        '';
-      provider && dispatch(setAuthProvider({
-        authority: process.env[`REACT_APP_${provider.toUpperCase()}_AUTHORITY`] as string,
-        client_id: process.env[`REACT_APP_${provider.toUpperCase()}_CLIENT_ID`] as string,
-        scope: process.env[`REACT_APP_${provider.toUpperCase()}_CLIENT_SCOPE`] as string,
-      }));
-    }}, 
-    [sessionState, sessionCode, dispatch]
-  );
+    provider && dispatch(setAuthProvider(provider));
+  }, []);
 
   if (auth.isLoading || auth.activeNavigator) {
     return (
@@ -118,38 +104,31 @@ export const LoginButton = ({variant}: {variant?: 'contained'}) => {
   console.log(auth);
 
   // Set authentication provider based on button click from login modal
+  // Also set in storage for reuse later on (app reload)
   const setAuth = (provider: AuthProvider) => {
-    dispatch(setAuthProvider({
-      authority: process.env[`REACT_APP_${provider.toUpperCase()}_AUTHORITY`] as string,
-      client_id: process.env[`REACT_APP_${provider.toUpperCase()}_CLIENT_ID`] as string,
-      scope: process.env[`REACT_APP_${provider.toUpperCase()}_CLIENT_SCOPE`] as string,
-    }));
+    if (auth.error) {
+      console.log('error bitch')
+      auth.clearStaleState();
+      auth.revokeTokens();
+    }
+    sessionStorage.setItem('dansAuthProvider', provider);
+    dispatch(setAuthProvider(provider));
   }
 
-  // Check if user has already logged in previously in the session
-  // By default, this data gets logged in the active session. Localstorage is also an option...
-  const loggedInSession = Object.keys(sessionStorage).find( key => key.startsWith('oidc.user:'));
-  // And if so, set that login provider as the active one
-  // Todo: Bit of a hacky way to get this, see if there's a nicer method
-  // Scope gets retrieved automatically, so no need to set that again
+  // Check if user has already logged in previously in the session, on page load
+  const provider = sessionStorage.getItem('dansAuthProvider') as AuthProvider;
   useEffect(() => {
-    if (loggedInSession) {
-      const keyArray = loggedInSession.split(':');
-      dispatch(setAuthProvider({
-        authority: `${keyArray[1]}:${keyArray[2]}`,
-        client_id: keyArray[3],
-      }));
-    }}, 
-    [loggedInSession, dispatch]
-  );
+    Log.setLogger(console);
+    Log.setLevel(Log.DEBUG);
+    provider && dispatch(setAuthProvider(provider));
+  }, []);
 
-  // Fires if a login provider has been set (aka after a login button click), and no session info is yet present
+  // Fires if a login provider has been set (aka after a login button click)
   useEffect(() => {
-    if (currentProvider.authority !== '' && !auth.isAuthenticated && !auth.isLoading && !auth.activeNavigator && !loggedInSession) {
+    if (currentProvider.authority !== '' && !auth.isAuthenticated && !auth.isLoading && !auth.activeNavigator && !auth.error) {
       void auth.signinRedirect();
-    }}, 
-    [currentProvider.authority, loggedInSession, auth.isAuthenticated, auth.activeNavigator, auth.isLoading]
-  );
+    }
+  }, [currentProvider.authority, auth.signinRedirect, auth.isAuthenticated, auth.activeNavigator, auth.isLoading, auth.error]);
 
   // Map the available providers from the .env file to an actual array
   const providers = (process.env.REACT_APP_ENABLED_AUTH_METHODS as string).split(', ') as AuthProvider[];
@@ -201,14 +180,12 @@ export const LogoutButton = () => {
   const { t } = useTranslation('auth');
   const auth = useAuth();
 
-  // Remove login provider too, otherwise it will automatically log the user in again
+  // Remove login provider and log user out
   const logOut = () => {
-    void auth.removeUser();
-    dispatch(setAuthProvider({
-      authority: '',
-      client_id: '',
-      scope: '',
-    }));
+    void auth.removeUser().then(() => {
+      sessionStorage.removeItem('dansAuthProvider');
+      dispatch(resetAuthProvider());
+    });
   }
 
   return (
