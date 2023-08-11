@@ -1,12 +1,7 @@
-export interface SetAuthProvider {
+export interface AuthProvider {
   authority: string;
   client_id: string;
-  scope?: string;
-}
-
-export interface AuthState extends SetAuthProvider {
+  scope: string;
   redirect_uri: string;
   loadUserInfo: boolean;
 }
-
-export type AuthProvider = 'SURF' | 'SRAM' | 'Google' | 'GitHub';

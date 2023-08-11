@@ -19,8 +19,6 @@ import Skeleton from '@mui/material/Skeleton';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AuthProvider } from 'react-oidc-context';
-import { getAuthProvider } from './auth/authSlice';
-import { useAppSelector } from './app/hooks';
 
 // Load theme
 const theme = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/theme`).default;
@@ -29,14 +27,19 @@ const theme = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/theme`).d
 const pages: Page[] = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/pages`).default;
 const formSections = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/form`).default;
 
-const App = () => {
-  // we set the key of AuthProvider too, to make sure it actually updates when it changes
-  const authProvider = useAppSelector(getAuthProvider);
+const authProvider = {
+  authority: process.env.REACT_APP_OIDC_AUTHORITY as string,
+  client_id: process.env.REACT_APP_OIDC_CLIENT_ID as string,
+  scope: process.env.REACT_APP_OIDC_SCOPE as string,
+  redirect_uri: process.env.REACT_APP_OIDC_REDIRECT_URI as string,
+  loadUserInfo: true,
+};
 
+const App = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <ThemeProvider theme={theme}>
-        <AuthProvider key={authProvider.authority} {...authProvider}>
+        <AuthProvider {...authProvider}>
           <CssBaseline />
           <BrowserRouter>
             <Suspense fallback={<Skeleton width={200} height={30} />}>
