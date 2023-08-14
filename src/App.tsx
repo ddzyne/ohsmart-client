@@ -12,7 +12,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Generic from './pages/Generic';
 import Deposit from './pages/Deposit';
 import { SignInCallback, AuthRoute } from './auth/Auth';
-import { UserSettings, UserSubmissions } from './pages/User';
+import { UserSettings, UserSubmissions } from './auth/User';
 import NotificationList from './features/notification/Notification';
 import type { Page } from './types/Pages';
 import Skeleton from '@mui/material/Skeleton';

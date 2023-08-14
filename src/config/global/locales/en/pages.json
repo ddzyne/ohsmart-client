@@ -2,9 +2,5 @@
 	"account": "Account",
 	"loggedIn": "Logged in as",
 	"userMenuSettings": "Settings",
-	"userMenuSubmissions": "Submissions",
-	"userSettings": "Your settings",
-	"userSubmissions": "Your submissions",
-	"dataverseKeyDescription": "To submit metadata, you need a Dataverse API key.",
-	"dataverseKey": "Your personal Dataverse API key"
+	"userMenuSubmissions": "Submissions"
 }

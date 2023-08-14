@@ -7,7 +7,7 @@ import type { PageProps } from '../types/Pages';
 import { lookupLanguageString } from '../app/i18n';
 import { useAuth } from 'react-oidc-context';
 import { useTranslation } from 'react-i18next';
-import { LoginButton } from '../auth/Auth';
+import { LoginButton } from '../auth/User';
 
 const logo = require(`../config/${process.env.REACT_APP_CONFIG_FOLDER}/images/logo.png`);
 

@@ -13,6 +13,7 @@ import { submitApi } from '../features/submit/submitApi';
 import { dansFormatsApi } from '../features/files/api/dansFormats';
 import { dansUtilityApi } from '../features/files/api/dansUtility';
 import { dansVerificationApi } from '../features/files/api/dansVerification';
+import { authApi } from '../auth/authApi';
 import { rtkQueryErrorLogger } from './error';
 
 export const store = configureStore({
@@ -29,6 +30,7 @@ export const store = configureStore({
     [dansFormatsApi.reducerPath]: dansFormatsApi.reducer,
     [dansVerificationApi.reducerPath]: dansVerificationApi.reducer,
     [dansUtilityApi.reducerPath]: dansUtilityApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
     submit: submitReducer,
     notification: notificationReducer,
   },
@@ -44,6 +46,7 @@ export const store = configureStore({
       .concat(dansFormatsApi.middleware)
       .concat(dansVerificationApi.middleware)
       .concat(dansUtilityApi.middleware)
+      .concat(authApi.middleware)
       .concat(rtkQueryErrorLogger)
 });
 

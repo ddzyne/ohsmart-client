@@ -2,9 +2,5 @@
 	"account": "Account",
 	"loggedIn": "Ingelogd als",
 	"userMenuSettings": "Instellingen",
-	"userMenuSubmissions": "Submissies",
-	"userSettings": "Instellingen",
-	"userSubmissions": "Submissies",
-	"dataverseKeyDescription": "Om metadata op te sturen heb je een Dataverse API key nodig.",
-	"dataverseKey": "Jouw persoonlijke Dataverse API key"
+	"userMenuSubmissions": "Submissies"
 }
