@@ -13,15 +13,24 @@ import { getMetadataStatus, getSessionId, getOpenTab, setOpenTab } from '../feat
 import { getFiles } from '../features/files/filesSlice';
 import { StatusIcon } from '../features/generic/Icons';
 import Submit from '../features/submit/Submit';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { initForm } from '../features/metadata/metadataSlice';
+import { useFetchUserProfileQuery } from '../user/authApi';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Link from '@mui/material/Link';
+import { Link as RouterLink } from 'react-router-dom';
 
 const Deposit = ({form}: InitialFormProps) => {
   const dispatch = useAppDispatch();
   const sessionId = useAppSelector(getSessionId);
   const openTab = useAppSelector(getOpenTab);
+  const { data: userData } = useFetchUserProfileQuery(null);
+  const { t } = useTranslation('user');
+
+  console.log(userData)
 
   // Initialize form only on initial render when there's no sessionId yet
   // Or when form gets reset
@@ -35,6 +44,15 @@ const Deposit = ({form}: InitialFormProps) => {
     <Container>
       <Grid container>
         <Grid xs={12} mt={4}>
+          {!userData?.attributes[process.env.REACT_APP_DATAVERSE_KEY as string][0] &&
+            <Alert severity="warning">
+              <AlertTitle>{t('missingInfoHeader')}</AlertTitle>
+              <Trans
+                i18nKey="user:missingInfoText"
+                components={[<Link component={RouterLink} to="/user-settings" />]}
+              />
+            </Alert>
+          }
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <Suspense fallback={<Skeleton width={400} height={50} />}>
               <TabHeader value={openTab} handleChange={(e, val) => dispatch(setOpenTab(val))} />

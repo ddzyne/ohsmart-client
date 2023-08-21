@@ -13,7 +13,7 @@ import { submitApi } from '../features/submit/submitApi';
 import { dansFormatsApi } from '../features/files/api/dansFormats';
 import { dansUtilityApi } from '../features/files/api/dansUtility';
 import { dansVerificationApi } from '../features/files/api/dansVerification';
-import { authApi } from '../auth/authApi';
+import { authApi } from '../user/authApi';
 import { rtkQueryErrorLogger } from './error';
 
 export const store = configureStore({

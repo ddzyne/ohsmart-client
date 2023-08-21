@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
@@ -20,7 +20,7 @@ import { grey } from '@mui/material/colors';
 import { NavLink as RouterLink } from 'react-router-dom';
 
 export const UserSettings = () => {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation('user');
   return (
     <Container>
       <Grid container>
@@ -34,25 +34,26 @@ export const UserSettings = () => {
 }
 
 const UserSettingsItem = ({property}: {property: string}) => {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation('user');
   const { data } = useFetchUserProfileQuery(null);
 
   const [apiValue, setApiValue] = useState('Loading...');
 
   // set API key value once it's been retrieved
-  useEffect(() => data && setApiValue(data.attributes[property][0]), [data, property]);
+  useEffect(() => data && setApiValue(data.attributes[property][0] || ''), [data, property]);
 
-  // TODO: save user to redux state..
-
+  // call keycloak to save new API key
   const [saveData, {isUninitialized, isLoading, isSuccess, isError}] = useSaveUserDataMutation();
 
   console.log(data)
 
   return (
-    <Stack direction="column" spacing={1} alignItems="flex-start">
-      <Typography>{t('dataverseKeyDescription')}</Typography>
-      <Typography sx={{pb: 1}}>
-        <Link href="https://demo.ssh.datastations.nl/dataverseuser.xhtml?selectTab=apiTokenTab" target="_blank">Get your key here</Link>.
+    <Stack direction="column" spacing={2} alignItems="flex-start">
+      <Typography>
+        <Trans
+          i18nKey="user:dataverseKeyDescription"
+          components={[<Link href="https://demo.ssh.datastations.nl/dataverseuser.xhtml?selectTab=apiTokenTab" target="_blank"/>]}
+        />
       </Typography>
       <TextField 
         id="dataverse" 
@@ -81,7 +82,7 @@ const UserSettingsItem = ({property}: {property: string}) => {
 }
 
 export const UserSubmissions = () => {
-  const { t } = useTranslation('pages');
+  const { t } = useTranslation('user');
 
   return (
     <Container>
@@ -97,7 +98,7 @@ export const UserSubmissions = () => {
 
 export const UserMenu = () => {
   const auth = useAuth();
-  const { t } = useTranslation('pages');
+  const { t } = useTranslation('user');
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -156,7 +157,7 @@ export const UserMenu = () => {
 }
 
 export const LoginButton = ({variant}: {variant?: 'contained'}) => {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation('user');
   const auth = useAuth();
 
   return (
@@ -178,7 +179,7 @@ export const LoginButton = ({variant}: {variant?: 'contained'}) => {
 }
 
 export const LogoutButton = () => {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation('user');
   const auth = useAuth();
 
   // Remove user

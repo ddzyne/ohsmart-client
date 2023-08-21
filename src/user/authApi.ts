@@ -22,9 +22,9 @@ export const authApi = createApi({
           url: 'account',
           headers: {
             Accept: 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
-       })
+        });
       },
       providesTags: ['User'],
     }),
@@ -37,7 +37,7 @@ export const authApi = createApi({
           method: 'POST',
           headers: {
             Accept: 'application/json',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
           },
           body: content,
         })

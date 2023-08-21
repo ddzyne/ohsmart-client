@@ -11,14 +11,15 @@ import '@fontsource/roboto/700.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Generic from './pages/Generic';
 import Deposit from './pages/Deposit';
-import { SignInCallback, AuthRoute } from './auth/Auth';
-import { UserSettings, UserSubmissions } from './auth/User';
+import { SignInCallback, AuthRoute } from './user/Auth';
+import { UserSettings, UserSubmissions } from './user/User';
 import NotificationList from './features/notification/Notification';
 import type { Page } from './types/Pages';
 import Skeleton from '@mui/material/Skeleton';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AuthProvider } from 'react-oidc-context';
+import { useFetchUserProfileQuery } from './user/authApi';
 
 // Load theme
 const theme = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/theme`).default;
@@ -30,7 +31,7 @@ const formSections = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/fo
 const authProvider = {
   authority: process.env.REACT_APP_OIDC_AUTHORITY as string,
   client_id: process.env.REACT_APP_OIDC_CLIENT_ID as string,
-  scope: process.env.REACT_APP_OIDC_SCOPE as string,
+  scope: process.env.REACT_APP_OIDC_SCOPE as string || 'openid profile',
   redirect_uri: process.env.REACT_APP_OIDC_REDIRECT_URI as string,
   loadUserInfo: true,
 };

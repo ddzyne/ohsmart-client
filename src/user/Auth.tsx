@@ -25,7 +25,7 @@ export const AuthRoute = ({ children }: { children: ReactNode }) => {
 
 export const SignInCallback = () => {
   const auth = useAuth();
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation('user');
 
   if (auth.isLoading || auth.activeNavigator) {
     return (

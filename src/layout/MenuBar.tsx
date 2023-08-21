@@ -15,7 +15,7 @@ import type { MenuBarProps } from '../types/Pages';
 import { lookupLanguageString } from '../app/i18n';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
-import { UserMenu } from '../auth/User';
+import { UserMenu } from '../user/User';
 
 const MenuBar = ({pages}: MenuBarProps) => {
   const { i18n } = useTranslation();
