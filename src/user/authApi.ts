@@ -2,7 +2,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 import { User } from 'oidc-client-ts';
 
 function getUser() {
-    const oidcStorage = sessionStorage.getItem(`oidc.user:${process.env.REACT_APP_OIDC_AUTHORITY}:${process.env.REACT_APP_OIDC_CLIENT_ID}`)
+    const oidcStorage = sessionStorage.getItem(`oidc.user:${import.meta.env.VITE_OIDC_AUTHORITY}:${import.meta.env.VITE_OIDC_CLIENT_ID}`)
     if (!oidcStorage) {
         return null;
     }
@@ -11,7 +11,7 @@ function getUser() {
 
 export const authApi = createApi({
   reducerPath: 'auth',
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_OIDC_AUTHORITY }),
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_OIDC_AUTHORITY }),
   tagTypes: ['User'],
   endpoints: (build) => ({
     fetchUserProfile: build.query({

@@ -7,7 +7,7 @@ export const sheetsApi = createApi({
   endpoints: (build) => ({
     fetchSheets: build.query({
       query: (content) => ({
-        url: `${content.sheetId}/values/${content.page}?key=${process.env.REACT_APP_GSHEETS_API_KEY}`,
+        url: `${content.sheetId}/values/${content.page}?key=${import.meta.env.VITE_GSHEETS_API_KEY}`,
         headers: {Accept: "application/json"},
       }),
       transformResponse: (response: SheetsResponse, meta, arg) => {

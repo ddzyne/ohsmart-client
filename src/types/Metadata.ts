@@ -275,5 +275,8 @@ export interface InitialFormType {
 }
 
 export interface InitialFormProps {
-  form: InitialFormType;
+  form: InitialSectionType[];
+  targetRepo: string;
+  dataverseApiKeyIdentifier: string;
+  skipValidation?: boolean;
 }

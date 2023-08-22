@@ -14,29 +14,36 @@ import Deposit from './pages/Deposit';
 import { SignInCallback, AuthRoute } from './user/Auth';
 import { UserSettings, UserSubmissions } from './user/User';
 import NotificationList from './features/notification/Notification';
-import type { Page } from './types/Pages';
 import Skeleton from '@mui/material/Skeleton';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AuthProvider } from 'react-oidc-context';
 import { useFetchUserProfileQuery } from './user/authApi';
+import type { Language } from './types/Language';
+import { useTranslation } from 'react-i18next';
 
 // Load theme
-const theme = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/theme`).default;
-
-// Load pages
-const pages: Page[] = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/pages`).default;
-const formSections = require(`./config/${process.env.REACT_APP_CONFIG_FOLDER}/form`).default;
+import theme from './config/ohsmart/theme';
+import pages from './config/ohsmart/pages';
+import formSections from './config/ohsmart/form';
 
 const authProvider = {
-  authority: process.env.REACT_APP_OIDC_AUTHORITY as string,
-  client_id: process.env.REACT_APP_OIDC_CLIENT_ID as string,
-  scope: process.env.REACT_APP_OIDC_SCOPE as string || 'openid profile',
-  redirect_uri: process.env.REACT_APP_OIDC_REDIRECT_URI as string,
+  authority: import.meta.env.VITE_OIDC_AUTHORITY as string,
+  client_id: import.meta.env.VITE_OIDC_CLIENT_ID as string,
+  scope: import.meta.env.VITE_OIDC_SCOPE as string || 'openid profile',
+  redirect_uri: import.meta.env.VITE_OIDC_REDIRECT_URI as string,
   loadUserInfo: true,
 };
 
+const formProps = {
+  form: formSections,
+  targetRepo: 'demo.ssh.datastations.nl',
+  dataverseApiKeyIdentifier: 'dataverseApiKey',
+  skipValidation: true,
+}
+
 const App = () => {
+  const { i18n } = useTranslation();
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <ThemeProvider theme={theme}>
@@ -58,7 +65,9 @@ const App = () => {
                     path={page.slug} 
                     element={
                       page.template === 'deposit' ? 
-                      <AuthRoute><Deposit form={formSections} /></AuthRoute> : 
+                      <AuthRoute>
+                        <Deposit {...formProps} />
+                      </AuthRoute> : 
                       <Generic page={page} />
                     } 
                   />

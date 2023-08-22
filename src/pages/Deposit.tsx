@@ -23,28 +23,26 @@ import AlertTitle from '@mui/material/AlertTitle';
 import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
 
-const Deposit = ({form}: InitialFormProps) => {
+const Deposit = ({ ...props }: InitialFormProps) => {
   const dispatch = useAppDispatch();
   const sessionId = useAppSelector(getSessionId);
   const openTab = useAppSelector(getOpenTab);
   const { data: userData } = useFetchUserProfileQuery(null);
   const { t } = useTranslation('user');
 
-  console.log(userData)
-
-  // Initialize form only on initial render when there's no sessionId yet
-  // Or when form gets reset
+  // Initialize form on initial render when there's no sessionId yet
+  // or when form gets reset
   useEffect(() => {
     if (!sessionId) {
-      dispatch(initForm(form));  
+      dispatch(initForm(props.form));  
     }
-  }, [dispatch, sessionId, form]);
+  }, [dispatch, sessionId, props.form]);
 
   return (
     <Container>
       <Grid container>
         <Grid xs={12} mt={4}>
-          {!userData?.attributes[process.env.REACT_APP_DATAVERSE_KEY as string][0] &&
+          {!userData?.attributes[props.dataverseApiKeyIdentifier][0] &&
             <Alert severity="warning">
               <AlertTitle>{t('missingInfoHeader')}</AlertTitle>
               <Trans

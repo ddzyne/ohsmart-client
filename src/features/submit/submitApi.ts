@@ -79,7 +79,7 @@ const axiosBaseQuery =
 
 export const submitApi = createApi({
   reducerPath: 'submitApi',
-  baseQuery: axiosBaseQuery({ baseUrl: process.env.REACT_APP_SUBMIT_API as string }),
+  baseQuery: axiosBaseQuery({ baseUrl: import.meta.env.VITE_SUBMIT_API as string }),
   endpoints: (build) => ({
     submitData: build.mutation({
       // Custom query for chaining Post functions
@@ -88,13 +88,13 @@ export const submitApi = createApi({
         console.log(arg)
         // First post the metadata
         const metadataResult = await fetchWithBQ({
-          url: `metadata?repo_target=${process.env.REACT_APP_TARGET_REPO}`,
+          url: `metadata?repo_target=${import.meta.env.VITE_TARGET_REPO}`,
           method: 'POST',
           data: arg,
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_PACKAGING_API_KEY}`,
-            'target-username': process.env.REACT_APP_TARGET_USERNAME,
-            'target-password': process.env.REACT_APP_TARGET_PASSWORD,
+            Authorization: `Bearer ${import.meta.env.VITE_PACKAGING_API_KEY}`,
+            'target-username': import.meta.env.VITE_TARGET_USERNAME,
+            'target-password': import.meta.env.VITE_TARGET_PASSWORD,
           },
         });
 
@@ -113,9 +113,9 @@ export const submitApi = createApi({
           method: 'POST',
           data: file,
           headers: {
-            Authorization: `Bearer ${process.env.REACT_APP_PACKAGING_API_KEY}`,
-            'target-username': process.env.REACT_APP_TARGET_USERNAME,
-            'target-password': process.env.REACT_APP_TARGET_PASSWORD,
+            Authorization: `Bearer ${import.meta.env.VITE_PACKAGING_API_KEY}`,
+            'target-username': import.meta.env.VITE_TARGET_USERNAME,
+            'target-password': import.meta.env.VITE_TARGET_PASSWORD,
           },
         })));
 

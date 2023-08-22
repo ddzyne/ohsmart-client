@@ -5,6 +5,7 @@ import oralHistorySpecific from './formsections/oralHistorySpecific';
 import relations from './formsections/relations';
 import rights from './formsections/rights';
 import humanities from './formsections/humanities';
+import type { InitialSectionType } from '../../types/Metadata';
 
 // Make sure to import all sections of the form here, and add them to the sections export
 // Section data are formatted as js/ts, so we can easily import things like option lists, or set a variable that gets reused
@@ -20,4 +21,4 @@ const sections = [
   rights,
 ];
 
-export default sections;
+export default sections as InitialSectionType[];

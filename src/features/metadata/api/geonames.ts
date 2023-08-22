@@ -7,7 +7,7 @@ export const geonamesApi = createApi({
   endpoints: (build) => ({
     fetchGeonamesFreeText: build.query({
       query: (content) => ({
-        url: `searchJSON?q=${content}&username=${process.env.REACT_APP_GEONAMES_API_KEY}`,
+        url: `searchJSON?q=${content}&username=${import.meta.env.VITE_GEONAMES_API_KEY}`,
         headers: {Accept: "application/json"},
       }),
       transformResponse: (response: GeonamesResponse, meta, arg) => {

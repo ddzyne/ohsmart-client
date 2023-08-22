@@ -63,7 +63,7 @@ const MenuBar = ({pages}: MenuBarProps) => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-            {pages && pages.map((page, i) => ( page.inMenu && page.menuTitle && ((page.restricted && auth.isAuthenticated) || !page.restricted) &&
+            {pages && pages.map((page, i) => ( page.inMenu && page.menuTitle && ((page.restricted && auth.isAuthenticated) || !page.restricted || import.meta.env.VITE_SKIP_AUTHENTICATION) &&
               <MenuItem key={i} onClick={handleCloseNavMenu}>
                 <Link 
                   underline="none" 
@@ -86,7 +86,7 @@ const MenuBar = ({pages}: MenuBarProps) => {
             <DansLogoWhite/>
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages && pages.map((page, i) => ( page.inMenu && page.menuTitle && ((page.restricted && auth.isAuthenticated) || !page.restricted) &&
+            {pages && pages.map((page, i) => ( page.inMenu && page.menuTitle && ((page.restricted && auth.isAuthenticated) || !page.restricted || import.meta.env.VITE_SKIP_AUTHENTICATION) &&
               <Button
                 key={i}
                 onClick={handleCloseNavMenu}

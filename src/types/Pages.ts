@@ -8,16 +8,18 @@ interface PageAction {
   restricted?: boolean; // display when logged in, otherwise show a login button
 }
 
+export type Template = 'deposit' | 'generic';
+
 export interface Page {
   id: string;
   name: string | LanguageStrings;
   slug: string;
-  template: 'deposit' | 'generic';
+  template: Template;
   inMenu: boolean;
   menuTitle?: string | LanguageStrings;
   content?: string | LanguageStrings;
   action?: PageAction;
-  logo?: boolean;
+  logo?: any;
   form?: any;
   restricted?: boolean; // display only when logged in
 }

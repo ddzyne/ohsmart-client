@@ -9,8 +9,6 @@ import { useAuth } from 'react-oidc-context';
 import { useTranslation } from 'react-i18next';
 import { LoginButton } from '../user/User';
 
-const logo = require(`../config/${process.env.REACT_APP_CONFIG_FOLDER}/images/logo.png`);
-
 const Generic = ({page}: PageProps) => {
   const auth = useAuth();
   const { i18n } = useTranslation('pages');
@@ -28,7 +26,7 @@ const Generic = ({page}: PageProps) => {
         >
           <h1>
             {page.logo ? 
-              <img src={logo} alt="OH-SMArt" title="OH-SMArt" /> :
+              <img src={page.logo} alt="OH-SMArt" title="OH-SMArt" /> :
               lookupLanguageString(page.name, i18n.language)
             }
           </h1>
@@ -41,7 +39,7 @@ const Generic = ({page}: PageProps) => {
           {page.action && 
             <Box mt={4} display="flex" justifyContent="center">
               {
-                (page.action.restricted && auth.isAuthenticated) || !page.action.restricted ?
+                (page.action.restricted && auth.isAuthenticated) || !page.action.restricted || import.meta.env.VITE_SKIP_AUTHENTICATION ?
                 <Link to={`/${page.action.link}`}>
                   <Button variant="contained" size="large">{lookupLanguageString(page.action.text, i18n.language)}</Button>
                 </Link>:

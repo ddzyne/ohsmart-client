@@ -26,7 +26,7 @@ export const UserSettings = () => {
       <Grid container>
         <Grid xs={12} mdOffset={2.5} md={7}>
           <h1>{t('userSettings')}</h1>
-          { process.env.REACT_APP_DATAVERSE_KEY && <UserSettingsItem property={process.env.REACT_APP_DATAVERSE_KEY} />}
+          { import.meta.env.VITE_DATAVERSE_KEY && <UserSettingsItem property={import.meta.env.VITE_DATAVERSE_KEY} />}
         </Grid>
       </Grid>
     </Container>
@@ -109,13 +109,13 @@ export const UserMenu = () => {
 
   console.log(auth)
 
-  if (auth.isAuthenticated && auth.user) {
+  if ((auth.isAuthenticated && auth.user) || import.meta.env.VITE_SKIP_AUTHENTICATION) {
     return (
       <Box sx={{ flexGrow: 0 }}>
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
           <Avatar sx={{bgcolor: grey[300], color: 'black'}}>
-            {(auth.user.profile.given_name as string).charAt(0).toUpperCase()}
-            {(auth.user.profile.family_name as string).charAt(0).toUpperCase()}
+            {((auth.user?.profile.given_name as string) || '').charAt(0).toUpperCase()}
+            {((auth.user?.profile.family_name as string) || '').charAt(0).toUpperCase()}
           </Avatar>
         </IconButton>
         <Menu
@@ -136,8 +136,8 @@ export const UserMenu = () => {
         >
           <Box sx={{pl: 2, pr: 2, pb: 1, pt: 1}}>
             <Typography sx={{fontSize: '80%', fontWeight: 600, mb: 1}}>{t('loggedIn')}</Typography>
-            <Typography>{auth.user.profile.name}</Typography>
-            <Typography sx={{fontSize: '90%', color: 'neutralDark.contrastText'}}>{auth.user.profile.email}</Typography>
+            <Typography>{auth.user?.profile.name}</Typography>
+            <Typography sx={{fontSize: '90%', color: 'neutralDark.contrastText'}}>{auth.user?.profile.email}</Typography>
           </Box>
           <Divider />
           <Link component={RouterLink} to="/user-settings" underline="none" color="inherit" onClick={handleCloseUserMenu}>

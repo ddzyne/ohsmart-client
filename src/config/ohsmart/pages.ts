@@ -1,3 +1,6 @@
+import logo from './images/logo.png';
+import type { Page } from '../../types/Pages';
+
 const pages = [
   {
     id: "home",
@@ -18,7 +21,7 @@ const pages = [
       },
       restricted: true,
     },
-    logo: true,
+    logo: logo,
   },
   {
     id: "deposit",
@@ -85,4 +88,4 @@ const pages = [
   }
 ];
 
-export default pages;
+export default pages as Page[];

@@ -4,7 +4,7 @@ import type { GettyResponse, ProxyResponse } from '../../../types/Api';
 
 export const gettyApi = createApi({
   reducerPath: 'getty',
-  baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_HTTP_REDIRECT_PROXY }),
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_HTTP_REDIRECT_PROXY }),
   endpoints: (build) => ({
     fetchGettyAATTerms: build.query({
       query: (content) => {

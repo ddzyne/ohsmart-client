@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 export const AuthRoute = ({ children }: { children: ReactNode }) => {
   const auth = useAuth();
 
-  if (auth.isAuthenticated) {
+  if (auth.isAuthenticated || import.meta.env.VITE_SKIP_AUTHENTICATION) {
     return (
       <Fragment>
         {children}
