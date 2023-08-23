@@ -75,7 +75,7 @@ const App = () => {
               }
               )}
             </Routes>
-        </Suspense>
+          </Suspense>
         </BrowserRouter>
         <Footer />
         <NotificationList />
