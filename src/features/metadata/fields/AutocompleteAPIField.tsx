@@ -18,7 +18,7 @@ import { StatusIcon } from '../../generic/Icons';
 import { setField, setMultiApiField } from '../metadataSlice';
 import type { AutocompleteFieldProps, AutocompleteAPIFieldProps, TypeaheadAPI, ApiLinkProps, OptionsType } from '../../../types/Metadata';
 import type { QueryReturnType } from '../../../types/Api';
-import { lookupLanguageString } from '../../../app/i18n';
+import { lookupLanguageString } from '../../../utils/language';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
@@ -30,6 +30,7 @@ import LaunchIcon from '@mui/icons-material/Launch';
 import InputAdornment from '@mui/material/InputAdornment';
 import AutocompleteField from './AutocompleteField';
 import { getMetadataSubmitStatus } from '../../submit/submitSlice';
+import { getData } from '../../../pages/depositSlice';
 
 /*
  *  Type ahead fields for different API endpoints
@@ -81,8 +82,10 @@ export const RorField = ({field, sectionIndex}: AutocompleteFieldProps) => {
 export const GeonamesField = ({field, sectionIndex}: AutocompleteFieldProps) => {
   const [inputValue, setInputValue] = useState<string>('');
   const debouncedInputValue = useDebounce(inputValue, 500)[0];
+  const apiKey = useAppSelector(getData).geonamesApiKey;
   // Fetch data on input change
-  const {data, isFetching, isLoading} = useFetchGeonamesFreeTextQuery<QueryReturnType>(debouncedInputValue, {skip: debouncedInputValue === ''});
+  const {data, isFetching, isLoading} = useFetchGeonamesFreeTextQuery<QueryReturnType>({value: debouncedInputValue, apiKey: apiKey}, {skip: debouncedInputValue === ''});
+  console.log(data)
 
   return (
     <AutocompleteAPIField 
@@ -160,7 +163,8 @@ export const DansFormatsField = ({field, sectionIndex}: AutocompleteFieldProps) 
 }
 
 export const SheetsField = ({field, sectionIndex}: AutocompleteFieldProps) => {
-  const {data, isFetching, isLoading} = useFetchSheetsQuery<QueryReturnType>(field.sheetOptions);
+  const apiKey = useAppSelector(getData).gsheetsApiKey;
+  const {data, isFetching, isLoading} = useFetchSheetsQuery<QueryReturnType>({options: field.sheetOptions, apiKey: apiKey});
   const newField = {...field, options: data && data.response ? data.response : []};
 
   return (

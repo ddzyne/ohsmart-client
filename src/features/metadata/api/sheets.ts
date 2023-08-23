@@ -6,18 +6,18 @@ export const sheetsApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://sheets.googleapis.com/v4/spreadsheets/' }),
   endpoints: (build) => ({
     fetchSheets: build.query({
-      query: (content) => ({
-        url: `${content.sheetId}/values/${content.page}?key=${import.meta.env.VITE_GSHEETS_API_KEY}`,
+      query: ({options, apiKey}) => ({
+        url: `${options.sheetId}/values/${options.page}?key=${apiKey}`,
         headers: {Accept: "application/json"},
       }),
       transformResponse: (response: SheetsResponse, meta, arg) => {
         // cut off everything above the starting row
-        return response.values.length > arg.startAtRow ?
+        return response.values.length > arg.options.startAtRow ?
           ({
-            response: response.values.slice(arg.startAtRow).map((value: any) => ({
-              label: value[arg.labelCol],
-              value: value[arg.valueCol],
-              header: arg.headerCol !== undefined && value[arg.headerCol],
+            response: response.values.slice(arg.options.startAtRow).map((value: any) => ({
+              label: value[arg.options.labelCol],
+              value: value[arg.options.valueCol],
+              header: arg.options.headerCol !== undefined && value[arg.options.headerCol],
             }))
           })
           :

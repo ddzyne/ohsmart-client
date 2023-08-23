@@ -10,7 +10,7 @@ import { SingleField, GroupedField } from './MetadataFields';
 import { StatusIcon } from '../generic/Icons';
 import { useAppSelector, useAppDispatch } from '../../app/hooks';
 import { getMetadata, getOpenPanel, setOpenPanel } from './metadataSlice';
-import { lookupLanguageString } from '../../app/i18n';
+import { lookupLanguageString } from '../../utils/language';
 import { useTranslation } from 'react-i18next';
 
 const Form = () => {

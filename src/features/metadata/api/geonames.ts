@@ -6,15 +6,15 @@ export const geonamesApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'https://secure.geonames.org/' }),
   endpoints: (build) => ({
     fetchGeonamesFreeText: build.query({
-      query: (content) => ({
-        url: `searchJSON?q=${content}&username=${import.meta.env.VITE_GEONAMES_API_KEY}`,
+      query: ({value, apiKey}) => ({
+        url: `searchJSON?q=${value}&username=${apiKey}`,
         headers: {Accept: "application/json"},
       }),
       transformResponse: (response: GeonamesResponse, meta, arg) => {
         // Return an empty array when no results, which is what the Autocomplete field expects
         return response.totalResultsCount > 0 ? 
           ({
-            arg: arg,
+            arg: arg.value,
             response: 
               response.geonames.map( item => ({
                 label: `${item.name} (${item.fcodeName}) ${item.countryName ? item.countryName : ''}`,

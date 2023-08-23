@@ -9,7 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { setField } from '../metadataSlice';
 import { getFieldStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
-import { lookupLanguageString } from '../../../app/i18n';
+import { lookupLanguageString } from '../../../utils/language';
 import type { RadioFieldProps, CheckFieldProps } from '../../../types/Metadata';
 import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 import { useTranslation } from 'react-i18next';

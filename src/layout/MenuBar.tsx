@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { DansLogoWhite } from '../images/DansLogo';
 import { NavLink as RouterLink } from 'react-router-dom';
 import type { MenuBarProps } from '../types/Pages';
-import { lookupLanguageString } from '../app/i18n';
+import { lookupLanguageString } from '../utils/language';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from 'react-oidc-context';
 import { UserMenu } from '../user/User';
@@ -99,7 +99,7 @@ const MenuBar = ({pages}: MenuBarProps) => {
             ))}
           </Box>
 
-          <UserMenu />
+          {!import.meta.env.VITE_SKIP_AUTHENTICATION && <UserMenu />}
         </Toolbar>
       </Container>
     </AppBar>

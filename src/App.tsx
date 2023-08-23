@@ -15,12 +15,10 @@ import { SignInCallback, AuthRoute } from './user/Auth';
 import { UserSettings, UserSubmissions } from './user/User';
 import NotificationList from './features/notification/Notification';
 import Skeleton from '@mui/material/Skeleton';
+import { AuthProvider } from 'react-oidc-context';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { AuthProvider } from 'react-oidc-context';
-import { useFetchUserProfileQuery } from './user/authApi';
-import type { Language } from './types/Language';
-import { useTranslation } from 'react-i18next';
+import Box from '@mui/material/Box';
 
 // Load theme
 import theme from './config/ohsmart/theme';
@@ -31,29 +29,31 @@ const authProvider = {
   authority: import.meta.env.VITE_OIDC_AUTHORITY as string,
   client_id: import.meta.env.VITE_OIDC_CLIENT_ID as string,
   scope: import.meta.env.VITE_OIDC_SCOPE as string || 'openid profile',
-  redirect_uri: import.meta.env.VITE_OIDC_REDIRECT_URI as string,
+  redirect_uri: `${window.location.origin}/signin-callback`,
   loadUserInfo: true,
 };
 
 const formProps = {
   form: formSections,
   targetRepo: 'demo.ssh.datastations.nl',
-  dataverseApiKeyIdentifier: 'dataverseApiKey',
+  dataverseApiKeyIdentifier: 'dataverse_api_key', // key to use from Keycloak user object
+  submitKey: import.meta.env.VITE_PACKAGING_KEY, // maybe not use .env file anymore?
+  targetAuth: 'API_KEY',
+  targetKey: import.meta.env.VITE_TARGET_KEY, // todo.. dataverse api key, get this from auth using dataverseApiKeyIdentifier, so not needed here anymore
   skipValidation: true,
+  geonamesApiKey: 'dans_deposit_webapp',
+  // Todo: also pass along the user profile
 }
 
 const App = () => {
-  const { i18n } = useTranslation();
   return (
-    <LocalizationProvider dateAdapter={AdapterMoment}>
-      <ThemeProvider theme={theme}>
-        <AuthProvider {...authProvider}>
-          <CssBaseline />
-          <BrowserRouter>
-            <Suspense fallback={<Skeleton width={200} height={30} />}>
-              <LanguageBar />
-            </Suspense>
-            <MenuBar pages={pages} />
+    <ThemeProvider theme={theme}>
+      <AuthProvider {...authProvider}>
+        <CssBaseline />
+        <BrowserRouter>
+          <LanguageBar />
+          <MenuBar pages={pages} />
+          <Suspense fallback={<Box sx={{display: 'flex', justifyContent: 'center'}}><Skeleton height={600} width={900} /></Box>}>
             <Routes>
               <Route path="signin-callback" element={<SignInCallback />} />
               <Route path="user-settings" element={<AuthRoute><UserSettings /></AuthRoute>} />
@@ -75,12 +75,12 @@ const App = () => {
               }
               )}
             </Routes>
-          </BrowserRouter>
-          <Footer />
-          <NotificationList />
-        </AuthProvider>
-      </ThemeProvider>
-    </LocalizationProvider>
+        </Suspense>
+        </BrowserRouter>
+        <Footer />
+        <NotificationList />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

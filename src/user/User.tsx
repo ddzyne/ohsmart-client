@@ -109,7 +109,7 @@ export const UserMenu = () => {
 
   console.log(auth)
 
-  if ((auth.isAuthenticated && auth.user) || import.meta.env.VITE_SKIP_AUTHENTICATION) {
+  if (auth.isAuthenticated && auth.user) {
     return (
       <Box sx={{ flexGrow: 0 }}>
         <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>

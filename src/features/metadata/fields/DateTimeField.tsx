@@ -13,7 +13,7 @@ import { AddButton, DeleteButton } from '../MetadataButtons';
 import { setField, setDateTypeField } from '../metadataSlice';
 import { getFieldStatus } from '../metadataHelpers';
 import type { DateFieldProps } from '../../../types/Metadata';
-import { lookupLanguageString } from '../../../app/i18n';
+import { lookupLanguageString } from '../../../utils/language';
 import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 
 // Date and time selection component

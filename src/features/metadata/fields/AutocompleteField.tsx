@@ -7,7 +7,7 @@ import { getFieldStatus } from '../metadataHelpers';
 import { StatusIcon } from '../../generic/Icons';
 import { setField } from '../metadataSlice';
 import type { AutocompleteFieldProps, OptionsType } from '../../../types/Metadata';
-import { lookupLanguageString } from '../../../app/i18n';
+import { lookupLanguageString } from '../../../utils/language';
 import { getMetadataSubmitStatus } from '../../submit/submitSlice';
 
 const AutocompleteField = ({field, sectionIndex, isLoading}: AutocompleteFieldProps) => {

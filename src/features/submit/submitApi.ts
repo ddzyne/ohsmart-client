@@ -79,22 +79,23 @@ const axiosBaseQuery =
 
 export const submitApi = createApi({
   reducerPath: 'submitApi',
-  baseQuery: axiosBaseQuery({ baseUrl: import.meta.env.VITE_SUBMIT_API as string }),
+  baseQuery: axiosBaseQuery({ baseUrl: 'https://packaging.labs.dans.knaw.nl/inbox/' }),
   endpoints: (build) => ({
     submitData: build.mutation({
       // Custom query for chaining Post functions
       // TODO: responses and error handling.
-      async queryFn(arg, queryApi, extraOptions, fetchWithBQ) {
-        console.log(arg)
+      async queryFn({data, targetRepo, submitKey, targetAuth, targetKey}, queryApi, extraOptions, fetchWithBQ) {
+        console.log('submitting metadata...')
+        console.log(data)
         // First post the metadata
         const metadataResult = await fetchWithBQ({
-          url: `metadata?repo_target=${import.meta.env.VITE_TARGET_REPO}`,
+          url: `metadata?repo_target=${targetRepo}`,
           method: 'POST',
-          data: arg,
+          data: data,
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_PACKAGING_API_KEY}`,
-            'target-username': import.meta.env.VITE_TARGET_USERNAME,
-            'target-password': import.meta.env.VITE_TARGET_PASSWORD,
+            Authorization: `Bearer ${submitKey}`,
+            'target-username': targetAuth,
+            'target-password': targetKey,
           },
         });
 
@@ -107,15 +108,15 @@ export const submitApi = createApi({
       },
     }),
     submitFiles: build.mutation({
-      async queryFn(arg, queryApi, extraOptions, fetchWithBQ) {
-        const filesResults = Array.isArray(arg) && await Promise.all(arg.map((file: any) => fetchWithBQ({
+      async queryFn({data, submitKey}, queryApi, extraOptions, fetchWithBQ) {
+        console.log('submitting files...')
+        console.log(data)
+        const filesResults = Array.isArray(data) && await Promise.all(data.map((file: any) => fetchWithBQ({
           url: 'file',
           method: 'POST',
           data: file,
           headers: {
-            Authorization: `Bearer ${import.meta.env.VITE_PACKAGING_API_KEY}`,
-            'target-username': import.meta.env.VITE_TARGET_USERNAME,
-            'target-password': import.meta.env.VITE_TARGET_PASSWORD,
+            Authorization: `Bearer ${submitKey}`,
           },
         })));
 

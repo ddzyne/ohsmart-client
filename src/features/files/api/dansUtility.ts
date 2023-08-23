@@ -2,7 +2,7 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export const dansUtilityApi = createApi({
   reducerPath: 'dansUtility',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_UTILITY_API }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://facades-formats.labs.dans.knaw.nl' }),
   endpoints: (build) => ({
     checkType: build.query({
       query: (content) => ({

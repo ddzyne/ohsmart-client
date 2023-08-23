@@ -278,5 +278,10 @@ export interface InitialFormProps {
   form: InitialSectionType[];
   targetRepo: string;
   dataverseApiKeyIdentifier: string;
+  submitKey?: string;
+  targetAuth?: string;
+  targetKey?: string;
   skipValidation?: boolean;
+  geonamesApiKey?: string;
+  gsheetsApiKey?: string;
 }

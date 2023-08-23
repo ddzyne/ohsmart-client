@@ -1,4 +1,4 @@
-import { Fragment, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useAuth } from 'react-oidc-context';
 import { Navigate } from 'react-router';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -12,9 +12,9 @@ export const AuthRoute = ({ children }: { children: ReactNode }) => {
 
   if (auth.isAuthenticated || import.meta.env.VITE_SKIP_AUTHENTICATION) {
     return (
-      <Fragment>
+      <>
         {children}
-      </Fragment>
+      </>
     );
   }
 

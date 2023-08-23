@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { Link } from 'react-router-dom';
 import type { PageProps } from '../types/Pages';
-import { lookupLanguageString } from '../app/i18n';
+import { lookupLanguageString } from '../utils/language';
 import { useAuth } from 'react-oidc-context';
 import { useTranslation } from 'react-i18next';
 import { LoginButton } from '../user/User';

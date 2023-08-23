@@ -1,4 +1,4 @@
-import { Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import Container from '@mui/material/Container';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -14,7 +14,6 @@ import { getFiles } from '../features/files/filesSlice';
 import { StatusIcon } from '../features/generic/Icons';
 import Submit from '../features/submit/Submit';
 import { useTranslation, Trans } from 'react-i18next';
-import Skeleton from '@mui/material/Skeleton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { initForm } from '../features/metadata/metadataSlice';
 import { useFetchUserProfileQuery } from '../user/authApi';
@@ -22,6 +21,9 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Link from '@mui/material/Link';
 import { Link as RouterLink } from 'react-router-dom';
+import { setData } from './depositSlice';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
 const Deposit = ({ ...props }: InitialFormProps) => {
   const dispatch = useAppDispatch();
@@ -38,25 +40,28 @@ const Deposit = ({ ...props }: InitialFormProps) => {
     }
   }, [dispatch, sessionId, props.form]);
 
+  // Set props in redux
+  useEffect(() => {
+    dispatch(setData(props));
+  }, []);
+
   return (
-    <Container>
-      <Grid container>
-        <Grid xs={12} mt={4}>
-          {!userData?.attributes[props.dataverseApiKeyIdentifier][0] &&
-            <Alert severity="warning">
-              <AlertTitle>{t('missingInfoHeader')}</AlertTitle>
-              <Trans
-                i18nKey="user:missingInfoText"
-                components={[<Link component={RouterLink} to="/user-settings" />]}
-              />
-            </Alert>
-          }
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Suspense fallback={<Skeleton width={400} height={50} />}>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
+      <Container>
+        <Grid container>
+          <Grid xs={12} mt={4}>
+            {!props.targetKey &&
+              <Alert severity="warning">
+                <AlertTitle>{t('missingInfoHeader')}</AlertTitle>
+                <Trans
+                  i18nKey="user:missingInfoText"
+                  components={[<Link component={RouterLink} to="/user-settings" />]}
+                />
+              </Alert>
+            }
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabHeader value={openTab} handleChange={(e, val) => dispatch(setOpenTab(val))} />
-            </Suspense>
-          </Box>
-          <Suspense fallback={<Skeleton width={800} height={400} />}>
+            </Box>
             <AnimatePresence initial={false}>
               <TabPanel value={openTab} index={0} key="tab1">
                 <Metadata />
@@ -65,15 +70,13 @@ const Deposit = ({ ...props }: InitialFormProps) => {
                 <Files />
               </TabPanel>
             </AnimatePresence>
-          </Suspense>
-        </Grid>
-        <Grid xs={12} mt={4} display="flex" justifyContent="end" alignItems="center">
-          <Suspense fallback={<Skeleton width={150} height={55} />}>
+          </Grid>
+          <Grid xs={12} mt={4} display="flex" justifyContent="end" alignItems="center">
             <Submit />
-          </Suspense>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </LocalizationProvider>
   )
 }
 

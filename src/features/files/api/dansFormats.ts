@@ -3,7 +3,7 @@ import type { DansSimpleList, DansFilesResponse } from '../../../types/Files';
 
 export const dansFormatsApi = createApi({
   reducerPath: 'dansFormats',
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_FORMATS_API }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://type.labs.dans.knaw.nl' }),
   endpoints: (build) => ({
     fetchDansFormats: build.query({
       query: () => ({

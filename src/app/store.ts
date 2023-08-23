@@ -3,6 +3,7 @@ import metadataReducer from '../features/metadata/metadataSlice';
 import filesReducer from '../features/files/filesSlice';
 import submitReducer from '../features/submit/submitSlice';
 import notificationReducer from '../features/notification/notificationSlice';
+import depositReducer from '../pages/depositSlice';
 import { orcidApi } from '../features/metadata/api/orcid';
 import { rorApi } from '../features/metadata/api/ror';
 import { gettyApi } from '../features/metadata/api/getty';
@@ -31,6 +32,7 @@ export const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
     submit: submitReducer,
     notification: notificationReducer,
+    deposit: depositReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()

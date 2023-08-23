@@ -15,7 +15,7 @@ import TextField from './fields/TextField';
 import DateTimeField from './fields/DateTimeField';
 import { RadioField, CheckField } from './fields/RadioCheckField';
 import { TransitionGroup } from 'react-transition-group';
-import { lookupLanguageString } from '../../app/i18n';
+import { lookupLanguageString } from '../../utils/language';
 import { getMetadataSubmitStatus } from '../submit/submitSlice';
 import { useAppSelector } from '../../app/hooks';
 import { useTranslation } from 'react-i18next';

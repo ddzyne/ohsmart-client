@@ -15,6 +15,7 @@ import { useSubmitDataMutation, useSubmitFilesMutation } from './submitApi';
 import { setMetadataSubmitStatus, getMetadataSubmitStatus, getFilesSubmitStatus, resetFilesSubmitStatus } from './submitSlice';
 import { formatFormData, formatFileData } from './submitHelpers';
 import { useTranslation } from 'react-i18next';
+import { getData } from '../../pages/depositSlice';
 
 const Submit = () => {
   const dispatch = useAppDispatch();
@@ -50,11 +51,19 @@ const Submit = () => {
     reset: resetSubmittedFiles, 
   }] = useSubmitFilesMutation();
 
+  const depositProps = useAppSelector(getData);
+
   const handleButtonClick = () => {
     // First submit the metadata
     const formattedMetadata = formatFormData(sessionId, metadata, selectedFiles);
     dispatch(setMetadataSubmitStatus('submitting'));
-    submitData(formattedMetadata);
+    submitData({
+      data: formattedMetadata, 
+      targetRepo: depositProps.targetRepo,
+      submitKey: depositProps.submitKey,
+      targetAuth: depositProps.targetAuth,
+      targetKey: depositProps.targetKey,
+    });
   };
 
   useEffect(() => {
@@ -62,7 +71,10 @@ const Submit = () => {
     if (isSuccessMeta && selectedFiles) {
       formatFileData(sessionId, selectedFiles)
         .then( d => {
-          submitFiles(d);
+          submitFiles({
+            data: d, 
+            submitKey: depositProps.submitKey,
+          });
         });
     }
   }, [isSuccessMeta, selectedFiles, sessionId, submitFiles]);
@@ -160,7 +172,7 @@ const Submit = () => {
         }
         <Button
           variant="contained"
-          disabled={isSuccessMeta || isLoadingMeta || (metadataStatus === 'error' && !import.meta.env.VITE_SKIP_VALIDATION)}
+          disabled={isSuccessMeta || isLoadingMeta || (metadataStatus === 'error' && !depositProps.skipValidation)}
           onClick={handleButtonClick}
           size="large"
         >
